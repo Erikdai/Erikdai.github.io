@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: MSc Student · <a href='https://www.sydney.edu.au/'>University of Sydney</a> · Large Language Models & Multi-Agent Systems
+subtitle:
 
 profile:
   align: right
@@ -27,7 +27,7 @@ latest_posts:
   limit: 3
 ---
 
-Hi! I am **Chengxiao Dai (戴铖骁)**, a Master of Computer Science student and tutor at the [University of Sydney](https://www.sydney.edu.au/). Previously, I was a research intern at [A\*STAR's Singapore Institute of Manufacturing Technology](https://www.a-star.edu.sg/simtech) and at the [China Academy of Information and Communications Technology (CAICT)](http://www.caict.ac.cn/english/).
+Hi! I am **Chengxiao Dai**, a Master of Computer Science student and tutor at the [University of Sydney](https://www.sydney.edu.au/). Previously, I was a research intern at [A\*STAR's Singapore Institute of Manufacturing Technology](https://www.a-star.edu.sg/simtech) and at the [China Academy of Information and Communications Technology (CAICT)](http://www.caict.ac.cn/english/).
 
 My research focuses on **large language models** and **multi-agent systems**.
 

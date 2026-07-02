@@ -3,7 +3,7 @@
 # Publications, Skills, Languages, Awards, References, ...). Unknown section names
 # only render entries that use `label`/`details` or `bullet` fields.
 cv:
-  name: Chengxiao Dai (戴铖骁)
+  name: Chengxiao Dai
   label: MSc Student & Tutor, University of Sydney
   email: "chengxiao [dot] dai [at] sydney [dot] edu [dot] au"
   location: Sydney, NSW, Australia
