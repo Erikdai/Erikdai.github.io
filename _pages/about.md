@@ -2,33 +2,39 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
+subtitle: <a href='https://www.sydney.edu.au/'>University of Sydney</a> · Sydney, Australia
 
 profile:
   align: right
   image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
-    <p>555 your office number</p>
-    <p>123 your address street</p>
-    <p>Your City, State 12345</p>
+    <p>University of Sydney</p>
+    <p>Sydney, NSW, Australia</p>
+    <p>cdai0023@uni.sydney.edu.au</p>
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 
 announcements:
-  enabled: true # includes a list of news items
+  enabled: false # set to true to show a list of news items
   scrollable: true # adds a vertical scroll bar if there are more than 3 news items
   limit: 5 # leave blank to include all the news in the `_news` folder
 
 latest_posts:
-  enabled: true
-  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
-  limit: 3 # leave blank to include all the blog posts
+  enabled: false # set to true to show a list of blog posts
+  scrollable: true
+  limit: 3
 ---
 
-Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](https://www.reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
+Hi! I am **Joshua Dai**, a researcher at the [University of Sydney](https://www.sydney.edu.au/). <!-- TODO: 换成你的真实身份，例如 PhD student / Research Assistant in the School of Computer Science -->
 
-Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
+My research focuses on <!-- TODO: 你的研究方向 -->*[your research area, e.g. machine learning / natural language processing]*. I am broadly interested in <!-- TODO: 兴趣点 -->*[topics you care about]*.
 
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+Feel free to reach out via [email](mailto:cdai0023@uni.sydney.edu.au) — I'm always happy to chat about research and collaboration.
+
+---
+
+你好！我是**戴**，[悉尼大学](https://www.sydney.edu.au/)的研究人员。<!-- TODO: 换成真实身份，如「博士研究生」 -->
+
+我的研究方向是<!-- TODO: 中文研究方向 -->*[你的研究领域]*，主要关注<!-- TODO: 兴趣点 -->*[你关心的问题]*。欢迎通过[邮件](mailto:cdai0023@uni.sydney.edu.au)与我交流，探讨科研与合作。
