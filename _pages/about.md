@@ -12,6 +12,7 @@ profile:
     <p>School of Computer Science</p>
     <p>University of Sydney</p>
     <p>NSW, Australia</p>
+    <p>Currently seeking PhD opportunities</p>
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
