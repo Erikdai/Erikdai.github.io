@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: MSc Student · <a href='https://www.sydney.edu.au/'>University of Sydney</a> · Agentic Systems & Knowledge-Graph Reasoning
+subtitle: MSc Student · <a href='https://www.sydney.edu.au/'>University of Sydney</a> · Large Language Models & Multi-Agent Systems
 
 profile:
   align: right
@@ -29,6 +29,6 @@ latest_posts:
 
 Hi! I am **Chengxiao Dai (戴铖骁)**, a Master of Computer Science student and tutor at the [University of Sydney](https://www.sydney.edu.au/). Previously, I was a research intern at [A\*STAR's Singapore Institute of Manufacturing Technology](https://www.a-star.edu.sg/simtech) and at the [China Academy of Information and Communications Technology (CAICT)](http://www.caict.ac.cn/english/).
 
-My research focuses on **agentic systems**, **knowledge-graph reasoning (GraphRAG)**, and **agent memory & context engineering**.
+My research focuses on **large language models** and **multi-agent systems**.
 
 Feel free to reach out at **chengxiao [dot] dai [at] sydney [dot] edu [dot] au**.
