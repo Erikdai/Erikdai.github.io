@@ -3,18 +3,18 @@
 # -----------------------------------------------------------------------------
 
 title: blank # the website title (if blank, full name will be used instead)
-first_name: Joshua
+first_name: Chengxiao
 middle_name: ""
 last_name: Dai
 contact_note: >
   The best way to reach me is by email.
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Personal academic homepage of Joshua Dai, University of Sydney. 戴的个人学术主页。
+  Chengxiao Dai (戴铖骁) — MSc student at the University of Sydney working on large language models, multi-agent systems, retrieval-augmented generation and knowledge-graph reasoning.
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
   Photos from <a href="https://unsplash.com" target="_blank">Unsplash</a>.
-keywords: Joshua Dai, University of Sydney, academic homepage, research, publications # add your own keywords or leave empty
+keywords: Chengxiao Dai, 戴铖骁, University of Sydney, large language models, multi-agent systems, retrieval-augmented generation, knowledge graph reasoning, LLM safety # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: ⚛️ # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
@@ -342,7 +342,7 @@ display_categories: ["external-services"] # these categories will be displayed o
 
 scholar:
   last_name: [Dai]
-  first_name: [Joshua, J.]
+  first_name: [Chengxiao, C.]
 
   style: apa
   locale: en

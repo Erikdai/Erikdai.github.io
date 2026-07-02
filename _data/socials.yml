@@ -1,11 +1,10 @@
 # this file contains the social media links and usernames of the author
 # the socials will be displayed in the order they are defined here
 # for more information, please refer to the documentation of jekyll-socials plugin: https://github.com/george-gca/jekyll-socials
-cv_pdf: /assets/pdf/example_pdf.pdf # TODO: replace with your own CV PDF placed in assets/pdf/
-email: cdai0023@uni.sydney.edu.au # your email address
+cv_pdf: /assets/pdf/cv.pdf # downloadable CV shown on the /cv/ page
+# email: # removed on purpose — the raw mailto would expose the address to scrapers; the obfuscated address is shown on the About/CV pages instead
 github_username: Erikdai # your GitHub username
-# scholar_userid: # TODO: add your Google Scholar ID (from your Scholar profile URL)
+scholar_userid: 9IYEVxcAAAAJ # Google Scholar ID
 # orcid_id: # TODO: add your ORCID id (e.g. 0000-0000-0000-0000)
-# linkedin_username: # TODO: add your LinkedIn username
-# x_username: # TODO: add your X/Twitter handle (without @)
+# linkedin_username: # TODO: add your LinkedIn username (the part after /in/ in your profile URL)
 rss_icon: false # comment this line to show the RSS icon
