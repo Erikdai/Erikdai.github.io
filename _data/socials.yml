@@ -3,6 +3,11 @@
 # see the jekyll-socials plugin: https://github.com/george-gca/jekyll-socials
 github_username: Erikdai # your GitHub username
 scholar_userid: 9IYEVxcAAAAJ # Google Scholar ID
-# linkedin_username: # TODO: add your LinkedIn username (the part after /in/ in your profile URL)
+# LinkedIn: linked via custom_social so it can point at an exact URL.
+# To use your own profile instead of the homepage, set url to https://www.linkedin.com/in/<your-handle>
+custom_social:
+  logo: /assets/img/linkedin.svg
+  title: LinkedIn
+  url: https://linkedin.com/
 # cv_pdf removed on purpose (no CV icon in the footer)
 # rss_icon removed on purpose (no RSS/xml icon in the footer)
