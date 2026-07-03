@@ -4,7 +4,7 @@ title: life
 permalink: /life/
 nav: true
 nav_order: 5
-description: Just a chill guy
+description: Just a chill guy.
 ---
 
 <style>
