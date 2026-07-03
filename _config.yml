@@ -6,8 +6,7 @@ title: blank # the website title (if blank, full name will be used instead)
 first_name: Chengxiao Dai
 middle_name: ""
 last_name: ""
-contact_note: >
-  The best way to reach me is by email.
+contact_note:
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Chengxiao Dai — MSc student at the University of Sydney working on large language models, multi-agent systems, retrieval-augmented generation and knowledge-graph reasoning.
 footer_text: >
