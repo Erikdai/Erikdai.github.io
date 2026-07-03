@@ -14,6 +14,8 @@ nav_order: 3
 - **Reviewer**, ICML 2026 Workshop on AI for Good (AI4Good)
 - **Reviewer**, ICML 2026 Workshop on Hypothesis Testing
 - **Reviewer**, KDD 2026 Workshop on Agentic AI Evaluation and Trustworthiness
+- **Reviewer**, ICLR 2025 Workshop on WMARK
+- **Reviewer**, NeurIPS 2024 Workshop on Bayesian Decision-making and Uncertainty (Vancouver, Canada, Dec 2024)
 - **Steering Committee**, ICC 2027
 
 ## Teaching
