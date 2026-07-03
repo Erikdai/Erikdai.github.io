@@ -169,4 +169,12 @@
   .projects .card-img-top { aspect-ratio: 2 / 1; object-fit: cover; width: 100%; }
   /* Slightly smaller profile avatar on tablet/desktop */
   @media (min-width: 576px) { .profile { width: 26%; } }
+  /* Pronouns after the hero name only (scoped to the bold-name heading) */
+  .post-title:has(> span.font-weight-bold)::after {
+    content: " (he/him)";
+    font-size: 0.5em;
+    font-weight: 400;
+    color: var(--global-text-color-light);
+    white-space: nowrap;
+  }
 </style>
