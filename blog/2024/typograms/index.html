@@ -13,7 +13,7 @@
   /* Uniform project card images */
   .projects .card-img-top { aspect-ratio: 2 / 1; object-fit: cover; width: 100%; }
   /* Slightly smaller profile avatar on tablet/desktop */
-  @media (min-width: 576px) { .profile { width: 26%; } }
+  @media (min-width: 576px) { .profile { width: 22%; } }
   /* Pronouns after the hero name only (scoped to the bold-name heading) */
   .post-title:has(> span.font-weight-bold)::after {
     content: " (he/him)";
@@ -522,6 +522,13 @@ ninja.data = [{
           section: "Teachings",handler: () => {
               window.location.href = "/teachings/introduction-to-machine-learning/";
             },},{
+        id: 'social-email',
+        title: 'email',
+        section: 'Socials',
+        handler: () => {
+          window.open("mailto:%63%68%65%6E%67%78%69%61%6F.%64%61%69@%73%79%64%6E%65%79.%65%64%75.%61%75", "_blank");
+        },
+      },{
         id: 'social-github',
         title: 'GitHub',
         section: 'Socials',
