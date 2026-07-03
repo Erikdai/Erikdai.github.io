@@ -6,6 +6,8 @@ nav: true
 nav_order: 3
 ---
 
+## Academic Service
+
 - **Program Committee**, AAAI 2025 / 2026
 - **Reviewer**, IJCNN 2025 / 2026
 - **Reviewer**, ICIC 2026
@@ -13,3 +15,8 @@ nav_order: 3
 - **Reviewer**, ICML 2026 Workshop on Hypothesis Testing
 - **Reviewer**, KDD 2026 Workshop on Agentic AI Evaluation and Trustworthiness
 - **Steering Committee**, ICC 2027
+
+## Teaching
+
+- **Tutor**, DATA2001: Data Science, Big Data and Data Variety — University of Sydney
+- **Teaching Assistant**, AI Spring Camp — jointly organized by [Datawhale](https://www.datawhale.cn/) and the [Shanghai Academy of Artificial Intelligence for Science (SAIS)](https://www.sais.com.cn/)
