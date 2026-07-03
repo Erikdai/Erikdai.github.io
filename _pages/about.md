@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle:
+subtitle: 进退维谷之日，正是别有洞天之时。
 
 profile:
   align: right
