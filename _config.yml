@@ -2,10 +2,10 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: blank # the website title (if blank, full name will be used instead)
+title: Chengxiao Dai # the website title (if blank, full name will be used instead)
 first_name: Chengxiao Dai
 middle_name: ""
-last_name: ""
+last_name: (he/him)
 contact_note:
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Chengxiao Dai — MSc student at the University of Sydney working on large language models, multi-agent systems, retrieval-augmented generation and knowledge-graph reasoning.

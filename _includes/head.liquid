@@ -165,4 +165,8 @@
     --global-hover-color: #2698ba;
     --global-code-bg-color: rgba(38, 152, 186, 0.05);
   }
+  /* LinkedIn custom-social icon: keep it monochrome like the icon fonts (invert in dark mode) */
+  html[data-theme="dark"] .social .contact-icons a svg image { filter: invert(1); }
+  /* Uniform project card images */
+  .projects .card-img-top { aspect-ratio: 2 / 1; object-fit: cover; width: 100%; }
 </style>

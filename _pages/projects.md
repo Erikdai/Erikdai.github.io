@@ -4,7 +4,7 @@ title: projects
 permalink: /projects/
 description: Selected projects and open-source work.
 nav: true
-nav_order: 3
+nav_order: 4
 horizontal: false
 ---
 
@@ -62,3 +62,5 @@ horizontal: false
   {% endif %}
 {% endif %}
 </div>
+
+<p style="text-align: center; margin-top: 1.5rem; color: var(--global-text-color-light);"><em>More projects coming soon…</em></p>
