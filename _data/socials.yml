@@ -1,6 +1,7 @@
 # this file contains the social media links and usernames of the author
 # the socials will be displayed in the order they are defined here
 # see the jekyll-socials plugin: https://github.com/george-gca/jekyll-socials
+email: chengxiao.dai@sydney.edu.au # shows an envelope icon (mailto link)
 github_username: Erikdai # your GitHub username
 scholar_userid: 9IYEVxcAAAAJ # Google Scholar ID
 # LinkedIn as a native FontAwesome icon (matches the GitHub/Scholar icons).
