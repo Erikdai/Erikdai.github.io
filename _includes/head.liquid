@@ -179,8 +179,8 @@
   }
   /* Keep the publications list author-free; full authors stay in the BibTeX (Bib button) */
   .publications .author { display: none; }
-  /* A bit more space between publication entries */
-  .publications ol.bibliography li { margin-bottom: 1.75rem; }
+  /* Push the "selected publications" heading down a bit (heading-to-papers gap stays default) */
+  h2:has(> a[href="/publications/"]) { margin-top: 2.5rem; }
   /* Underline beneath the hero slogan/subtitle */
   .desc { display: inline-block; border-bottom: 1px solid var(--global-divider-color, #e8e8e8); padding-bottom: 0.4rem; }
 </style>
