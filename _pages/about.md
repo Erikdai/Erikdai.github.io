@@ -6,7 +6,7 @@ subtitle: 进退维谷之日，正是别有洞天之时。
 
 profile:
   align: right
-  image: prof_pic.jpg
+  image: prof_pic_2026.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
     <p>School of Computer Science</p>
