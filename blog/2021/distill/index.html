@@ -14,6 +14,14 @@
   .projects .card-img-top { aspect-ratio: 2 / 1; object-fit: cover; width: 100%; }
   /* Slightly smaller profile avatar on tablet/desktop */
   @media (min-width: 576px) { .profile { width: 26%; } }
+  /* Pronouns after the hero name only (scoped to the bold-name heading) */
+  .post-title:has(> span.font-weight-bold)::after {
+    content: " (he/him)";
+    font-size: 0.5em;
+    font-weight: 400;
+    color: var(--global-text-color-light);
+    white-space: nowrap;
+  }
 </style> <link rel="stylesheet" href="/assets/css/al-folio-distill.css?v=fb7196ec07cb5299d51b2cbdc69c23d7"> <script src="/assets/js/distillpub/template.v2.js"></script> <script src="/assets/js/distillpub/transforms.v2.js"></script> <style type="text/css">
         .fake-img {
   background: #bbb;
