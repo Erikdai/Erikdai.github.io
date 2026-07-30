@@ -4,10 +4,6 @@
 email: chengxiao.dai@sydney.edu.au # shows an envelope icon (mailto link)
 github_username: Erikdai # your GitHub username
 scholar_userid: 9IYEVxcAAAAJ # Google Scholar ID
-# LinkedIn as a native FontAwesome icon (matches the GitHub/Scholar icons).
-# The value below resolves to the LinkedIn homepage (the URL you provided).
-# To point at your own profile instead, set: linkedin_username: your-handle
-# (that becomes https://www.linkedin.com/in/your-handle)
-linkedin_username: "../.."
+linkedin_username: chengxiaodai # https://www.linkedin.com/in/chengxiaodai/
 # cv_pdf removed on purpose (no CV icon in the footer)
 # rss_icon removed on purpose (no RSS/xml icon in the footer)
