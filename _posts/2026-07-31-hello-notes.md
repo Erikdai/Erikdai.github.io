@@ -1,7 +1,7 @@
 ---
 layout: post
 title: starting a notes page
-date: 2026-08-01 10:00:00 +1000
+date: 2026-07-31 10:00:00 +1000
 description: why I keep research notes in public, and what will show up here.
 tags: meta
 categories: misc

@@ -1,7 +1,9 @@
 ---
 layout: post
 title: 标题写这里
-date: 2026-08-01 10:00:00 +1000 # 发布时间，+1000 是悉尼时区
+date: 2026-08-01 10:00:00 +1000 # +1000 是悉尼时区。注意别填未来时间：
+# GitHub runner 用 UTC，比悉尼晚 10 小时，日期一旦超过构建时刻，
+# Jekyll 会静默跳过这篇文章（future: false），页面上就是不显示。
 description: 一句话摘要，会显示在 /blog/ 列表里
 tags: llm agents # 空格分隔；点进去是 /blog/tag/llm/
 categories: paper-notes # 空格分隔；点进去是 /blog/category/paper-notes/
