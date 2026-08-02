@@ -55,6 +55,10 @@ on:
       - "!docs/FAQ.md"
       - "!docs/INSTALL.md"
       - "!README.md"
+  schedule:
+    # Weekly, Sunday 20:00 UTC = Monday 06:00 Sydney. Refreshes the Google
+    # Scholar numbers on the homepage, then rebuilds in the same run.
+    - cron: "0 20 * * 0"
   workflow_dispatch:
 
 permissions:
@@ -91,6 +95,21 @@ jobs:
           valueFile: "_config.yml"
           propertyPath: "giscus.repo"
           value: ${{ github.repository }}
+      - name: Refresh Google Scholar stats 📈
+        # Only on the weekly cron and manual runs: ordinary content pushes
+        # should not wait on (or be blocked by) Google Scholar.
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          python3 bin/update_scholar_stats.py
+          if [ -z "$(git status --porcelain _data/scholar_stats.yml)" ]; then
+            echo "Scholar stats unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _data/scholar_stats.yml
+          git commit -m "Update Google Scholar stats"
+          git push
       - name: Install and Build 🔧
         run: |
           sudo apt-get update && sudo apt-get install -y imagemagick

@@ -31,6 +31,7 @@ Hi! I am **Chengxiao Dai**, a Master of Computer Science student and tutor at th
 
 My research focuses on large language models and multi-agent systems, with an emphasis on trustworthy reasoning, agent collaboration, and domain-specific applications.
 
-<p style="font-size: 0.9rem; color: var(--global-text-color-light);"><a href="https://scholar.google.com/citations?user=9IYEVxcAAAAJ" target="_blank">Google Scholar</a> · 145 citations · h-index 6 · i10-index 3</p>
+{% assign gs = site.data.scholar_stats %}
+<p style="font-size: 0.9rem; color: var(--global-text-color-light);" title="Google Scholar figures as of {{ gs.last_updated }}"><a href="https://scholar.google.com/citations?user={{ site.data.socials.scholar_userid }}" target="_blank">Google Scholar</a> · {{ gs.citations }} citations · h-index {{ gs.h_index }} · i10-index {{ gs.i10_index }}</p>
 
 I am currently seeking PhD opportunities and AI/ML engineering roles. Feel free to reach out at **chengxiao [dot] dai [at] sydney [dot] edu [dot] au**.
