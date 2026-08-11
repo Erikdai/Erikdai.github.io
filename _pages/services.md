@@ -10,6 +10,7 @@ nav_order: 3
 
 - **Steering Committee**, ICC 2027
 - **Program Committee**, AAAI 2025 / 2026
+- **Reviewer**, Transactions on Machine Learning Research (TMLR)
 - **Reviewer**, IJCNN 2025 / 2026
 - **Reviewer**, ICIC 2026
 - **Reviewer**, ICML 2026 Workshop on AI for Good (AI4Good)
