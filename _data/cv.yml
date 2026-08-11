@@ -117,7 +117,7 @@ cv:
       - label: "Journal Reviewer"
         details: "Transactions on Machine Learning Research (TMLR)"
       - label: "Conference Reviewer / Technical Committee"
-        details: "AAAI, ICIC, IJCNN, NeurIPS Workshop, ICC"
+        details: "ACL Rolling Review (ARR), AAAI, ICIC, IJCNN, NeurIPS Workshop, ICC"
       - label: "Open-Source Contributions"
         details: "Core contributor to aiXiv and SkillBible (100+ GitHub stars)"
 
