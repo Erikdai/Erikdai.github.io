@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: '进退维谷之日，正是别有洞天之时。<br><span style="font-size: 0.85em; color: var(--global-text-color-light);">When there is no way forward and no way back, that is when a hidden world opens.</span>'
+subtitle: '进退维谷之日，正是别有洞天之时。<br><span class="subtitle-en">When there seems to be no way forward or back, a whole new world may be just about to reveal itself.</span>'
 
 profile:
   align: right
