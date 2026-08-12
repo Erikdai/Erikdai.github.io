@@ -29,7 +29,7 @@ latest_posts:
 
 Hi! I am **Chengxiao Dai**, a Master of Computer Science student and tutor at the [University of Sydney](https://www.sydney.edu.au/). I have previously worked as a research intern at [A\*STAR's Singapore Institute of Manufacturing Technology](https://www.a-star.edu.sg/simtech) and the [China Academy of Information and Communications Technology (CAICT)](http://www.caict.ac.cn/english/), and as an algorithm engineer at [Imperial Vision](https://imperial-vision.com/en). I am also a co-founder of [ChuChiang Data](https://chuchiangdata.cc/), where we focus on building high-quality synthetic data solutions to address long-tail data challenges.
 
-My research focuses on large language models and multi-agent systems, with an emphasis on trustworthy reasoning, agent collaboration, and domain-specific applications.
+My research focuses on large language models and multi-agent systems, in particular LLM post-training, reinforcement learning for agentic systems, knowledge-graph reasoning, and domain-specific applications.
 
 {% assign gs = site.data.scholar_stats %}
 <p style="font-size: 0.9rem; color: var(--global-text-color-light);" title="Google Scholar figures as of {{ gs.last_updated }}"><a href="https://scholar.google.com/citations?user={{ site.data.socials.scholar_userid }}" target="_blank">Google Scholar</a> · {{ gs.citations }} citations · h-index {{ gs.h_index }} · i10-index {{ gs.i10_index }}</p>
