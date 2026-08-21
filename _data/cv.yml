@@ -76,6 +76,10 @@ cv:
           - Operated a private cloud platform (20+ Linux servers); wrote Shell/Python automation for inspection and monitoring, proactively identifying 12 potential faults.
 
     Publications:
+      - title: "ShardMemo: Scope-Before-Routing for Agentic Memory Retrieval"
+        publisher: "Findings of the Association for Computational Linguistics: EMNLP 2026"
+        date: 2026
+        url: https://arxiv.org/abs/2601.21545
       - title: "From Knowledge to Inference: Scaling Laws of Specialized Reasoning on GlobalHealthAtlas"
         publisher: "International Conference on Machine Learning (ICML) 2026"
         date: 2026
