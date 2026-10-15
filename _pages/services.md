@@ -1,6 +1,6 @@
 ---
 layout: page
-title: services
+title: Services
 title_zh: 服务
 permalink: /services/
 nav: true

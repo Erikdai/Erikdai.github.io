@@ -165,11 +165,142 @@
     --global-hover-color: #2698ba;
     --global-code-bg-color: rgba(38, 152, 186, 0.05);
   }
-  /* Uniform project card images */
-  .projects .card-img-top { aspect-ratio: 2 / 1; object-fit: cover; width: 100%; }
-  /* Breathing room between the icon buttons under a project card's text (GitHub / website / report) */
+  /* ===== Projects: equal-height cards, icon row pinned to the bottom, cursor-following tilt + spotlight ===== */
+  .projects .col { perspective: 1000px; }
+  .projects .card {
+    --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 50%;
+    position: relative;
+    overflow: hidden;
+    transform: rotateX(var(--rx)) rotateY(var(--ry));
+    transition: transform .5s cubic-bezier(.2, .7, .2, 1), box-shadow .5s ease;
+  }
+  .projects .card.is-tilting { transition: transform .1s linear, box-shadow .5s ease; }
+  .projects .card:hover {
+    transform: rotateX(var(--rx)) rotateY(var(--ry)) translateY(-8px);
+    box-shadow: 0 22px 40px rgba(0, 0, 0, .16), 0 6px 14px rgba(0, 0, 0, .08);
+  }
+  /* The title link is "stretched" over the whole card (no nested anchors, see projects.liquid) */
+  .projects .card-title .project-link { color: inherit; text-decoration: none; }
+  .projects .card-title .project-link::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+  .projects .card-body .project-links { position: relative; z-index: 4; }
+  /* spotlight that follows the cursor */
+  .projects .card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(360px circle at var(--mx) var(--my), rgba(38, 152, 186, .16), transparent 60%);
+    transition: opacity .35s ease;
+  }
+  /* glowing accent border that brightens near the cursor */
+  .projects .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    border-radius: inherit;
+    padding: 1.5px;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(320px circle at var(--mx) var(--my), var(--global-theme-color), rgba(38, 152, 186, .15) 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    transition: opacity .35s ease;
+  }
+  @supports (color: color-mix(in srgb, red, red)) {
+    .projects .card::after { background: radial-gradient(360px circle at var(--mx) var(--my), color-mix(in srgb, var(--global-theme-color) 16%, transparent), transparent 60%); }
+    .projects .card::before { background: radial-gradient(320px circle at var(--mx) var(--my), var(--global-theme-color), color-mix(in srgb, var(--global-theme-color) 15%, transparent) 70%); }
+  }
+  .projects .card:hover::after, .projects .card:hover::before { opacity: 1; }
+  .projects .card figure { margin: 0; overflow: hidden; }
+  .projects .card-img-top { aspect-ratio: 2 / 1; object-fit: cover; width: 100%; transition: transform .7s cubic-bezier(.2, .7, .2, 1); }
+  .projects .card:hover .card-img-top { transform: scale(1.06); }
+  .projects .card-title { transition: color .25s ease; }
+  .projects .card:hover .card-title { color: var(--global-theme-color); }
+  .projects .card-body { display: flex; flex-direction: column; }
+  .projects .card-body .card-text { flex: 1 1 auto; }
+  .projects .card-body > .row { margin-top: auto; padding-top: .9rem; }
   .projects .card-body .github-icon { margin-right: 1.1rem; }
   .projects .card-body .github-icon:last-child { margin-right: 0; }
+  .projects .card-body .gh-icon { display: inline-block; transition: transform .2s ease, color .2s ease; }
+  .projects .card-body .icon a:hover .gh-icon { transform: translateY(-2px) scale(1.2); color: var(--global-theme-color); }
+
+  /* ===== Publications: per-entry hover highlight (tint + accent bar + cursor glow), lively thumbnails and buttons ===== */
+  .publications ol.bibliography > li > .row {
+    --mx: 50%; --my: 50%;
+    position: relative;
+    border-radius: .6rem;
+    padding: .6rem 0;
+    transition: background-color .3s ease, transform .3s cubic-bezier(.2, .7, .2, 1), box-shadow .3s ease;
+  }
+  .publications ol.bibliography > li > .row::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1rem;
+    bottom: 1rem;
+    width: 3px;
+    border-radius: 3px;
+    background: var(--global-theme-color);
+    transform: scaleY(0);
+    transition: transform .3s ease;
+  }
+  .publications ol.bibliography > li > .row::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(420px circle at var(--mx) var(--my), rgba(38, 152, 186, .12), transparent 60%);
+    transition: opacity .35s ease;
+  }
+  .publications ol.bibliography > li > .row:hover {
+    background: rgba(38, 152, 186, .05);
+    transform: translateX(6px);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, .07);
+  }
+  @supports (color: color-mix(in srgb, red, red)) {
+    .publications ol.bibliography > li > .row:hover { background: color-mix(in srgb, var(--global-theme-color) 5%, transparent); }
+    .publications ol.bibliography > li > .row::after { background: radial-gradient(420px circle at var(--mx) var(--my), color-mix(in srgb, var(--global-theme-color) 12%, transparent), transparent 60%); }
+  }
+  .publications ol.bibliography > li > .row:hover::before { transform: scaleY(1); }
+  .publications ol.bibliography > li > .row:hover::after { opacity: 1; }
+  .publications ol.bibliography > li > .row > * { position: relative; z-index: 1; }
+  .publications .preview { transition: transform .4s cubic-bezier(.2, .7, .2, 1), box-shadow .4s ease; }
+  .publications ol.bibliography > li > .row:hover .preview { transform: translateY(-3px) scale(1.04); box-shadow: 0 10px 22px rgba(0, 0, 0, .18); }
+  .publications .title a { transition: color .2s ease; }
+  .publications .links .btn {
+    border-color: var(--global-divider-color, #ddd);
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .publications .links .btn:hover {
+    background: var(--global-theme-color);
+    border-color: var(--global-theme-color);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(38, 152, 186, .35);
+  }
+
+  /* ===== Gentle staggered entrance for project cards and publication entries ===== */
+  @keyframes rise-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .projects .col, .publications ol.bibliography > li { animation: rise-in .55s cubic-bezier(.2, .7, .2, 1) both; }
+  .projects .col:nth-child(2), .publications ol.bibliography > li:nth-child(2) { animation-delay: .07s; }
+  .projects .col:nth-child(3), .publications ol.bibliography > li:nth-child(3) { animation-delay: .14s; }
+  .projects .col:nth-child(4), .publications ol.bibliography > li:nth-child(4) { animation-delay: .21s; }
+  .projects .col:nth-child(5), .publications ol.bibliography > li:nth-child(5) { animation-delay: .28s; }
+  .projects .col:nth-child(n + 6), .publications ol.bibliography > li:nth-child(n + 6) { animation-delay: .35s; }
+  @media (prefers-reduced-motion: reduce) {
+    .projects .col, .publications ol.bibliography > li { animation: none; }
+    .projects .card, .projects .card-img-top, .projects .gh-icon, .publications ol.bibliography > li > .row,
+    .publications .preview, .publications .links .btn { transition: none; }
+    .projects .card, .projects .card:hover, .projects .card:hover .card-img-top, .publications ol.bibliography > li > .row:hover { transform: none; }
+  }
   /* Slightly smaller profile avatar on tablet/desktop */
   @media (min-width: 576px) { .profile { width: 27%; } }
   /* Pronouns after the hero name only (scoped to the bold-name heading) */
@@ -197,6 +328,53 @@
     color: var(--global-text-color-light);
   }
 </style>
+<script>
+  // Cursor-following tilt (project cards) and spotlight (project cards + publication entries).
+  // Hover-capable, fine-pointer devices only; disabled when the user prefers reduced motion.
+  (function () {
+    function init() {
+      if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      function bind(el, tilt) {
+        var rect = null, raf = null, last = null;
+        function apply() {
+          raf = null;
+          if (!rect || !last) return;
+          var x = last.clientX - rect.left, y = last.clientY - rect.top;
+          el.style.setProperty("--mx", x.toFixed(1) + "px");
+          el.style.setProperty("--my", y.toFixed(1) + "px");
+          if (tilt) {
+            el.style.setProperty("--rx", ((0.5 - y / rect.height) * 7).toFixed(2) + "deg");
+            el.style.setProperty("--ry", ((x / rect.width - 0.5) * 9).toFixed(2) + "deg");
+          }
+        }
+        el.addEventListener("mouseenter", function (e) {
+          rect = el.getBoundingClientRect();
+          last = e;
+          if (tilt) el.classList.add("is-tilting");
+          apply();
+        });
+        el.addEventListener("mousemove", function (e) {
+          last = e;
+          if (!raf) raf = requestAnimationFrame(apply);
+        });
+        el.addEventListener("mouseleave", function () {
+          rect = null;
+          last = null;
+          if (tilt) {
+            el.classList.remove("is-tilting");
+            el.style.setProperty("--rx", "0deg");
+            el.style.setProperty("--ry", "0deg");
+          }
+        });
+      }
+      document.querySelectorAll(".projects .card").forEach(function (el) { bind(el, true); });
+      document.querySelectorAll(".publications ol.bibliography > li > .row").forEach(function (el) { bind(el, false); });
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    else init();
+  })();
+</script>
 
 {% if page.splash.enabled %}
   <!-- Intro splash (homepage). Decided before first paint so nothing flickers; markup + behaviour live in

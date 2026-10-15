@@ -1,49 +1,62 @@
+{% comment %}
+  Local override of al_folio_core 1.0.11's _includes/projects.liquid.
+  Changes vs. upstream:
+    1. Bilingual description (description / description_zh via lang.liquid).
+    2. Optional "report" icon (technical report / paper) next to GitHub / website.
+    3. No nested anchors. Upstream wraps the whole card in an <a> and puts more <a>s (the icons) inside it;
+       browsers split that into a broken DOM, so the icon row could never be aligned reliably. Here the title
+       carries a "stretched" link (an ::after overlay covering the card, see head.liquid) and the icon row is
+       stacked above that overlay so GitHub / website / report stay clickable.
+  When bumping al_folio_core in the Gemfile, re-copy the gem's projects.liquid and re-apply these changes.
+{% endcomment %}
+{% assign project_url = project.url | relative_url %}
+{% if project.redirect %}
+  {% assign project_url = project.redirect %}
+{% endif %}
 <div class="col">
-  <a href="{% if project.redirect %}{{ project.redirect }}{% else %}{{ project.url | relative_url }}{% endif %}">
-    <div class="card h-100 hoverable">
-      {% if project.img %}
-        {%
-          include figure.liquid
-          loading="eager"
-          path=project.img
-          sizes = "250px"
-          alt="project thumbnail"
-          class="card-img-top"
-        %}
-      {% endif %}
-      <div class="card-body">
-        <h2 class="card-title">{{ project.title }}</h2>
-        <p class="card-text">{% include lang.liquid en=project.description zh=project.description_zh %}</p>
-        <div class="row ml-1 mr-1 p-0">
-          {% if project.github %}
-            <div class="github-icon">
-              <div class="icon" data-toggle="tooltip" title="Code Repository">
-                <a href="{{ project.github }}"><i class="fa-brands fa-github gh-icon"></i></a>
-              </div>
-              {% if project.github_stars %}
-                <span class="stars" data-toggle="tooltip" title="GitHub Stars">
-                  <i class="fa-solid fa-star"></i>
-                  <span id="{{ project.github_stars }}-stars"></span>
-                </span>
-              {% endif %}
+  <div class="card h-100 hoverable project-card">
+    {% if project.img %}
+      {%
+        include figure.liquid
+        loading="eager"
+        path=project.img
+        sizes = "250px"
+        alt="project thumbnail"
+        class="card-img-top"
+      %}
+    {% endif %}
+    <div class="card-body">
+      <h2 class="card-title"><a class="project-link" href="{{ project_url }}">{{ project.title }}</a></h2>
+      <p class="card-text">{% include lang.liquid en=project.description zh=project.description_zh %}</p>
+      <div class="row ml-1 mr-1 p-0 project-links">
+        {% if project.github %}
+          <div class="github-icon">
+            <div class="icon" data-toggle="tooltip" title="Code Repository">
+              <a href="{{ project.github }}" aria-label="Code repository"><i class="fa-brands fa-github gh-icon"></i></a>
             </div>
-          {% endif %}
-          {% if project.website %}
-            <div class="github-icon">
-              <div class="icon" data-toggle="tooltip" title="Website">
-                <a href="{{ project.website }}"><i class="fa-solid fa-globe gh-icon"></i></a>
-              </div>
+            {% if project.github_stars %}
+              <span class="stars" data-toggle="tooltip" title="GitHub Stars">
+                <i class="fa-solid fa-star"></i>
+                <span id="{{ project.github_stars }}-stars"></span>
+              </span>
+            {% endif %}
+          </div>
+        {% endif %}
+        {% if project.website %}
+          <div class="github-icon">
+            <div class="icon" data-toggle="tooltip" title="Website">
+              <a href="{{ project.website }}" aria-label="Website"><i class="fa-solid fa-globe gh-icon"></i></a>
             </div>
-          {% endif %}
-          {% if project.report %}
-            <div class="github-icon">
-              <div class="icon" data-toggle="tooltip" title="Technical Report">
-                <a href="{{ project.report }}" aria-label="Technical report"><i class="fa-solid fa-file-lines gh-icon"></i></a>
-              </div>
+          </div>
+        {% endif %}
+        {% if project.report %}
+          <div class="github-icon">
+            <div class="icon" data-toggle="tooltip" title="Technical Report">
+              <a href="{{ project.report }}" aria-label="Technical report"><i class="fa-solid fa-file-lines gh-icon"></i></a>
             </div>
-          {% endif %}
-        </div>
+          </div>
+        {% endif %}
       </div>
     </div>
-  </a>
+  </div>
 </div>

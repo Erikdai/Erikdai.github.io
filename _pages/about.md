@@ -1,6 +1,6 @@
 ---
 layout: about
-title: about
+title: About
 title_zh: 关于
 permalink: /
 subtitle: '进退维谷之日，正是别有洞天之时。<br><span class="subtitle-en">When there seems to be no way forward or back, a whole new world may be just about to reveal itself.</span>'

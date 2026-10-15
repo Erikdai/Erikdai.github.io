@@ -1,7 +1,7 @@
 ---
 layout: page
 permalink: /cv/
-title: cv
+title: CV
 title_zh: 简历
 nav: true
 nav_order: 7

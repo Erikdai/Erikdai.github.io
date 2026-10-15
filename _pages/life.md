@@ -1,6 +1,6 @@
 ---
 layout: page
-title: life
+title: Life
 title_zh: 生活
 permalink: /life/
 nav: true

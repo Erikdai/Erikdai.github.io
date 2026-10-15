@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /blog/
-title: notes
+title: Notes
 title_zh: 笔记
 nav: true
 nav_order: 6

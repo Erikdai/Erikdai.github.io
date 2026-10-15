@@ -1,6 +1,6 @@
 ---
 layout: page
-title: projects
+title: Projects
 title_zh: 项目
 permalink: /projects/
 description: Selected projects and open-source work.

@@ -83,7 +83,7 @@ al_folio:
 
 navbar_fixed: true
 footer_fixed: true
-search_enabled: true
+search_enabled: false # Cmd-K palette off (it listed the unused template pages)
 socials_in_search: true
 posts_in_search: true
 bib_search: true
