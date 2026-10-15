@@ -5,8 +5,9 @@
 
   Behaviour: a particle network draws on a canvas, "hello" in many languages
   (`page.splash.greetings`) floats slowly all over the screen, and the name fades in letter
-  by letter above an iOS-style "slide to unlock" control. It never dismisses itself: the
-  visitor drags the knob to the right end (or presses Enter / Space / Escape). It plays once per tab (sessionStorage); add
+  by letter above a round "magnetic" Enter button (it leans towards the cursor and fills
+  with the accent colour on hover). It never dismisses itself: the visitor clicks the
+  button (or presses Enter / Space / Escape). It plays once per tab (sessionStorage); add
   `?splash` to the URL to force it, e.g. while testing. Skipped entirely for
   `prefers-reduced-motion` and when JS is off.
 {% endcomment %}
@@ -45,13 +46,14 @@
     {% if page.splash.subtitle %}
       <p class="splash-sub">{% include lang.liquid en=page.splash.subtitle zh=page.splash.subtitle_zh %}</p>
     {% endif %}
-    {%- comment -%} "Slide to unlock" control: drag the knob to the right end to open the page. {%- endcomment -%}
-    <div class="splash-slide" id="splash-slide" role="slider" tabindex="0" aria-label="Slide to enter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-      <span class="splash-slide-text">{{ page.splash.enter_label | default: '滑动进入 · Slide to enter' }}</span>
-      <span class="splash-slide-knob" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l6 6-6 6M13 6l6 6-6 6"/></svg>
+    {%- comment -%} Magnetic round Enter button: the script below makes it lean towards the pointer. {%- endcomment -%}
+    <button type="button" class="splash-enter" id="splash-enter">
+      <span class="splash-enter-fill" aria-hidden="true"></span>
+      <span class="splash-enter-label">
+        {{- page.splash.enter_label | default: 'Enter' -}}
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </span>
-    </div>
+    </button>
   </div>
 </div>
 <script>
@@ -227,9 +229,11 @@
       function onMove(e) {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
+        if (e.pointerType !== "touch") magnet(e.clientX, e.clientY);
       }
       function onLeave() {
         mouse.x = mouse.y = -1e9;
+        magnetReset();
       }
       function onResize() {
         size();
@@ -238,10 +242,6 @@
           if (nodes[i].y > H) nodes[i].y = Math.random() * H;
         }
         placeWords();
-        if (slider && !slider.classList.contains("done")) {
-          measureSlider();
-          setKnob(0);
-        }
       }
 
       size();
@@ -261,28 +261,39 @@
       }
       setTimeout(ready, 600);
 
-      /* ---------- dismissal: the slide-to-enter control (or Enter / Space / Escape) ---------- */
-      var slider = document.getElementById("splash-slide");
-      var knob = slider ? slider.querySelector(".splash-slide-knob") : null;
-      var dragging = false;
-      var dragStart = 0;
-      var knobX = 0;
-      var knobMax = 0;
-      function measureSlider() {
-        if (!slider) return;
-        knobMax = Math.max(0, slider.clientWidth - knob.offsetWidth - 6);
-        slider.style.setProperty("--max", knobMax + "px");
+      /* ---------- dismissal: the Enter button (or Enter / Space / Escape) ---------- */
+      var enterBtn = document.getElementById("splash-enter");
+      var enterFill = enterBtn ? enterBtn.querySelector(".splash-enter-fill") : null;
+      var MAGNET = 150; // px: how far from the button centre the pull starts
+      function magnet(x, y) {
+        if (!enterBtn || finished) return;
+        var r = enterBtn.getBoundingClientRect();
+        var cx = r.left + r.width / 2 - parseFloat(enterBtn.style.getPropertyValue("--mx") || 0);
+        var cy = r.top + r.height / 2 - parseFloat(enterBtn.style.getPropertyValue("--my") || 0);
+        var dx = x - cx;
+        var dy = y - cy;
+        var d = Math.sqrt(dx * dx + dy * dy);
+        if (d < MAGNET) {
+          var pull = 0.38 * (1 - d / MAGNET) + 0.12; // stronger the closer you get
+          enterBtn.style.setProperty("--mx", (dx * pull).toFixed(1) + "px");
+          enterBtn.style.setProperty("--my", (dy * pull).toFixed(1) + "px");
+          if (enterFill) enterFill.style.transformOrigin = (50 + (dx / r.width) * 60).toFixed(1) + "% " + (50 + (dy / r.height) * 60).toFixed(1) + "%";
+        } else {
+          enterBtn.style.setProperty("--mx", "0px");
+          enterBtn.style.setProperty("--my", "0px");
+        }
       }
-      function setKnob(v) {
-        knobX = Math.max(0, Math.min(knobMax, v));
-        knob.style.setProperty("--x", knobX + "px");
-        slider.style.setProperty("--p", knobMax ? (knobX / knobMax).toFixed(3) : "0");
-        slider.setAttribute("aria-valuenow", knobMax ? Math.round((100 * knobX) / knobMax) : 0);
+      function magnetReset() {
+        if (!enterBtn) return;
+        enterBtn.style.setProperty("--mx", "0px");
+        enterBtn.style.setProperty("--my", "0px");
       }
       function dismiss() {
         if (finished) return;
         finished = true;
+        if (enterBtn) enterBtn.removeEventListener("click", dismiss);
         window.removeEventListener("keydown", onKey);
+        magnetReset();
         root.classList.remove("splash-pending");
         root.classList.add("splash-leaving");
         el.classList.add("is-out");
@@ -295,52 +306,17 @@
           if (el.parentNode) el.parentNode.removeChild(el);
         }, 1000);
       }
-      function unlock() {
-        if (finished || (slider && slider.classList.contains("done"))) return;
-        if (slider) {
-          slider.classList.remove("dragging");
-          slider.classList.add("done");
-          setKnob(knobMax);
-        }
-        setTimeout(dismiss, 180); // let the knob reach the end first
-      }
-      function onDragStart(e) {
-        if (finished || slider.classList.contains("done")) return;
-        dragging = true;
-        dragStart = e.clientX - knobX;
-        slider.classList.add("dragging");
-        if (slider.setPointerCapture) slider.setPointerCapture(e.pointerId);
-        e.preventDefault();
-      }
-      function onDragMove(e) {
-        if (!dragging) return;
-        setKnob(e.clientX - dragStart);
-      }
-      function onDragEnd() {
-        if (!dragging) return;
-        dragging = false;
-        slider.classList.remove("dragging");
-        if (knobX >= knobMax * 0.85) unlock();
-        else setKnob(0); // spring back
-      }
       function onKey(e) {
         if (e.key === "Enter" || e.key === " " || e.key === "Escape") {
           e.preventDefault();
-          unlock();
+          dismiss();
         }
       }
 
       el.addEventListener("pointermove", onMove, { passive: true });
       el.addEventListener("pointerleave", onLeave);
       window.addEventListener("resize", onResize);
-      if (slider) {
-        measureSlider();
-        slider.addEventListener("pointerdown", onDragStart);
-        slider.addEventListener("pointermove", onDragMove);
-        slider.addEventListener("pointerup", onDragEnd);
-        slider.addEventListener("pointercancel", onDragEnd);
-        slider.addEventListener("lostpointercapture", onDragEnd);
-      }
+      if (enterBtn) enterBtn.addEventListener("click", dismiss);
       window.addEventListener("keydown", onKey);
 
       // Tells the backstop in head.liquid that the splash is alive and will dismiss itself on click.
