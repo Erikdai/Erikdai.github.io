@@ -91,10 +91,11 @@
       -webkit-user-select: none;
       -webkit-tap-highlight-color: transparent;
       touch-action: none;
-      transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.95s cubic-bezier(0.76, 0, 0.24, 1);
     }
     html.splash-pending #splash, html.splash-leaving #splash { display: flex; visibility: visible; }
-    #splash.is-out { opacity: 0; transform: scale(1.04); pointer-events: none; }
+    #splash.is-out { transform: translateY(-100%); pointer-events: none; }
+    html.splash-leaving { overflow: hidden; } /* keep the page at the top while the curtain lifts */
     #splash canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
     #splash::before {
       content: "";
@@ -166,69 +167,34 @@
       from { transform: translate(-50%, -50%); }
       to { transform: translate(calc(-50% + var(--dx, 20px)), calc(-50% + var(--dy, -20px))); }
     }
-    /* Magnetic round Enter button: leans towards the pointer (--mx/--my set by splash.liquid), fills on hover */
-    .splash-enter {
-      --mx: 0px;
-      --my: 0px;
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 7.2rem;
-      height: 7.2rem;
-      margin-top: 2rem;
+    /* Down arrow at the bottom: click / scroll / swipe to enter */
+    .splash-down {
+      position: absolute;
+      left: 50%;
+      bottom: calc(1.4rem + env(safe-area-inset-bottom, 0px));
+      width: 3rem;
+      height: 3rem;
       padding: 0;
-      border: 1px solid rgba(38, 152, 186, 0.55);
-      border-radius: 50%;
+      border: 0;
       background: transparent;
-      color: var(--global-text-color, #000);
-      font: inherit;
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
+      color: var(--global-text-color-light, #828282);
       cursor: pointer;
       opacity: 0;
-      transform: translate(var(--mx), var(--my));
-      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.35s ease, border-color 0.35s ease;
+      transform: translate(-50%, 0);
+      transition: color 0.3s ease;
       -webkit-tap-highlight-color: transparent;
     }
-    .is-ready .splash-enter { animation: splash-up 0.8s ease 1.75s forwards; }
-    .splash-enter::before {
-      /* slow breathing ring */
-      content: "";
-      position: absolute;
-      inset: -1px;
-      border-radius: 50%;
-      border: 1px solid var(--global-theme-color, #2698ba);
-      opacity: 0;
-      animation: splash-ring 2.8s ease-out 2.4s infinite;
-      pointer-events: none;
+    .is-ready .splash-down {
+      animation:
+        splash-down-in 0.9s ease 1.6s forwards,
+        splash-bounce 2.2s ease-in-out 2.5s infinite;
     }
-    @keyframes splash-ring { 0% { transform: scale(1); opacity: 0.45; } 100% { transform: scale(1.45); opacity: 0; } }
-    .splash-enter-fill {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: var(--global-theme-color, #2698ba);
-      transform: scale(0);
-      transform-origin: 50% 50%;
-      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    .splash-down:hover, .splash-down:focus-visible { color: var(--global-theme-color, #2698ba); outline: none; }
+    @keyframes splash-down-in { to { opacity: 0.85; } }
+    @keyframes splash-bounce {
+      0%, 100% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, 9px); }
     }
-    .splash-enter-label {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      transform: translate(calc(var(--mx) * 0.4), calc(var(--my) * 0.4));
-      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-    .splash-enter-label svg { transition: transform 0.3s ease; }
-    .splash-enter:hover, .splash-enter:focus-visible { color: #fff; border-color: var(--global-theme-color, #2698ba); outline: none; }
-    .splash-enter:hover .splash-enter-fill, .splash-enter:focus-visible .splash-enter-fill { transform: scale(1.02); }
-    .splash-enter:hover .splash-enter-label svg { transform: translateX(4px); }
-    .splash-enter:hover::before { animation-play-state: paused; opacity: 0; }
-    @media (max-width: 575px) { .splash-enter { width: 6.2rem; height: 6.2rem; margin-top: 1.6rem; } }
   </style> <script>
   (function () {
     var root = document.documentElement;
@@ -274,7 +240,7 @@
   }
   #lang-toggle:hover { color: var(--global-hover-color); }
   @media (min-width: 576px) { #lang-toggle { transform: translateY(4px); margin-left: 0.25rem; } }
-</style> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item active"> <a class="nav-link" href="/"><span class="lang-en">about</span><span class="lang-zh">关于</span> <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/"><span class="lang-en">projects</span><span class="lang-zh">项目</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/"><span class="lang-en">life</span><span class="lang-zh">生活</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">cv</span><span class="lang-zh">简历</span> </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div id="splash" aria-hidden="true"> <canvas></canvas> <div class="splash-float"> <span class="fw">你好</span><span class="fw">Hello</span><span class="fw">こんにちは</span><span class="fw">안녕하세요</span><span class="fw">Bonjour</span><span class="fw">Hola</span><span class="fw">Hallo</span><span class="fw">Ciao</span><span class="fw">Olá</span><span class="fw">Привет</span><span class="fw">مرحبا</span><span class="fw">नमस्ते</span><span class="fw">Xin chào</span><span class="fw">Sawubona</span> </div> <div class="splash-inner"> <p class="splash-name" lang="en"><span class="word"><span class="ch" style="--i: 0">C</span><span class="ch" style="--i: 1">h</span><span class="ch" style="--i: 2">e</span><span class="ch" style="--i: 3">n</span><span class="ch" style="--i: 4">g</span><span class="ch" style="--i: 5">x</span><span class="ch" style="--i: 6">i</span><span class="ch" style="--i: 7">a</span><span class="ch" style="--i: 8">o</span></span><span class="word"><span class="ch" style="--i: 9">D</span><span class="ch" style="--i: 10">a</span><span class="ch" style="--i: 11">i</span></span></p> <div class="splash-rule"></div> <p class="splash-sub">AI Researcher · Agent Engineer · World Explorer</p> <button type="button" class="splash-enter" id="splash-enter"> <span class="splash-enter-fill" aria-hidden="true"></span> <span class="splash-enter-label">Enter<svg aria-hidden="true" viewbox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg> </span> </button> </div> </div> <script>
+</style> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item active"> <a class="nav-link" href="/"><span class="lang-en">about</span><span class="lang-zh">关于</span> <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/"><span class="lang-en">projects</span><span class="lang-zh">项目</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/"><span class="lang-en">life</span><span class="lang-zh">生活</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">cv</span><span class="lang-zh">简历</span> </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div id="splash" aria-hidden="true"> <canvas></canvas> <div class="splash-float"> <span class="fw">你好</span><span class="fw">Hello</span><span class="fw">こんにちは</span><span class="fw">안녕하세요</span><span class="fw">Bonjour</span><span class="fw">Hola</span><span class="fw">Hallo</span><span class="fw">Ciao</span><span class="fw">Olá</span><span class="fw">Привет</span><span class="fw">مرحبا</span><span class="fw">नमस्ते</span><span class="fw">Xin chào</span><span class="fw">Sawubona</span> </div> <div class="splash-inner"> <p class="splash-name" lang="en"><span class="word"><span class="ch" style="--i: 0">C</span><span class="ch" style="--i: 1">h</span><span class="ch" style="--i: 2">e</span><span class="ch" style="--i: 3">n</span><span class="ch" style="--i: 4">g</span><span class="ch" style="--i: 5">x</span><span class="ch" style="--i: 6">i</span><span class="ch" style="--i: 7">a</span><span class="ch" style="--i: 8">o</span></span><span class="word"><span class="ch" style="--i: 9">D</span><span class="ch" style="--i: 10">a</span><span class="ch" style="--i: 11">i</span></span></p> <div class="splash-rule"></div> <p class="splash-sub">AI Researcher · Agent Engineer · World Explorer</p> </div> <button type="button" class="splash-down" id="splash-down" aria-label="Enter" title="Enter"> <svg aria-hidden="true" viewbox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg> </button> </div> <script>
   (function () {
     var root = document.documentElement;
     var el = document.getElementById("splash");
@@ -415,6 +381,7 @@
             var cx = (c + 0.5) / cols;
             var cy = (r + 0.5) / rows;
             if (cx > zx && cx < 1 - zx && cy > zy && cy < 1 - zy) continue;
+            if (cy > 0.8 && cx > 0.3 && cx < 0.7) continue; // leave the bottom centre for the down arrow
             cells.push([cx, cy]);
           }
         }
@@ -447,11 +414,9 @@
       function onMove(e) {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
-        if (e.pointerType !== "touch") magnet(e.clientX, e.clientY);
       }
       function onLeave() {
         mouse.x = mouse.y = -1e9;
-        magnetReset();
       }
       function onResize() {
         size();
@@ -479,39 +444,17 @@
       }
       setTimeout(ready, 600);
 
-      /* ---------- dismissal: the Enter button (or Enter / Space / Escape) ---------- */
-      var enterBtn = document.getElementById("splash-enter");
-      var enterFill = enterBtn ? enterBtn.querySelector(".splash-enter-fill") : null;
-      var MAGNET = 150; // px: how far from the button centre the pull starts
-      function magnet(x, y) {
-        if (!enterBtn || finished) return;
-        var r = enterBtn.getBoundingClientRect();
-        var cx = r.left + r.width / 2 - parseFloat(enterBtn.style.getPropertyValue("--mx") || 0);
-        var cy = r.top + r.height / 2 - parseFloat(enterBtn.style.getPropertyValue("--my") || 0);
-        var dx = x - cx;
-        var dy = y - cy;
-        var d = Math.sqrt(dx * dx + dy * dy);
-        if (d < MAGNET) {
-          var pull = 0.38 * (1 - d / MAGNET) + 0.12; // stronger the closer you get
-          enterBtn.style.setProperty("--mx", (dx * pull).toFixed(1) + "px");
-          enterBtn.style.setProperty("--my", (dy * pull).toFixed(1) + "px");
-          if (enterFill) enterFill.style.transformOrigin = (50 + (dx / r.width) * 60).toFixed(1) + "% " + (50 + (dy / r.height) * 60).toFixed(1) + "%";
-        } else {
-          enterBtn.style.setProperty("--mx", "0px");
-          enterBtn.style.setProperty("--my", "0px");
-        }
-      }
-      function magnetReset() {
-        if (!enterBtn) return;
-        enterBtn.style.setProperty("--mx", "0px");
-        enterBtn.style.setProperty("--my", "0px");
-      }
+      /* ---------- dismissal: arrow click, wheel down, swipe up, or a key ---------- */
+      var downBtn = document.getElementById("splash-down");
+      var touchY = null;
       function dismiss() {
         if (finished) return;
         finished = true;
-        if (enterBtn) enterBtn.removeEventListener("click", dismiss);
+        if (downBtn) downBtn.removeEventListener("click", dismiss);
         window.removeEventListener("keydown", onKey);
-        magnetReset();
+        el.removeEventListener("wheel", onWheel);
+        el.removeEventListener("touchstart", onTouchStart);
+        el.removeEventListener("touchmove", onTouchMove);
         root.classList.remove("splash-pending");
         root.classList.add("splash-leaving");
         el.classList.add("is-out");
@@ -525,17 +468,33 @@
         }, 1000);
       }
       function onKey(e) {
-        if (e.key === "Enter" || e.key === " " || e.key === "Escape") {
+        if (e.key === "Enter" || e.key === " " || e.key === "Escape" || e.key === "ArrowDown" || e.key === "PageDown") {
           e.preventDefault();
           dismiss();
         }
+      }
+      function onWheel(e) {
+        if (e.deltaY > 0) {
+          e.preventDefault();
+          dismiss();
+        }
+      }
+      function onTouchStart(e) {
+        touchY = e.touches.length ? e.touches[0].clientY : null;
+      }
+      function onTouchMove(e) {
+        if (touchY === null || !e.touches.length) return;
+        if (touchY - e.touches[0].clientY > 30) dismiss(); // finger moved up: "scroll down"
       }
 
       el.addEventListener("pointermove", onMove, { passive: true });
       el.addEventListener("pointerleave", onLeave);
       window.addEventListener("resize", onResize);
-      if (enterBtn) enterBtn.addEventListener("click", dismiss);
+      if (downBtn) downBtn.addEventListener("click", dismiss);
       window.addEventListener("keydown", onKey);
+      el.addEventListener("wheel", onWheel, { passive: false });
+      el.addEventListener("touchstart", onTouchStart, { passive: true });
+      el.addEventListener("touchmove", onTouchMove, { passive: true });
 
       // Tells the backstop in head.liquid that the splash is alive and will dismiss itself on click.
       window.__splashOk = true;
@@ -646,6 +605,11 @@ ninja.data = [{
           description: "Fault diagnosis of aero-engine inter-shaft bearings with a parallel SE-depthwise-separable CNN and Transformer model (MCTE 2024, IEEE Xplore). Code and notebooks for VMD/FFT preprocessing, dataset construction, and the SEDSCN-Trans model.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/faultdiagnosis/";
+            },},{id: "projects-finagent",
+          title: 'FinAgent',
+          description: "An A-share multi-agent research and paper-trading platform built on TradingAgents — analyst agents, bull/bear debate, a trader and risk committee, then a rule-based risk gate, human approval and a paper ledger (LangGraph, MCP, RAG, FastAPI, React).",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/finagent/";
             },},{id: "projects-skillbible",
           title: 'SkillBible',
           description: "An open-source, curated collection of AI-agent skills — gathered, categorized, and organized to make skills easier to discover and reuse.",
