@@ -166,74 +166,69 @@
       from { transform: translate(-50%, -50%); }
       to { transform: translate(calc(-50% + var(--dx, 20px)), calc(-50% + var(--dy, -20px))); }
     }
-    /* "Slide to enter" control (iOS slide-to-unlock style) */
-    .splash-slide {
-      --h: 3.3rem;
-      --x: 0px;
-      --p: 0;
+    /* Magnetic round Enter button: leans towards the pointer (--mx/--my set by splash.liquid), fills on hover */
+    .splash-enter {
+      --mx: 0px;
+      --my: 0px;
       position: relative;
-      width: min(19rem, 82vw);
-      height: var(--h);
-      margin: 1.7rem auto 0;
-      border-radius: 999px;
-      background: rgba(127, 127, 127, 0.14);
-      border: 1px solid var(--global-divider-color, rgba(0, 0, 0, 0.1));
-      box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.18);
-      overflow: hidden;
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: none;
-      cursor: grab;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 7.2rem;
+      height: 7.2rem;
+      margin-top: 2rem;
+      padding: 0;
+      border: 1px solid rgba(38, 152, 186, 0.55);
+      border-radius: 50%;
+      background: transparent;
+      color: var(--global-text-color, #000);
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      cursor: pointer;
       opacity: 0;
-      transform: translateY(8px);
+      transform: translate(var(--mx), var(--my));
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.35s ease, border-color 0.35s ease;
+      -webkit-tap-highlight-color: transparent;
     }
-    .is-ready .splash-slide { animation: splash-up 0.8s ease 1.75s forwards; }
-    .splash-slide:focus-visible { outline: 2px solid var(--global-theme-color, #2698ba); outline-offset: 3px; }
-    .splash-slide.dragging { cursor: grabbing; }
-    .splash-slide-text {
+    .is-ready .splash-enter { animation: splash-up 0.8s ease 1.75s forwards; }
+    .splash-enter::before {
+      /* slow breathing ring */
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: 50%;
+      border: 1px solid var(--global-theme-color, #2698ba);
+      opacity: 0;
+      animation: splash-ring 2.8s ease-out 2.4s infinite;
+      pointer-events: none;
+    }
+    @keyframes splash-ring { 0% { transform: scale(1); opacity: 0.45; } 100% { transform: scale(1.45); opacity: 0; } }
+    .splash-enter-fill {
       position: absolute;
       inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-left: calc(var(--h) * 0.6);
-      font-size: 0.86rem;
-      letter-spacing: 0.14em;
-      white-space: nowrap;
-      pointer-events: none;
-      color: transparent;
-      background: linear-gradient(90deg,
-        var(--global-text-color-light, #828282) 0%,
-        var(--global-text-color-light, #828282) 38%,
-        var(--global-text-color, #000) 50%,
-        var(--global-text-color-light, #828282) 62%,
-        var(--global-text-color-light, #828282) 100%);
-      background-size: 220% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      animation: splash-shimmer 2.6s linear infinite;
-      opacity: calc(1 - var(--p) * 1.6);
-    }
-    @keyframes splash-shimmer { from { background-position: 160% 0; } to { background-position: -60% 0; } }
-    .splash-slide-knob {
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: calc(var(--h) - 6px);
-      height: calc(var(--h) - 6px);
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       background: var(--global-theme-color, #2698ba);
-      color: #fff;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.28);
-      transform: translateX(var(--x));
-      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform: scale(0);
+      transform-origin: 50% 50%;
+      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
-    .splash-slide.dragging .splash-slide-knob { transition: none; }
-    .splash-slide.done { background: rgba(38, 152, 186, 0.22); }
-    .splash-slide.done .splash-slide-knob { transform: translateX(var(--max, var(--x))); }
+    .splash-enter-label {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      transform: translate(calc(var(--mx) * 0.4), calc(var(--my) * 0.4));
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .splash-enter-label svg { transition: transform 0.3s ease; }
+    .splash-enter:hover, .splash-enter:focus-visible { color: #fff; border-color: var(--global-theme-color, #2698ba); outline: none; }
+    .splash-enter:hover .splash-enter-fill, .splash-enter:focus-visible .splash-enter-fill { transform: scale(1.02); }
+    .splash-enter:hover .splash-enter-label svg { transform: translateX(4px); }
+    .splash-enter:hover::before { animation-play-state: paused; opacity: 0; }
+    @media (max-width: 575px) { .splash-enter { width: 6.2rem; height: 6.2rem; margin-top: 1.6rem; } }
   </style> <script>
   (function () {
     var root = document.documentElement;
@@ -279,7 +274,7 @@
   }
   #lang-toggle:hover { color: var(--global-hover-color); }
   @media (min-width: 576px) { #lang-toggle { transform: translateY(4px); margin-left: 0.25rem; } }
-</style> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item active"> <a class="nav-link" href="/"><span class="lang-en">about</span><span class="lang-zh">关于</span> <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/"><span class="lang-en">projects</span><span class="lang-zh">项目</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/"><span class="lang-en">life</span><span class="lang-zh">生活</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">cv</span><span class="lang-zh">简历</span> </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div id="splash" aria-hidden="true"> <canvas></canvas> <div class="splash-float"> <span class="fw">你好</span><span class="fw">Hello</span><span class="fw">こんにちは</span><span class="fw">안녕하세요</span><span class="fw">Bonjour</span><span class="fw">Hola</span><span class="fw">Hallo</span><span class="fw">Ciao</span><span class="fw">Olá</span><span class="fw">Привет</span><span class="fw">مرحبا</span><span class="fw">नमस्ते</span><span class="fw">Xin chào</span><span class="fw">Sawubona</span> </div> <div class="splash-inner"> <p class="splash-name" lang="en"><span class="word"><span class="ch" style="--i: 0">C</span><span class="ch" style="--i: 1">h</span><span class="ch" style="--i: 2">e</span><span class="ch" style="--i: 3">n</span><span class="ch" style="--i: 4">g</span><span class="ch" style="--i: 5">x</span><span class="ch" style="--i: 6">i</span><span class="ch" style="--i: 7">a</span><span class="ch" style="--i: 8">o</span></span><span class="word"><span class="ch" style="--i: 9">D</span><span class="ch" style="--i: 10">a</span><span class="ch" style="--i: 11">i</span></span></p> <div class="splash-rule"></div> <p class="splash-sub">AI Researcher · Agent Engineer · World Explorer</p> <div class="splash-slide" id="splash-slide" role="slider" tabindex="0" aria-label="Slide to enter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"> <span class="splash-slide-text">滑动进入 · Slide to enter</span> <span class="splash-slide-knob" aria-hidden="true"> <svg viewbox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l6 6-6 6M13 6l6 6-6 6"></path></svg> </span> </div> </div> </div> <script>
+</style> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item active"> <a class="nav-link" href="/"><span class="lang-en">about</span><span class="lang-zh">关于</span> <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/"><span class="lang-en">projects</span><span class="lang-zh">项目</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/"><span class="lang-en">life</span><span class="lang-zh">生活</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">cv</span><span class="lang-zh">简历</span> </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div id="splash" aria-hidden="true"> <canvas></canvas> <div class="splash-float"> <span class="fw">你好</span><span class="fw">Hello</span><span class="fw">こんにちは</span><span class="fw">안녕하세요</span><span class="fw">Bonjour</span><span class="fw">Hola</span><span class="fw">Hallo</span><span class="fw">Ciao</span><span class="fw">Olá</span><span class="fw">Привет</span><span class="fw">مرحبا</span><span class="fw">नमस्ते</span><span class="fw">Xin chào</span><span class="fw">Sawubona</span> </div> <div class="splash-inner"> <p class="splash-name" lang="en"><span class="word"><span class="ch" style="--i: 0">C</span><span class="ch" style="--i: 1">h</span><span class="ch" style="--i: 2">e</span><span class="ch" style="--i: 3">n</span><span class="ch" style="--i: 4">g</span><span class="ch" style="--i: 5">x</span><span class="ch" style="--i: 6">i</span><span class="ch" style="--i: 7">a</span><span class="ch" style="--i: 8">o</span></span><span class="word"><span class="ch" style="--i: 9">D</span><span class="ch" style="--i: 10">a</span><span class="ch" style="--i: 11">i</span></span></p> <div class="splash-rule"></div> <p class="splash-sub">AI Researcher · Agent Engineer · World Explorer</p> <button type="button" class="splash-enter" id="splash-enter"> <span class="splash-enter-fill" aria-hidden="true"></span> <span class="splash-enter-label">Enter<svg aria-hidden="true" viewbox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg> </span> </button> </div> </div> <script>
   (function () {
     var root = document.documentElement;
     var el = document.getElementById("splash");
@@ -452,9 +447,11 @@
       function onMove(e) {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
+        if (e.pointerType !== "touch") magnet(e.clientX, e.clientY);
       }
       function onLeave() {
         mouse.x = mouse.y = -1e9;
+        magnetReset();
       }
       function onResize() {
         size();
@@ -463,10 +460,6 @@
           if (nodes[i].y > H) nodes[i].y = Math.random() * H;
         }
         placeWords();
-        if (slider && !slider.classList.contains("done")) {
-          measureSlider();
-          setKnob(0);
-        }
       }
 
       size();
@@ -486,28 +479,39 @@
       }
       setTimeout(ready, 600);
 
-      /* ---------- dismissal: the slide-to-enter control (or Enter / Space / Escape) ---------- */
-      var slider = document.getElementById("splash-slide");
-      var knob = slider ? slider.querySelector(".splash-slide-knob") : null;
-      var dragging = false;
-      var dragStart = 0;
-      var knobX = 0;
-      var knobMax = 0;
-      function measureSlider() {
-        if (!slider) return;
-        knobMax = Math.max(0, slider.clientWidth - knob.offsetWidth - 6);
-        slider.style.setProperty("--max", knobMax + "px");
+      /* ---------- dismissal: the Enter button (or Enter / Space / Escape) ---------- */
+      var enterBtn = document.getElementById("splash-enter");
+      var enterFill = enterBtn ? enterBtn.querySelector(".splash-enter-fill") : null;
+      var MAGNET = 150; // px: how far from the button centre the pull starts
+      function magnet(x, y) {
+        if (!enterBtn || finished) return;
+        var r = enterBtn.getBoundingClientRect();
+        var cx = r.left + r.width / 2 - parseFloat(enterBtn.style.getPropertyValue("--mx") || 0);
+        var cy = r.top + r.height / 2 - parseFloat(enterBtn.style.getPropertyValue("--my") || 0);
+        var dx = x - cx;
+        var dy = y - cy;
+        var d = Math.sqrt(dx * dx + dy * dy);
+        if (d < MAGNET) {
+          var pull = 0.38 * (1 - d / MAGNET) + 0.12; // stronger the closer you get
+          enterBtn.style.setProperty("--mx", (dx * pull).toFixed(1) + "px");
+          enterBtn.style.setProperty("--my", (dy * pull).toFixed(1) + "px");
+          if (enterFill) enterFill.style.transformOrigin = (50 + (dx / r.width) * 60).toFixed(1) + "% " + (50 + (dy / r.height) * 60).toFixed(1) + "%";
+        } else {
+          enterBtn.style.setProperty("--mx", "0px");
+          enterBtn.style.setProperty("--my", "0px");
+        }
       }
-      function setKnob(v) {
-        knobX = Math.max(0, Math.min(knobMax, v));
-        knob.style.setProperty("--x", knobX + "px");
-        slider.style.setProperty("--p", knobMax ? (knobX / knobMax).toFixed(3) : "0");
-        slider.setAttribute("aria-valuenow", knobMax ? Math.round((100 * knobX) / knobMax) : 0);
+      function magnetReset() {
+        if (!enterBtn) return;
+        enterBtn.style.setProperty("--mx", "0px");
+        enterBtn.style.setProperty("--my", "0px");
       }
       function dismiss() {
         if (finished) return;
         finished = true;
+        if (enterBtn) enterBtn.removeEventListener("click", dismiss);
         window.removeEventListener("keydown", onKey);
+        magnetReset();
         root.classList.remove("splash-pending");
         root.classList.add("splash-leaving");
         el.classList.add("is-out");
@@ -520,52 +524,17 @@
           if (el.parentNode) el.parentNode.removeChild(el);
         }, 1000);
       }
-      function unlock() {
-        if (finished || (slider && slider.classList.contains("done"))) return;
-        if (slider) {
-          slider.classList.remove("dragging");
-          slider.classList.add("done");
-          setKnob(knobMax);
-        }
-        setTimeout(dismiss, 180); // let the knob reach the end first
-      }
-      function onDragStart(e) {
-        if (finished || slider.classList.contains("done")) return;
-        dragging = true;
-        dragStart = e.clientX - knobX;
-        slider.classList.add("dragging");
-        if (slider.setPointerCapture) slider.setPointerCapture(e.pointerId);
-        e.preventDefault();
-      }
-      function onDragMove(e) {
-        if (!dragging) return;
-        setKnob(e.clientX - dragStart);
-      }
-      function onDragEnd() {
-        if (!dragging) return;
-        dragging = false;
-        slider.classList.remove("dragging");
-        if (knobX >= knobMax * 0.85) unlock();
-        else setKnob(0); // spring back
-      }
       function onKey(e) {
         if (e.key === "Enter" || e.key === " " || e.key === "Escape") {
           e.preventDefault();
-          unlock();
+          dismiss();
         }
       }
 
       el.addEventListener("pointermove", onMove, { passive: true });
       el.addEventListener("pointerleave", onLeave);
       window.addEventListener("resize", onResize);
-      if (slider) {
-        measureSlider();
-        slider.addEventListener("pointerdown", onDragStart);
-        slider.addEventListener("pointermove", onDragMove);
-        slider.addEventListener("pointerup", onDragEnd);
-        slider.addEventListener("pointercancel", onDragEnd);
-        slider.addEventListener("lostpointercapture", onDragEnd);
-      }
+      if (enterBtn) enterBtn.addEventListener("click", dismiss);
       window.addEventListener("keydown", onKey);
 
       // Tells the backstop in head.liquid that the splash is alive and will dismiss itself on click.
