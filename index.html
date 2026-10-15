@@ -67,7 +67,7 @@
       // Backstop: never leave the page hidden if the splash script fails to run.
       setTimeout(function () {
         root.classList.remove("splash-pending");
-      }, 9200);
+      }, 9800);
     })();
   </script> <style>
     html.splash-pending { overflow: hidden; }
@@ -141,6 +141,26 @@
     }
     .is-ready .splash-sub { animation: splash-up 0.9s ease 1.35s forwards; }
     @keyframes splash-up { to { opacity: 1; transform: none; } }
+    /* Rotating "hello" greetings: all stacked in one line, only .on is visible */
+    .splash-greet {
+      position: relative;
+      height: 1.7em;
+      width: 100%;
+      font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: none;
+    }
+    .splash-greet .g {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    .splash-greet .g.on { opacity: 1; transform: none; }
     .splash-hint {
       position: absolute;
       left: 0;
@@ -155,7 +175,7 @@
     }
     .is-ready .splash-hint { animation: splash-hint 2.2s ease-in-out 1.9s infinite; }
     @keyframes splash-hint { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.9; } }
-  </style> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item active"> <a class="nav-link" href="/">about <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/">services </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/">life </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/">notes </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div id="splash" aria-hidden="true"> <canvas></canvas> <div class="splash-inner"> <p class="splash-name" lang="en"><span class="word"><span class="ch" style="--i: 0">C</span><span class="ch" style="--i: 1">h</span><span class="ch" style="--i: 2">e</span><span class="ch" style="--i: 3">n</span><span class="ch" style="--i: 4">g</span><span class="ch" style="--i: 5">x</span><span class="ch" style="--i: 6">i</span><span class="ch" style="--i: 7">a</span><span class="ch" style="--i: 8">o</span></span><span class="word"><span class="ch" style="--i: 9">D</span><span class="ch" style="--i: 10">a</span><span class="ch" style="--i: 11">i</span></span></p> <div class="splash-rule"></div> <p class="splash-sub">School of Computer Science · University of Sydney</p> </div> <p class="splash-hint">点击任意处进入 · Click anywhere to enter</p> </div> <script>
+  </style> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item active"> <a class="nav-link" href="/">about <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/">services </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/">life </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/">notes </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div id="splash" aria-hidden="true"> <canvas></canvas> <div class="splash-inner"> <p class="splash-name" lang="en"><span class="word"><span class="ch" style="--i: 0">C</span><span class="ch" style="--i: 1">h</span><span class="ch" style="--i: 2">e</span><span class="ch" style="--i: 3">n</span><span class="ch" style="--i: 4">g</span><span class="ch" style="--i: 5">x</span><span class="ch" style="--i: 6">i</span><span class="ch" style="--i: 7">a</span><span class="ch" style="--i: 8">o</span></span><span class="word"><span class="ch" style="--i: 9">D</span><span class="ch" style="--i: 10">a</span><span class="ch" style="--i: 11">i</span></span></p> <div class="splash-rule"></div> <p class="splash-sub splash-greet"><span class="g on">你好</span><span class="g">Hello</span><span class="g">こんにちは</span><span class="g">안녕하세요</span><span class="g">Bonjour</span><span class="g">Hola</span><span class="g">Hallo</span><span class="g">Ciao</span><span class="g">Olá</span><span class="g">Привет</span><span class="g">مرحبا</span><span class="g">नमस्ते</span><span class="g">Xin chào</span><span class="g">Sawubona</span></p> </div> <p class="splash-hint">点击任意处进入 · Click anywhere to enter</p> </div> <script>
   (function () {
     var root = document.documentElement;
     var el = document.getElementById("splash");
@@ -302,10 +322,23 @@
 
       /* ---------- text timeline: wait (briefly) for the web font so letters do not swap mid-reveal ---------- */
       var readyFired = false;
+      var greetings = el.querySelectorAll(".splash-greet .g");
+      var greetIndex = 0;
+      var greetTimer = 0;
+      // Rotate the greetings once the subtitle line has faded in (1.35 s after is-ready, see head.liquid).
+      function startGreetings() {
+        if (greetings.length < 2) return;
+        greetTimer = setInterval(function () {
+          greetings[greetIndex].classList.remove("on");
+          greetIndex = (greetIndex + 1) % greetings.length;
+          greetings[greetIndex].classList.add("on");
+        }, 420);
+      }
       function ready() {
         if (readyFired) return;
         readyFired = true;
         el.classList.add("is-ready");
+        setTimeout(startGreetings, 1350 + 600);
       }
       if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
         document.fonts.ready.then(ready, ready);
@@ -326,6 +359,7 @@
         el.classList.add("is-out");
         setTimeout(function () {
           cancelAnimationFrame(raf);
+          clearInterval(greetTimer);
           el.removeEventListener("pointermove", onMove);
           el.removeEventListener("pointerleave", onLeave);
           window.removeEventListener("resize", onResize);
@@ -345,7 +379,7 @@
       window.addEventListener("keydown", onKey);
       window.addEventListener("wheel", dismiss, { passive: true });
       window.addEventListener("touchmove", dismiss, { passive: true });
-      autoTimer = setTimeout(dismiss, 4200);
+      autoTimer = setTimeout(dismiss, 4800);
     } catch (err) {
       bail();
       if (window.console) console.warn("splash disabled:", err);
@@ -443,6 +477,16 @@ ninja.data = [{
           description: "A next-generation open-access ecosystem for scientific discovery generated by AI scientists.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/aixiv/";
+            },},{id: "projects-bridgeagent",
+          title: 'BridgeAgent',
+          description: "An AI agent that treats the browser and the Windows desktop as one workspace — pages are read through the DOM, native windows through UI Automation, with deterministic focus-based routing, LLM-free skill replay, and permission guard rails.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/bridgeagent/";
+            },},{id: "projects-aero-engine-bearing-fault-diagnosis",
+          title: 'Aero-engine Bearing Fault Diagnosis',
+          description: "Fault diagnosis of aero-engine inter-shaft bearings with a parallel SE-depthwise-separable CNN and Transformer model (MCTE 2024, IEEE Xplore). Code and notebooks for VMD/FFT preprocessing, dataset construction, and the SEDSCN-Trans model.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/faultdiagnosis/";
             },},{id: "projects-skillbible",
           title: 'SkillBible',
           description: "An open-source, curated collection of AI-agent skills — gathered, categorized, and organized to make skills easier to discover and reuse.",
