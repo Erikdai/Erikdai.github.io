@@ -1,0 +1,289 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta http-equiv="refresh" content="3; url=https://github.com/Erikdai/quantcouncil"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> QuantCouncil | Chengxiao Dai </title> <meta name="author" content="Chengxiao Dai "> <meta name="description" content="An A-share multi-agent research and paper-trading platform built on TradingAgents — analyst agents, bull/bear debate, a trader and risk committee, then a rule-based risk gate, human approval and a paper ledger (LangGraph, MCP, RAG, FastAPI, React)."> <meta name="keywords" content="Chengxiao Dai, University of Sydney, large language models, multi-agent systems, retrieval-augmented generation, knowledge graph reasoning, LLM safety"> <meta property="og:site_name" content="Chengxiao Dai "> <meta property="og:type" content="website"> <meta property="og:title" content="Chengxiao Dai | QuantCouncil"> <meta property="og:url" content="https://erikdai.github.io/projects/quantcouncil/"> <meta property="og:description" content="An A-share multi-agent research and paper-trading platform built on TradingAgents — analyst agents, bull/bear debate, a trader and risk committee, then a rule-based risk gate, human approval and a paper ledger (LangGraph, MCP, RAG, FastAPI, React)."> <meta property="og:image" content="https://erikdai.github.io/assets/img/prof_pic_2026.jpg"> <meta property="og:locale" content="en"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="QuantCouncil"> <meta name="twitter:description" content="An A-share multi-agent research and paper-trading platform built on TradingAgents — analyst agents, bull/bear debate, a trader and risk committee, then a rule-based risk gate, human approval and a paper ledger (LangGraph, MCP, RAG, FastAPI, React)."> <meta name="twitter:image" content="https://erikdai.github.io/assets/img/prof_pic_2026.jpg"> <script type="application/ld+json">
+    {
+        "author":
+        {
+            "@type": "Person",
+            "name": "Chengxiao Dai  "
+        },
+        "url": "https://erikdai.github.io/projects/quantcouncil/",
+        "@type": "WebSite",
+        "description": "An A-share multi-agent research and paper-trading platform built on TradingAgents — analyst agents, bull/bear debate, a trader and risk committee, then a rule-based risk gate, human approval and a paper ledger (LangGraph, MCP, RAG, FastAPI, React).",
+        "headline": "QuantCouncil",
+        
+        "sameAs": ["https://github.com/Erikdai","https://scholar.google.com/citations?user=9IYEVxcAAAAJ","https://www.linkedin.com/in/chengxiaodai"],
+        
+        "name": "Chengxiao Dai  ",
+        "@context": "https://schema.org"
+    }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 930px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Great+Vibes|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%98%8E&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> <link rel="canonical" href="https://erikdai.github.io/projects/quantcouncil/"> <script src="/assets/js/theme.js?v=7af685e2ba20b37fef545c97b8064050"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> <style>
+  :root {
+    --global-theme-color: #2698ba;
+    --global-hover-color: #2698ba;
+    --global-code-bg-color: rgba(38, 152, 186, 0.05);
+  }
+  /* ===== Projects: equal-height cards, icon row pinned to the bottom, cursor-following tilt + spotlight ===== */
+  .projects .col { perspective: 1000px; }
+  .projects .card {
+    --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 50%;
+    position: relative;
+    overflow: hidden;
+    transform: rotateX(var(--rx)) rotateY(var(--ry));
+    transition: transform .5s cubic-bezier(.2, .7, .2, 1), box-shadow .5s ease;
+  }
+  .projects .card.is-tilting { transition: transform .1s linear, box-shadow .5s ease; }
+  .projects .card:hover {
+    transform: rotateX(var(--rx)) rotateY(var(--ry)) translateY(-8px);
+    box-shadow: 0 22px 40px rgba(0, 0, 0, .16), 0 6px 14px rgba(0, 0, 0, .08);
+  }
+  /* The title link is "stretched" over the whole card (no nested anchors, see projects.liquid) */
+  .projects .card-title .project-link { color: inherit; text-decoration: none; }
+  .projects .card-title .project-link::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+  .projects .card-body .project-links { position: relative; z-index: 4; }
+  /* spotlight that follows the cursor */
+  .projects .card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(360px circle at var(--mx) var(--my), rgba(38, 152, 186, .16), transparent 60%);
+    transition: opacity .35s ease;
+  }
+  /* glowing accent border that brightens near the cursor */
+  .projects .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    border-radius: inherit;
+    padding: 1.5px;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(320px circle at var(--mx) var(--my), var(--global-theme-color), rgba(38, 152, 186, .15) 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    transition: opacity .35s ease;
+  }
+  @supports (color: color-mix(in srgb, red, red)) {
+    .projects .card::after { background: radial-gradient(360px circle at var(--mx) var(--my), color-mix(in srgb, var(--global-theme-color) 16%, transparent), transparent 60%); }
+    .projects .card::before { background: radial-gradient(320px circle at var(--mx) var(--my), var(--global-theme-color), color-mix(in srgb, var(--global-theme-color) 15%, transparent) 70%); }
+  }
+  .projects .card:hover::after, .projects .card:hover::before { opacity: 1; }
+  .projects .card figure { margin: 0; overflow: hidden; }
+  .projects .card-img-top { aspect-ratio: 2 / 1; object-fit: cover; width: 100%; transition: transform .7s cubic-bezier(.2, .7, .2, 1); }
+  .projects .card:hover .card-img-top { transform: scale(1.06); }
+  .projects .card-title { transition: color .25s ease; }
+  .projects .card:hover .card-title { color: var(--global-theme-color); }
+  .projects .card-body { display: flex; flex-direction: column; }
+  .projects .card-body .card-text { flex: 1 1 auto; }
+  .projects .card-body > .row { margin-top: auto; padding-top: .9rem; }
+  .projects .card-body .github-icon { margin-right: 1.1rem; }
+  .projects .card-body .github-icon:last-child { margin-right: 0; }
+  .projects .card-body .gh-icon { display: inline-block; transition: transform .2s ease, color .2s ease; }
+  .projects .card-body .icon a:hover .gh-icon { transform: translateY(-2px) scale(1.2); color: var(--global-theme-color); }
+
+  /* ===== Publications: per-entry hover highlight (tint + accent bar + cursor glow), lively thumbnails and buttons ===== */
+  .publications ol.bibliography > li > .row {
+    --mx: 50%; --my: 50%;
+    position: relative;
+    border-radius: .6rem;
+    padding: .6rem 0;
+    transition: background-color .3s ease, transform .3s cubic-bezier(.2, .7, .2, 1), box-shadow .3s ease;
+  }
+  .publications ol.bibliography > li > .row::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1rem;
+    bottom: 1rem;
+    width: 3px;
+    border-radius: 3px;
+    background: var(--global-theme-color);
+    transform: scaleY(0);
+    transition: transform .3s ease;
+  }
+  .publications ol.bibliography > li > .row::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(420px circle at var(--mx) var(--my), rgba(38, 152, 186, .12), transparent 60%);
+    transition: opacity .35s ease;
+  }
+  .publications ol.bibliography > li > .row:hover {
+    background: rgba(38, 152, 186, .05);
+    transform: translateX(6px);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, .07);
+  }
+  @supports (color: color-mix(in srgb, red, red)) {
+    .publications ol.bibliography > li > .row:hover { background: color-mix(in srgb, var(--global-theme-color) 5%, transparent); }
+    .publications ol.bibliography > li > .row::after { background: radial-gradient(420px circle at var(--mx) var(--my), color-mix(in srgb, var(--global-theme-color) 12%, transparent), transparent 60%); }
+  }
+  .publications ol.bibliography > li > .row:hover::before { transform: scaleY(1); }
+  .publications ol.bibliography > li > .row:hover::after { opacity: 1; }
+  .publications ol.bibliography > li > .row > * { position: relative; z-index: 1; }
+  .publications .preview { transition: transform .4s cubic-bezier(.2, .7, .2, 1), box-shadow .4s ease; }
+  .publications ol.bibliography > li > .row:hover .preview { transform: translateY(-3px) scale(1.04); box-shadow: 0 10px 22px rgba(0, 0, 0, .18); }
+  .publications .title a { transition: color .2s ease; }
+  .publications .links .btn {
+    border-color: var(--global-divider-color, #ddd);
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .publications .links .btn:hover {
+    background: var(--global-theme-color);
+    border-color: var(--global-theme-color);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(38, 152, 186, .35);
+  }
+
+  /* ===== Gentle staggered entrance for project cards and publication entries ===== */
+  @keyframes rise-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .projects .col, .publications ol.bibliography > li { animation: rise-in .55s cubic-bezier(.2, .7, .2, 1) both; }
+  .projects .col:nth-child(2), .publications ol.bibliography > li:nth-child(2) { animation-delay: .07s; }
+  .projects .col:nth-child(3), .publications ol.bibliography > li:nth-child(3) { animation-delay: .14s; }
+  .projects .col:nth-child(4), .publications ol.bibliography > li:nth-child(4) { animation-delay: .21s; }
+  .projects .col:nth-child(5), .publications ol.bibliography > li:nth-child(5) { animation-delay: .28s; }
+  .projects .col:nth-child(n + 6), .publications ol.bibliography > li:nth-child(n + 6) { animation-delay: .35s; }
+  @media (prefers-reduced-motion: reduce) {
+    .projects .col, .publications ol.bibliography > li { animation: none; }
+    .projects .card, .projects .card-img-top, .projects .gh-icon, .publications ol.bibliography > li > .row,
+    .publications .preview, .publications .links .btn { transition: none; }
+    .projects .card, .projects .card:hover, .projects .card:hover .card-img-top, .publications ol.bibliography > li > .row:hover { transform: none; }
+  }
+  /* Slightly smaller profile avatar on tablet/desktop */
+  @media (min-width: 576px) { .profile { width: 27%; } }
+  /* Pronouns after the hero name only (scoped to the bold-name heading) */
+  .post-title:has(> span.font-weight-bold)::after {
+    content: " (he/him)";
+    font-size: 0.5em;
+    font-weight: 400;
+    color: var(--global-text-color-light);
+    white-space: nowrap;
+  }
+  /* Keep the publications list author-free; full authors stay in the BibTeX (BibTeX button) */
+  .publications .author { display: none; }
+  /* Paper titles are links (see _layouts/bib.liquid): keep the text colour, show the accent on hover */
+  .publications .title a { color: inherit; text-decoration: none; }
+  .publications .title a:hover { color: var(--global-theme-color); text-decoration: underline; text-underline-offset: 0.15em; }
+  /* Underline beneath the hero slogan/subtitle */
+  .desc { display: inline-block; border-bottom: 1px solid var(--global-divider-color, #e8e8e8); padding-bottom: 0.4rem; }
+  /* English rendering of the slogan, in a script face (font loaded via third_party_libraries.google_fonts) */
+  .desc .subtitle-en {
+    display: inline-block;
+    margin-top: 0.2rem;
+    font-family: "Great Vibes", cursive;
+    font-size: 1.3em;
+    line-height: 1.3;
+    color: var(--global-text-color-light);
+  }
+</style> <script>
+  // Cursor-following tilt (project cards) and spotlight (project cards + publication entries).
+  // Hover-capable, fine-pointer devices only; disabled when the user prefers reduced motion.
+  (function () {
+    function init() {
+      if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      function bind(el, tilt) {
+        var rect = null, raf = null, last = null;
+        function apply() {
+          raf = null;
+          if (!rect || !last) return;
+          var x = last.clientX - rect.left, y = last.clientY - rect.top;
+          el.style.setProperty("--mx", x.toFixed(1) + "px");
+          el.style.setProperty("--my", y.toFixed(1) + "px");
+          if (tilt) {
+            el.style.setProperty("--rx", ((0.5 - y / rect.height) * 7).toFixed(2) + "deg");
+            el.style.setProperty("--ry", ((x / rect.width - 0.5) * 9).toFixed(2) + "deg");
+          }
+        }
+        el.addEventListener("mouseenter", function (e) {
+          rect = el.getBoundingClientRect();
+          last = e;
+          if (tilt) el.classList.add("is-tilting");
+          apply();
+        });
+        el.addEventListener("mousemove", function (e) {
+          last = e;
+          if (!raf) raf = requestAnimationFrame(apply);
+        });
+        el.addEventListener("mouseleave", function () {
+          rect = null;
+          last = null;
+          if (tilt) {
+            el.classList.remove("is-tilting");
+            el.style.setProperty("--rx", "0deg");
+            el.style.setProperty("--ry", "0deg");
+          }
+        });
+      }
+      document.querySelectorAll(".projects .card").forEach(function (el) { bind(el, true); });
+      document.querySelectorAll(".publications ol.bibliography > li > .row").forEach(function (el) { bind(el, false); });
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    else init();
+  })();
+</script> <script>
+  (function () {
+    var root = document.documentElement;
+    function applyLang(lang) {
+      root.setAttribute("data-lang", lang);
+      root.setAttribute("lang", lang === "zh" ? "zh-CN" : "en");
+    }
+    var saved = null;
+    try {
+      saved = localStorage.getItem("lang");
+    } catch (e) {}
+    applyLang(saved === "zh" ? "zh" : "en");
+    window.toggleLang = function () {
+      var next = root.getAttribute("data-lang") === "zh" ? "en" : "zh";
+      try {
+        localStorage.setItem("lang", next);
+      } catch (e) {}
+      applyLang(next);
+    };
+    document.addEventListener("DOMContentLoaded", function () {
+      var btn = document.getElementById("lang-toggle");
+      if (btn) btn.addEventListener("click", window.toggleLang);
+    });
+  })();
+</script> <style>
+  html[data-lang="zh"] .lang-en, html:not([data-lang="zh"]) .lang-zh { display: none !important; }
+  /* Latin text keeps the site font; CJK glyphs fall through to a decent system font instead of SimSun */
+  html[data-lang="zh"] body { font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", sans-serif; }
+  #lang-toggle {
+    padding: 0 0.15rem;
+    border: 0;
+    background-color: inherit;
+    color: var(--global-text-color);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    height: 2rem;
+    min-width: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #lang-toggle:hover { color: var(--global-hover-color); }
+  @media (min-width: 576px) { #lang-toggle { transform: translateY(4px); margin-left: 0.25rem; } }
+</style> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Chengxiao Dai</span> </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/"><span class="lang-en">About</span><span class="lang-zh">关于</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">Publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">Services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item active"> <a class="nav-link" href="/projects/"><span class="lang-en">Projects</span><span class="lang-zh">项目</span> <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/"><span class="lang-en">Life</span><span class="lang-zh">生活</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">Notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">CV</span><span class="lang-zh">简历</span> </a> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">QuantCouncil</h1> <p class="post-description"><span class="lang-en">An A-share multi-agent research and paper-trading platform built on TradingAgents — analyst agents, bull/bear debate, a trader and risk committee, then a rule-based risk gate, human approval and a paper ledger (LangGraph, MCP, RAG, FastAPI, React).</span><span class="lang-zh">基于 TradingAgents 的 A 股多智能体投研与模拟交易平台——分析师智能体并行研究、多空辩论、交易员与风控委员会，再由代码化的风控闸门、人工审批和模拟账本接手（LangGraph、MCP、RAG、FastAPI、React）。</span></p> </header> <article> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Chengxiao Dai . Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+    addBackToTop();
+  </script> </body> </html>
