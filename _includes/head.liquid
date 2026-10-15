@@ -284,6 +284,26 @@
     }
     .is-ready .splash-sub { animation: splash-up 0.9s ease 1.35s forwards; }
     @keyframes splash-up { to { opacity: 1; transform: none; } }
+    /* Rotating "hello" greetings: all stacked in one line, only .on is visible */
+    .splash-greet {
+      position: relative;
+      height: 1.7em;
+      width: 100%;
+      font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: none;
+    }
+    .splash-greet .g {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    .splash-greet .g.on { opacity: 1; transform: none; }
     .splash-hint {
       position: absolute;
       left: 0;

@@ -34,7 +34,14 @@
       {%- endfor -%}
     </p>
     <div class="splash-rule"></div>
-    {% if page.splash.subtitle %}
+    {% if page.splash.greetings.size > 0 %}
+      {%- comment -%} "Hello" in several languages, one at a time; the script below rotates the .on class. {%- endcomment -%}
+      <p class="splash-sub splash-greet">
+        {%- for g in page.splash.greetings -%}
+          <span class="g{% if forloop.first %} on{% endif %}">{{ g }}</span>
+        {%- endfor -%}
+      </p>
+    {% elsif page.splash.subtitle %}
       <p class="splash-sub">{{ page.splash.subtitle }}</p>
     {% endif %}
   </div>
@@ -189,10 +196,23 @@
 
       /* ---------- text timeline: wait (briefly) for the web font so letters do not swap mid-reveal ---------- */
       var readyFired = false;
+      var greetings = el.querySelectorAll(".splash-greet .g");
+      var greetIndex = 0;
+      var greetTimer = 0;
+      // Rotate the greetings once the subtitle line has faded in (1.35 s after is-ready, see head.liquid).
+      function startGreetings() {
+        if (greetings.length < 2) return;
+        greetTimer = setInterval(function () {
+          greetings[greetIndex].classList.remove("on");
+          greetIndex = (greetIndex + 1) % greetings.length;
+          greetings[greetIndex].classList.add("on");
+        }, {{ page.splash.greeting_interval | default: 420 }});
+      }
       function ready() {
         if (readyFired) return;
         readyFired = true;
         el.classList.add("is-ready");
+        setTimeout(startGreetings, 1350 + 600);
       }
       if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
         document.fonts.ready.then(ready, ready);
@@ -213,6 +233,7 @@
         el.classList.add("is-out");
         setTimeout(function () {
           cancelAnimationFrame(raf);
+          clearInterval(greetTimer);
           el.removeEventListener("pointermove", onMove);
           el.removeEventListener("pointerleave", onLeave);
           window.removeEventListener("resize", onResize);

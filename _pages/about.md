@@ -6,11 +6,28 @@ subtitle: '进退维谷之日，正是别有洞天之时。<br><span class="subt
 
 # Intro splash shown before the homepage (see _includes/splash.liquid). Plays once per tab;
 # add ?splash to the URL to force it. Set enabled: false to turn it off.
+# greetings rotate one at a time under the name (every greeting_interval ms); a static
+# `subtitle:` can be used instead.
 splash:
   enabled: true
-  subtitle: "School of Computer Science · University of Sydney"
+  greetings:
+    - 你好
+    - Hello
+    - こんにちは
+    - 안녕하세요
+    - Bonjour
+    - Hola
+    - Hallo
+    - Ciao
+    - Olá
+    - Привет
+    - مرحبا
+    - नमस्ते
+    - Xin chào
+    - Sawubona
+  greeting_interval: 420
   hint: "点击任意处进入 · Click anywhere to enter"
-  duration: 4200
+  duration: 4800
 
 profile:
   align: right
