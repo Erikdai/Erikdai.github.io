@@ -40,8 +40,11 @@
     color: var(--global-text-color-light);
     white-space: nowrap;
   }
-  /* Keep the publications list author-free; full authors stay in the BibTeX (Bib button) */
+  /* Keep the publications list author-free; full authors stay in the BibTeX (BibTeX button) */
   .publications .author { display: none; }
+  /* Paper titles are links (see _layouts/bib.liquid): keep the text colour, show the accent on hover */
+  .publications .title a { color: inherit; text-decoration: none; }
+  .publications .title a:hover { color: var(--global-theme-color); text-decoration: underline; text-underline-offset: 0.15em; }
   /* Underline beneath the hero slogan/subtitle */
   .desc { display: inline-block; border-bottom: 1px solid var(--global-divider-color, #e8e8e8); padding-bottom: 0.4rem; }
   /* English rendering of the slogan, in a script face (font loaded via third_party_libraries.google_fonts) */
@@ -64,10 +67,11 @@
         }
       } catch (e) {}
       root.classList.add("splash-pending");
-      // Backstop: never leave the page hidden if the splash script fails to run.
+      // Backstop: never leave the page hidden if the splash script fails to run
+      // (it sets window.__splashOk once it is up; from then on only its button dismisses it).
       setTimeout(function () {
-        root.classList.remove("splash-pending");
-      }, 9800);
+        if (!window.__splashOk) root.classList.remove("splash-pending");
+      }, 6000);
     })();
   </script> <style>
     html.splash-pending { overflow: hidden; }
@@ -83,7 +87,6 @@
       background: var(--global-bg-color, #fff);
       color: var(--global-text-color, #000);
       overflow: hidden;
-      cursor: pointer;
       user-select: none;
       -webkit-user-select: none;
       -webkit-tap-highlight-color: transparent;
@@ -141,41 +144,97 @@
     }
     .is-ready .splash-sub { animation: splash-up 0.9s ease 1.35s forwards; }
     @keyframes splash-up { to { opacity: 1; transform: none; } }
-    /* Rotating "hello" greetings: all stacked in one line, only .on is visible */
-    .splash-greet {
-      position: relative;
-      height: 1.7em;
-      width: 100%;
-      font-size: clamp(1.2rem, 2.6vw, 1.6rem);
-      font-weight: 400;
+    /* "Hello" in many languages, scattered by splash.liquid and drifting slowly */
+    .splash-float { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .splash-float .fw {
+      position: absolute;
+      white-space: nowrap;
+      font-size: calc(var(--fs, 1.4) * 1rem);
+      font-weight: 300;
       letter-spacing: 0.04em;
-      text-transform: none;
-    }
-    .splash-greet .g {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
+      color: var(--global-text-color, #000);
       opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.22s ease, transform 0.22s ease;
+      transform: translate(-50%, -50%);
+      will-change: transform, opacity;
+      animation:
+        splash-fw-in 1.4s ease var(--in-delay, 0.5s) forwards,
+        splash-fw-drift var(--dur, 26s) ease-in-out var(--in-delay, 0.5s) infinite alternate;
     }
-    .splash-greet .g.on { opacity: 1; transform: none; }
-    .splash-hint {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
-      margin: 0;
-      text-align: center;
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      color: var(--global-text-color-light, #828282);
+    @media (max-width: 575px) { .splash-float .fw { font-size: calc(var(--fs, 1.4) * 0.72rem); } }
+    @keyframes splash-fw-in { to { opacity: var(--op, 0.35); } }
+    @keyframes splash-fw-drift {
+      from { transform: translate(-50%, -50%); }
+      to { transform: translate(calc(-50% + var(--dx, 20px)), calc(-50% + var(--dy, -20px))); }
+    }
+    /* Enter button */
+    .splash-enter {
+      margin-top: 1.6rem;
+      padding: 0.6rem 1.9rem;
+      border: 1px solid var(--global-theme-color, #2698ba);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--global-text-color, #000);
+      font: inherit;
+      font-size: 0.95rem;
+      letter-spacing: 0.14em;
+      cursor: pointer;
       opacity: 0;
+      transform: translateY(8px);
+      transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
     }
-    .is-ready .splash-hint { animation: splash-hint 2.2s ease-in-out 1.9s infinite; }
-    @keyframes splash-hint { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.9; } }
-  </style> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item active"> <a class="nav-link" href="/">about <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/">services </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/">life </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/">notes </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div id="splash" aria-hidden="true"> <canvas></canvas> <div class="splash-inner"> <p class="splash-name" lang="en"><span class="word"><span class="ch" style="--i: 0">C</span><span class="ch" style="--i: 1">h</span><span class="ch" style="--i: 2">e</span><span class="ch" style="--i: 3">n</span><span class="ch" style="--i: 4">g</span><span class="ch" style="--i: 5">x</span><span class="ch" style="--i: 6">i</span><span class="ch" style="--i: 7">a</span><span class="ch" style="--i: 8">o</span></span><span class="word"><span class="ch" style="--i: 9">D</span><span class="ch" style="--i: 10">a</span><span class="ch" style="--i: 11">i</span></span></p> <div class="splash-rule"></div> <p class="splash-sub splash-greet"><span class="g on">你好</span><span class="g">Hello</span><span class="g">こんにちは</span><span class="g">안녕하세요</span><span class="g">Bonjour</span><span class="g">Hola</span><span class="g">Hallo</span><span class="g">Ciao</span><span class="g">Olá</span><span class="g">Привет</span><span class="g">مرحبا</span><span class="g">नमस्ते</span><span class="g">Xin chào</span><span class="g">Sawubona</span></p> </div> <p class="splash-hint">点击任意处进入 · Click anywhere to enter</p> </div> <script>
+    .is-ready .splash-enter { animation: splash-up 0.8s ease 1.75s forwards; }
+    .splash-enter:hover, .splash-enter:focus-visible {
+      background-color: var(--global-theme-color, #2698ba);
+      color: #fff;
+      box-shadow: 0 0 0 6px rgba(38, 152, 186, 0.18);
+      outline: none;
+    }
+  </style> <script>
+  (function () {
+    var root = document.documentElement;
+    function applyLang(lang) {
+      root.setAttribute("data-lang", lang);
+      root.setAttribute("lang", lang === "zh" ? "zh-CN" : "en");
+    }
+    var saved = null;
+    try {
+      saved = localStorage.getItem("lang");
+    } catch (e) {}
+    applyLang(saved === "zh" ? "zh" : "en");
+    window.toggleLang = function () {
+      var next = root.getAttribute("data-lang") === "zh" ? "en" : "zh";
+      try {
+        localStorage.setItem("lang", next);
+      } catch (e) {}
+      applyLang(next);
+    };
+    document.addEventListener("DOMContentLoaded", function () {
+      var btn = document.getElementById("lang-toggle");
+      if (btn) btn.addEventListener("click", window.toggleLang);
+    });
+  })();
+</script> <style>
+  html[data-lang="zh"] .lang-en, html:not([data-lang="zh"]) .lang-zh { display: none !important; }
+  /* Latin text keeps the site font; CJK glyphs fall through to a decent system font instead of SimSun */
+  html[data-lang="zh"] body { font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", sans-serif; }
+  #lang-toggle {
+    padding: 0 0.15rem;
+    border: 0;
+    background-color: inherit;
+    color: var(--global-text-color);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    height: 2rem;
+    min-width: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #lang-toggle:hover { color: var(--global-hover-color); }
+  @media (min-width: 576px) { #lang-toggle { transform: translateY(4px); margin-left: 0.25rem; } }
+</style> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item active"> <a class="nav-link" href="/"><span class="lang-en">about</span><span class="lang-zh">关于</span> <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/"><span class="lang-en">projects</span><span class="lang-zh">项目</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/"><span class="lang-en">life</span><span class="lang-zh">生活</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">cv</span><span class="lang-zh">简历</span> </a> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div id="splash" aria-hidden="true"> <canvas></canvas> <div class="splash-float"> <span class="fw">你好</span><span class="fw">Hello</span><span class="fw">こんにちは</span><span class="fw">안녕하세요</span><span class="fw">Bonjour</span><span class="fw">Hola</span><span class="fw">Hallo</span><span class="fw">Ciao</span><span class="fw">Olá</span><span class="fw">Привет</span><span class="fw">مرحبا</span><span class="fw">नमस्ते</span><span class="fw">Xin chào</span><span class="fw">Sawubona</span> </div> <div class="splash-inner"> <p class="splash-name" lang="en"><span class="word"><span class="ch" style="--i: 0">C</span><span class="ch" style="--i: 1">h</span><span class="ch" style="--i: 2">e</span><span class="ch" style="--i: 3">n</span><span class="ch" style="--i: 4">g</span><span class="ch" style="--i: 5">x</span><span class="ch" style="--i: 6">i</span><span class="ch" style="--i: 7">a</span><span class="ch" style="--i: 8">o</span></span><span class="word"><span class="ch" style="--i: 9">D</span><span class="ch" style="--i: 10">a</span><span class="ch" style="--i: 11">i</span></span></p> <div class="splash-rule"></div> <p class="splash-sub">AI Researcher · Agent Engineer · World Explorer</p> <button type="button" class="splash-enter" id="splash-enter">进入 · Enter</button> </div> </div> <script>
   (function () {
     var root = document.documentElement;
     var el = document.getElementById("splash");
@@ -189,7 +248,6 @@
 
     var finished = false;
     var raf = 0;
-    var autoTimer = 0;
 
     // Whatever happens below, the page must never stay hidden.
     function bail() {
@@ -212,8 +270,8 @@
         ? [parseInt(m[1].slice(0, 2), 16), parseInt(m[1].slice(2, 4), 16), parseInt(m[1].slice(4, 6), 16)]
         : [38, 152, 186];
       var dark = root.getAttribute("data-theme") === "dark";
-      var lineAlpha = dark ? 0.5 : 0.38;
-      var dotAlpha = dark ? 0.85 : 0.7;
+      var lineAlpha = dark ? 0.4 : 0.3;
+      var dotAlpha = dark ? 0.75 : 0.6;
       var LINK = 140;
       var W = 0, H = 0, dpr = 1;
       var nodes = [];
@@ -301,6 +359,51 @@
         raf = requestAnimationFrame(step);
       }
 
+      /* ---------- floating greetings: scattered on a grid that leaves the middle for the name ---------- */
+      var words = el.querySelectorAll(".splash-float .fw");
+      var placed = false;
+      function placeWords() {
+        if (!words.length) return;
+        var portrait = W < 700;
+        var cols = portrait ? 4 : 6;
+        var rows = portrait ? 7 : 4;
+        var zx = portrait ? 0.1 : 0.24; // keep-out box around the name / button
+        var zy = portrait ? 0.34 : 0.28;
+        var cells = [];
+        for (var r = 0; r < rows; r++) {
+          for (var c = 0; c < cols; c++) {
+            var cx = (c + 0.5) / cols;
+            var cy = (r + 0.5) / rows;
+            if (cx > zx && cx < 1 - zx && cy > zy && cy < 1 - zy) continue;
+            cells.push([cx, cy]);
+          }
+        }
+        for (var k = cells.length - 1; k > 0; k--) {
+          var s = Math.floor(Math.random() * (k + 1));
+          var t = cells[k];
+          cells[k] = cells[s];
+          cells[s] = t;
+        }
+        for (var i = 0; i < words.length; i++) {
+          var cell = cells[i % cells.length];
+          var jx = (Math.random() - 0.5) * 0.5 / cols;
+          var jy = (Math.random() - 0.5) * 0.5 / rows;
+          var w = words[i];
+          w.style.left = ((cell[0] + jx) * 100).toFixed(2) + "%";
+          w.style.top = ((cell[1] + jy) * 100).toFixed(2) + "%";
+          if (!placed) {
+            w.style.setProperty("--fs", (0.95 + Math.random() * 1.45).toFixed(2));
+            w.style.setProperty("--op", (0.22 + Math.random() * 0.3).toFixed(2));
+            w.style.setProperty("--dx", ((Math.random() - 0.5) * 70).toFixed(0) + "px");
+            w.style.setProperty("--dy", ((Math.random() - 0.5) * 70).toFixed(0) + "px");
+            w.style.setProperty("--dur", (18 + Math.random() * 16).toFixed(1) + "s");
+            w.style.setProperty("--in-delay", (0.3 + Math.random() * 1.6).toFixed(2) + "s");
+            if (i % 3 === 0) w.style.color = accent || "#2698ba";
+          }
+        }
+        placed = true;
+      }
+
       function onMove(e) {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
@@ -314,52 +417,38 @@
           if (nodes[i].x > W) nodes[i].x = Math.random() * W;
           if (nodes[i].y > H) nodes[i].y = Math.random() * H;
         }
+        placeWords();
       }
 
       size();
       seed();
       step();
+      placeWords();
 
       /* ---------- text timeline: wait (briefly) for the web font so letters do not swap mid-reveal ---------- */
       var readyFired = false;
-      var greetings = el.querySelectorAll(".splash-greet .g");
-      var greetIndex = 0;
-      var greetTimer = 0;
-      // Rotate the greetings once the subtitle line has faded in (1.35 s after is-ready, see head.liquid).
-      function startGreetings() {
-        if (greetings.length < 2) return;
-        greetTimer = setInterval(function () {
-          greetings[greetIndex].classList.remove("on");
-          greetIndex = (greetIndex + 1) % greetings.length;
-          greetings[greetIndex].classList.add("on");
-        }, 420);
-      }
       function ready() {
         if (readyFired) return;
         readyFired = true;
         el.classList.add("is-ready");
-        setTimeout(startGreetings, 1350 + 600);
       }
       if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
         document.fonts.ready.then(ready, ready);
       }
       setTimeout(ready, 600);
 
-      /* ---------- dismissal ---------- */
+      /* ---------- dismissal: only the button (or Enter / Space / Escape) ---------- */
+      var enterBtn = document.getElementById("splash-enter");
       function dismiss() {
         if (finished) return;
         finished = true;
-        clearTimeout(autoTimer);
-        el.removeEventListener("pointerdown", dismiss);
+        if (enterBtn) enterBtn.removeEventListener("click", dismiss);
         window.removeEventListener("keydown", onKey);
-        window.removeEventListener("wheel", dismiss);
-        window.removeEventListener("touchmove", dismiss);
         root.classList.remove("splash-pending");
         root.classList.add("splash-leaving");
         el.classList.add("is-out");
         setTimeout(function () {
           cancelAnimationFrame(raf);
-          clearInterval(greetTimer);
           el.removeEventListener("pointermove", onMove);
           el.removeEventListener("pointerleave", onLeave);
           window.removeEventListener("resize", onResize);
@@ -368,24 +457,26 @@
         }, 1000);
       }
       function onKey(e) {
-        if (/^(Shift|Control|Alt|Meta|CapsLock|Tab|F\d+)$/.test(e.key)) return;
-        dismiss();
+        if (e.key === "Enter" || e.key === " " || e.key === "Escape") {
+          e.preventDefault();
+          dismiss();
+        }
       }
 
       el.addEventListener("pointermove", onMove, { passive: true });
       el.addEventListener("pointerleave", onLeave);
       window.addEventListener("resize", onResize);
-      el.addEventListener("pointerdown", dismiss);
+      if (enterBtn) enterBtn.addEventListener("click", dismiss);
       window.addEventListener("keydown", onKey);
-      window.addEventListener("wheel", dismiss, { passive: true });
-      window.addEventListener("touchmove", dismiss, { passive: true });
-      autoTimer = setTimeout(dismiss, 4800);
+
+      // Tells the backstop in head.liquid that the splash is alive and will dismiss itself on click.
+      window.__splashOk = true;
     } catch (err) {
       bail();
       if (window.console) console.warn("splash disabled:", err);
     }
   })();
-</script> <div class="post"> <header class="post-header"> <h1 class="post-title"> <span class="font-weight-bold">Chengxiao Dai</span> </h1> <p class="desc">进退维谷之日，正是别有洞天之时。<br><span class="subtitle-en">When there seems to be no way forward or back, a whole new world may be just about to reveal itself.</span></p> </header> <article> <div class="profile float-right"> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/prof_pic_2026-480.webp 480w,/assets/img/prof_pic_2026-800.webp 800w,/assets/img/prof_pic_2026-1400.webp 1400w," type="image/webp" sizes="(min-width: 930px) 270.0px, (min-width: 576px) 30vw, 95vw"> <img src="/assets/img/prof_pic_2026.jpg?v=d9125cd3a7b87588dc38877e92e4cfd7" class="img-fluid z-depth-1 rounded" width="100%" height="auto" alt="prof_pic_2026.jpg" loading="eager" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </source></picture> </figure> <div class="more-info"> <p>School of Computer Science</p> <p>University of Sydney</p> <p>NSW, Australia</p> </div> </div> <div class="clearfix"> <p>Hi! I am <strong>Chengxiao Dai</strong>, a Master of Computer Science student and tutor at the <a href="https://www.sydney.edu.au/" rel="external nofollow noopener" target="_blank">University of Sydney</a>. I have previously worked as a research intern at <a href="https://www.a-star.edu.sg/simtech" rel="external nofollow noopener" target="_blank">A*STAR’s Singapore Institute of Manufacturing Technology</a> and the <a href="http://www.caict.ac.cn/english/" rel="external nofollow noopener" target="_blank">China Academy of Information and Communications Technology (CAICT)</a>, and as an algorithm engineer at <a href="https://imperial-vision.com/en" rel="external nofollow noopener" target="_blank">Imperial Vision</a>. I am also a co-founder of <a href="https://chuchiangdata.cc/" rel="external nofollow noopener" target="_blank">ChuChiang Data</a>, where we focus on building high-quality synthetic data solutions to address long-tail data challenges.</p> <p>My research focuses on large language models and multi-agent systems, in particular LLM post-training, reinforcement learning for agentic systems, knowledge-graph reasoning, and domain-specific applications.</p> <p style="font-size: 0.9rem; color: var(--global-text-color-light);" title="Google Scholar figures as of 2026-10-05"><a href="https://scholar.google.com/citations?user=9IYEVxcAAAAJ" target="_blank" rel="external nofollow noopener">Google Scholar</a> · 191 citations · h-index 6 · i10-index 3</p> <p>I am currently seeking PhD opportunities and AI/ML engineering roles. Feel free to reach out at <strong>chengxiao [dot] dai [at] sydney [dot] edu [dot] au</strong>.</p> </div> <div class="social"> <div class="contact-icons"> <a href="mailto:chengxiao.dai@sydney.edu.au" title="Email"><i class="fa-solid fa-envelope"></i></a> <a href="https://github.com/Erikdai" title="Github username" rel="external nofollow noopener" target="_blank"><i class="fa-brands fa-github"></i></a> <a href="https://scholar.google.com/citations?user=9IYEVxcAAAAJ" title="Scholar userid" rel="external nofollow noopener" target="_blank"><i class="ai ai-google-scholar"></i></a> <a href="https://www.linkedin.com/in/chengxiaodai" title="Linkedin username" rel="external nofollow noopener" target="_blank"><i class="fa-brands fa-linkedin"></i></a> </div> <div class="contact-note"></div> </div> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Chengxiao Dai . Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script>
+</script> <div class="post"> <header class="post-header"> <h1 class="post-title"> <span class="font-weight-bold">Chengxiao Dai</span> </h1> <p class="desc">进退维谷之日，正是别有洞天之时。<br><span class="subtitle-en">When there seems to be no way forward or back, a whole new world may be just about to reveal itself.</span></p> </header> <article> <div class="profile float-right"> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/prof_pic_2026-480.webp 480w,/assets/img/prof_pic_2026-800.webp 800w,/assets/img/prof_pic_2026-1400.webp 1400w," type="image/webp" sizes="(min-width: 930px) 270.0px, (min-width: 576px) 30vw, 95vw"> <img src="/assets/img/prof_pic_2026.jpg?v=d9125cd3a7b87588dc38877e92e4cfd7" class="img-fluid z-depth-1 rounded" width="100%" height="auto" alt="prof_pic_2026.jpg" loading="eager" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </source></picture> </figure> <div class="more-info"> <div class="lang-en"> <p>School of Computer Science</p> <p>University of Sydney</p> <p>NSW, Australia</p> </div> <div class="lang-zh"> <p>计算机学院</p> <p>悉尼大学</p> <p>澳大利亚 新南威尔士州</p> </div> </div> </div> <div class="clearfix"> <div class="lang-en"> <p>Hi! I am <strong>Chengxiao Dai</strong>, a Master of Computer Science student and tutor at the <a href="https://www.sydney.edu.au/" rel="external nofollow noopener" target="_blank">University of Sydney</a>. I have previously worked as a research intern at <a href="https://www.a-star.edu.sg/simtech" rel="external nofollow noopener" target="_blank">A*STAR’s Singapore Institute of Manufacturing Technology</a> and the <a href="http://www.caict.ac.cn/english/" rel="external nofollow noopener" target="_blank">China Academy of Information and Communications Technology (CAICT)</a>, and as an algorithm engineer at <a href="https://imperial-vision.com/en" rel="external nofollow noopener" target="_blank">Imperial Vision</a>. I am also a co-founder of <a href="https://chuchiangdata.cc/" rel="external nofollow noopener" target="_blank">ChuChiang Data</a>, where we focus on building high-quality synthetic data solutions to address long-tail data challenges.</p> <p>My research focuses on large language models and multi-agent systems, in particular LLM post-training, reinforcement learning for agentic systems, knowledge-graph reasoning, and domain-specific applications.</p> </div> <div class="lang-zh"> <p>你好！我是 <strong>Chengxiao Dai</strong>，<a href="https://www.sydney.edu.au/" rel="external nofollow noopener" target="_blank">悉尼大学</a>计算机科学硕士在读，同时担任课程助教。此前曾在<a href="https://www.a-star.edu.sg/simtech" rel="external nofollow noopener" target="_blank">新加坡科技研究局制造技术研究院（A*STAR SIMTech）</a>和<a href="http://www.caict.ac.cn/english/" rel="external nofollow noopener" target="_blank">中国信息通信研究院（CAICT）</a>担任研究实习生，并在 <a href="https://imperial-vision.com/en" rel="external nofollow noopener" target="_blank">Imperial Vision</a> 担任算法工程师。我也是 <a href="https://chuchiangdata.cc/" rel="external nofollow noopener" target="_blank">ChuChiang Data</a> 的联合创始人，我们专注于构建高质量的合成数据方案，以解决长尾数据难题。</p> <p>我的研究方向是大语言模型与多智能体系统，重点关注 LLM 后训练、面向智能体系统的强化学习、知识图谱推理以及领域应用。</p> </div> <p class="lang-en" style="font-size: 0.9rem; color: var(--global-text-color-light);" title="Google Scholar figures as of 2026-10-05"><a href="https://scholar.google.com/citations?user=9IYEVxcAAAAJ" target="_blank" rel="external nofollow noopener">Google Scholar</a> · 191 citations · h-index 6 · i10-index 3</p> <p class="lang-zh" style="font-size: 0.9rem; color: var(--global-text-color-light);" title="Google Scholar 数据更新于 2026-10-05"><a href="https://scholar.google.com/citations?user=9IYEVxcAAAAJ" target="_blank" rel="external nofollow noopener">Google Scholar</a> · 引用 191 次 · h 指数 6 · i10 指数 3</p> <div class="lang-en"> <p>I am currently seeking PhD opportunities and AI/ML engineering roles. Feel free to reach out at <strong>chengxiao [dot] dai [at] sydney [dot] edu [dot] au</strong>.</p> </div> <div class="lang-zh"> <p>我目前正在寻找博士（PhD）机会以及 AI/ML 工程师岗位，欢迎通过 <strong>chengxiao [dot] dai [at] sydney [dot] edu [dot] au</strong> 与我联系。</p> </div> </div> <div class="social"> <div class="contact-icons"> <a href="mailto:chengxiao.dai@sydney.edu.au" title="Email"><i class="fa-solid fa-envelope"></i></a> <a href="https://github.com/Erikdai" title="Github username" rel="external nofollow noopener" target="_blank"><i class="fa-brands fa-github"></i></a> <a href="https://scholar.google.com/citations?user=9IYEVxcAAAAJ" title="Scholar userid" rel="external nofollow noopener" target="_blank"><i class="ai ai-google-scholar"></i></a> <a href="https://www.linkedin.com/in/chengxiaodai" title="Linkedin username" rel="external nofollow noopener" target="_blank"><i class="fa-brands fa-linkedin"></i></a> </div> <div class="contact-note"></div> </div> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Chengxiao Dai . Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script>
   window.alFolio = {
     compatBootstrap: false
   };
