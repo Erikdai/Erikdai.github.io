@@ -2,8 +2,10 @@
 ---
 {% comment %}
   Local override of al_folio_core 1.0.11's _layouts/bib.liquid.
-  Only change vs. upstream: the "arXiv" and "HTML" link buttons are labelled "View Paper".
-  When bumping al_folio_core in the Gemfile, re-copy the gem's bib.liquid and re-apply that label change.
+  Changes vs. upstream:
+    1. The title itself links to the paper (html > arxiv > doi > pdf); the DOI / arXiv / HTML buttons are gone.
+    2. A "BibTeX" button (and its hidden bibtex block) is shown for every entry, not only when bibtex_show is set.
+  When bumping al_folio_core in the Gemfile, re-copy the gem's bib.liquid and re-apply these changes.
 {% endcomment %}
 <div class="row">
   {% if site.enable_publication_thumbnails %}
@@ -52,8 +54,32 @@
 
   <!-- Entry bib key -->
   <div id="{{ entry.key }}" class="{% if site.enable_publication_thumbnails %}col-sm-8{% else %}col-sm-10{% endif %}">
-    <!-- Title -->
-    <div class="title">{{ entry.title }}</div>
+    <!-- Title (linked to the paper when a link is known) -->
+    {% assign paper_url = nil %}
+    {% if entry.html %}
+      {% if entry.html contains '://' %}
+        {% assign paper_url = entry.html %}
+      {% else %}
+        {% assign paper_url = entry.html | prepend: '/assets/html/' | relative_url %}
+      {% endif %}
+    {% elsif entry.arxiv %}
+      {% assign paper_url = entry.arxiv | prepend: 'https://arxiv.org/abs/' %}
+    {% elsif entry.doi %}
+      {% assign paper_url = entry.doi | prepend: 'https://doi.org/' %}
+    {% elsif entry.pdf %}
+      {% if entry.pdf contains '://' %}
+        {% assign paper_url = entry.pdf %}
+      {% else %}
+        {% assign paper_url = entry.pdf | prepend: '/assets/pdf/' | relative_url %}
+      {% endif %}
+    {% endif %}
+    <div class="title">
+      {%- if paper_url -%}
+        <a href="{{ paper_url }}" target="_blank" rel="noopener noreferrer">{{ entry.title }}</a>
+      {%- else -%}
+        {{ entry.title }}
+      {%- endif -%}
+    </div>
     <!-- Author -->
     <div class="author">
       {% assign author_array_size = entry.author_array | size %}
@@ -202,25 +228,10 @@
       {% if entry.abstract %}
         <a class="abstract btn btn-sm z-depth-0" role="button">Abs</a>
       {% endif %}
-      {% if entry.doi %}
-        <a href="https://doi.org/{{ entry.doi }}" class="btn btn-sm z-depth-0" role="button">DOI</a>
-      {% endif %}
-      {% if entry.arxiv %}
-        <a href="http://arxiv.org/abs/{{ entry.arxiv }}" class="btn btn-sm z-depth-0" role="button">View Paper</a>
-      {% endif %}
       {% if entry.hal %}
         <a href="https://hal.science/{{ entry.hal }}" class="btn btn-sm z-depth-0" role="button">HAL</a>
       {% endif %}
-      {% if entry.bibtex_show %}
-        <a class="bibtex btn btn-sm z-depth-0" role="button">Bib</a>
-      {% endif %}
-      {% if entry.html %}
-        {% if entry.html contains '://' %}
-          <a href="{{ entry.html }}" class="btn btn-sm z-depth-0" role="button">View Paper</a>
-        {% else %}
-          <a href="{{ entry.html | prepend: '/assets/html/' | relative_url }}" class="btn btn-sm z-depth-0" role="button">View Paper</a>
-        {% endif %}
-      {% endif %}
+      <a class="bibtex btn btn-sm z-depth-0" role="button">BibTeX</a>
       {% if entry.pdf %}
         {% if entry.pdf contains '://' %}
           <a href="{{ entry.pdf }}" class="btn btn-sm z-depth-0" role="button">PDF</a>
@@ -381,14 +392,12 @@
       </div>
     {% endif %}
 
-    {% if entry.bibtex_show %}
-      <!-- Hidden bibtex block -->
-      <div class="bibtex hidden">
-        {% highlight bibtex %}
-        {{- entry.bibtex | hideCustomBibtex -}}
-        {% endhighlight %}
-      </div>
-    {% endif %}
+    <!-- Hidden bibtex block (toggled by the BibTeX button) -->
+    <div class="bibtex hidden">
+      {% highlight bibtex %}
+      {{- entry.bibtex | hideCustomBibtex -}}
+      {% endhighlight %}
+    </div>
 
     {% if entry.video and site.enable_video_embedding %}
       <!-- Hidden video block -->

@@ -1,10 +1,12 @@
 ---
 layout: page
 title: life
+title_zh: 生活
 permalink: /life/
 nav: true
 nav_order: 5
 description: Just a chill guy.
+description_zh: 一个松弛的人。
 ---
 
 <style>

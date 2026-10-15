@@ -177,8 +177,11 @@
     color: var(--global-text-color-light);
     white-space: nowrap;
   }
-  /* Keep the publications list author-free; full authors stay in the BibTeX (Bib button) */
+  /* Keep the publications list author-free; full authors stay in the BibTeX (BibTeX button) */
   .publications .author { display: none; }
+  /* Paper titles are links (see _layouts/bib.liquid): keep the text colour, show the accent on hover */
+  .publications .title a { color: inherit; text-decoration: none; }
+  .publications .title a:hover { color: var(--global-theme-color); text-decoration: underline; text-underline-offset: 0.15em; }
   /* Underline beneath the hero slogan/subtitle */
   .desc { display: inline-block; border-bottom: 1px solid var(--global-divider-color, #e8e8e8); padding-bottom: 0.4rem; }
   /* English rendering of the slogan, in a script face (font loaded via third_party_libraries.google_fonts) */
@@ -206,10 +209,11 @@
         }
       } catch (e) {}
       root.classList.add("splash-pending");
-      // Backstop: never leave the page hidden if the splash script fails to run.
+      // Backstop: never leave the page hidden if the splash script fails to run
+      // (it sets window.__splashOk once it is up; from then on only its button dismisses it).
       setTimeout(function () {
-        root.classList.remove("splash-pending");
-      }, {{ page.splash.duration | default: 4200 | plus: 5000 }});
+        if (!window.__splashOk) root.classList.remove("splash-pending");
+      }, 6000);
     })();
   </script>
   <style>
@@ -226,7 +230,6 @@
       background: var(--global-bg-color, #fff);
       color: var(--global-text-color, #000);
       overflow: hidden;
-      cursor: pointer;
       user-select: none;
       -webkit-user-select: none;
       -webkit-tap-highlight-color: transparent;
@@ -284,39 +287,100 @@
     }
     .is-ready .splash-sub { animation: splash-up 0.9s ease 1.35s forwards; }
     @keyframes splash-up { to { opacity: 1; transform: none; } }
-    /* Rotating "hello" greetings: all stacked in one line, only .on is visible */
-    .splash-greet {
-      position: relative;
-      height: 1.7em;
-      width: 100%;
-      font-size: clamp(1.2rem, 2.6vw, 1.6rem);
-      font-weight: 400;
+    /* "Hello" in many languages, scattered by splash.liquid and drifting slowly */
+    .splash-float { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .splash-float .fw {
+      position: absolute;
+      white-space: nowrap;
+      font-size: calc(var(--fs, 1.4) * 1rem);
+      font-weight: 300;
       letter-spacing: 0.04em;
-      text-transform: none;
-    }
-    .splash-greet .g {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
+      color: var(--global-text-color, #000);
       opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.22s ease, transform 0.22s ease;
+      transform: translate(-50%, -50%);
+      will-change: transform, opacity;
+      animation:
+        splash-fw-in 1.4s ease var(--in-delay, 0.5s) forwards,
+        splash-fw-drift var(--dur, 26s) ease-in-out var(--in-delay, 0.5s) infinite alternate;
     }
-    .splash-greet .g.on { opacity: 1; transform: none; }
-    .splash-hint {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
-      margin: 0;
-      text-align: center;
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      color: var(--global-text-color-light, #828282);
+    @media (max-width: 575px) { .splash-float .fw { font-size: calc(var(--fs, 1.4) * 0.72rem); } }
+    @keyframes splash-fw-in { to { opacity: var(--op, 0.35); } }
+    @keyframes splash-fw-drift {
+      from { transform: translate(-50%, -50%); }
+      to { transform: translate(calc(-50% + var(--dx, 20px)), calc(-50% + var(--dy, -20px))); }
+    }
+    /* Enter button */
+    .splash-enter {
+      margin-top: 1.6rem;
+      padding: 0.6rem 1.9rem;
+      border: 1px solid var(--global-theme-color, #2698ba);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--global-text-color, #000);
+      font: inherit;
+      font-size: 0.95rem;
+      letter-spacing: 0.14em;
+      cursor: pointer;
       opacity: 0;
+      transform: translateY(8px);
+      transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
     }
-    .is-ready .splash-hint { animation: splash-hint 2.2s ease-in-out 1.9s infinite; }
-    @keyframes splash-hint { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.9; } }
+    .is-ready .splash-enter { animation: splash-up 0.8s ease 1.75s forwards; }
+    .splash-enter:hover, .splash-enter:focus-visible {
+      background-color: var(--global-theme-color, #2698ba);
+      color: #fff;
+      box-shadow: 0 0 0 6px rgba(38, 152, 186, 0.18);
+      outline: none;
+    }
   </style>
 {% endif %}
+
+<!-- English / 中文 toggle. The saved preference is applied before first paint (like the theme), so nothing flickers.
+     Content carries .lang-en / .lang-zh spans (see _includes/lang.liquid); the button lives in _includes/header.liquid. -->
+<script>
+  (function () {
+    var root = document.documentElement;
+    function applyLang(lang) {
+      root.setAttribute("data-lang", lang);
+      root.setAttribute("lang", lang === "zh" ? "zh-CN" : "{{ site.lang | default: 'en' }}");
+    }
+    var saved = null;
+    try {
+      saved = localStorage.getItem("lang");
+    } catch (e) {}
+    applyLang(saved === "zh" ? "zh" : "en");
+    window.toggleLang = function () {
+      var next = root.getAttribute("data-lang") === "zh" ? "en" : "zh";
+      try {
+        localStorage.setItem("lang", next);
+      } catch (e) {}
+      applyLang(next);
+    };
+    document.addEventListener("DOMContentLoaded", function () {
+      var btn = document.getElementById("lang-toggle");
+      if (btn) btn.addEventListener("click", window.toggleLang);
+    });
+  })();
+</script>
+<style>
+  html[data-lang="zh"] .lang-en, html:not([data-lang="zh"]) .lang-zh { display: none !important; }
+  /* Latin text keeps the site font; CJK glyphs fall through to a decent system font instead of SimSun */
+  html[data-lang="zh"] body { font-family: "Roboto", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", sans-serif; }
+  #lang-toggle {
+    padding: 0 0.15rem;
+    border: 0;
+    background-color: inherit;
+    color: var(--global-text-color);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    height: 2rem;
+    min-width: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #lang-toggle:hover { color: var(--global-hover-color); }
+  @media (min-width: 576px) { #lang-toggle { transform: translateY(4px); margin-left: 0.25rem; } }
+</style>

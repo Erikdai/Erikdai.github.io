@@ -1,8 +1,10 @@
 ---
 layout: page
 title: projects
+title_zh: 项目
 permalink: /projects/
 description: Selected projects and open-source work.
+description_zh: 精选项目与开源工作。
 nav: true
 nav_order: 4
 horizontal: false
@@ -63,4 +65,4 @@ horizontal: false
 {% endif %}
 </div>
 
-<p style="text-align: center; margin-top: 1.5rem; color: var(--global-text-color-light);"><em>More projects coming soon…</em></p>
+<p style="text-align: center; margin-top: 1.5rem; color: var(--global-text-color-light);"><em><span class="lang-en">More projects coming soon…</span><span class="lang-zh">更多项目即将上线……</span></em></p>

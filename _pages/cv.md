@@ -2,13 +2,14 @@
 layout: page
 permalink: /cv/
 title: cv
+title_zh: 简历
 nav: true
 nav_order: 7
 ---
 
 <p>
   <a href="/assets/pdf/cv.pdf" target="_blank" rel="noopener noreferrer">
-    <i class="fa-solid fa-file-pdf"></i>&nbsp;Download CV (PDF)
+    <i class="fa-solid fa-file-pdf"></i>&nbsp;<span class="lang-en">Download CV (PDF)</span><span class="lang-zh">下载简历（PDF）</span>
   </a>
 </p>
 

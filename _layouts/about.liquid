@@ -3,8 +3,8 @@ layout: default
 ---
 {% comment %}
   Local override of al_folio_core 1.0.11's _layouts/about.liquid.
-  Only change vs. upstream: the intro splash (`_includes/splash.liquid`) is rendered
-  at the top when the page's front matter has `splash.enabled: true`.
+  Changes vs. upstream: the intro splash (`_includes/splash.liquid`) is rendered at the top when the
+  page's front matter has `splash.enabled: true`, and profile.more_info_zh is rendered for the 中文 toggle.
   Its styles and the first-paint guard live in `_includes/head.liquid`.
 {% endcomment %}
 {% if page.splash.enabled %}
@@ -42,7 +42,14 @@ layout: default
           %}
         {% endif %}
         {% if page.profile.more_info %}
-          <div class="more-info">{{ page.profile.more_info }}</div>
+          <div class="more-info">
+            {%- if page.profile.more_info_zh -%}
+              <div class="lang-en">{{ page.profile.more_info }}</div>
+              <div class="lang-zh">{{ page.profile.more_info_zh }}</div>
+            {%- else -%}
+              {{ page.profile.more_info }}
+            {%- endif -%}
+          </div>
         {% endif %}
       </div>
     {% endif %}

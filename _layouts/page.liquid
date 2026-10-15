@@ -1,0 +1,35 @@
+---
+layout: default
+---
+{% comment %}
+  Local override of al_folio_core 1.0.11's _layouts/page.liquid.
+  Only change vs. upstream: title and description go through lang.liquid (title_zh / description_zh front matter).
+{% endcomment %}
+{% if page._styles %}
+  <!-- Page/Post style -->
+  <style type="text/css">
+    {{ page._styles }}
+  </style>
+{% endif %}
+
+<div class="post">
+  <header class="post-header">
+    <h1 class="post-title">{% include lang.liquid en=page.title zh=page.title_zh %}</h1>
+    <p class="post-description">{% include lang.liquid en=page.description zh=page.description_zh %}</p>
+  </header>
+
+  <article>
+    {{ content }}
+  </article>
+
+  {% if page.related_publications %}
+    <h2>References</h2>
+    <div class="publications">
+      {% bibliography --cited_in_order %}
+    </div>
+  {% endif %}
+
+  {% if site.plugins contains 'al_comments' %}
+    {% include plugins/al_comments.liquid %}
+  {% endif %}
+</div>

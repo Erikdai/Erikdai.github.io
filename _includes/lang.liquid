@@ -1,0 +1,11 @@
+{% comment %}
+  Bilingual text helper for the English / 中文 toggle (see _includes/head.liquid).
+  Usage: {% include lang.liquid en=page.title zh=page.title_zh %}
+  Prints <span class="lang-en">…</span><span class="lang-zh">…</span>; with no zh text it prints the English only.
+  CSS on html[data-lang] shows one span and hides the other.
+{% endcomment %}
+{%- if include.zh and include.zh != "" -%}
+  <span class="lang-en">{{ include.en }}</span><span class="lang-zh">{{ include.zh }}</span>
+{%- else -%}
+  {{ include.en }}
+{%- endif -%}

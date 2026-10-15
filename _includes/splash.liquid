@@ -3,11 +3,12 @@
   front matter has `splash.enabled: true`; styles + the first-paint guard that adds
   `html.splash-pending` live in `_includes/head.liquid`.
 
-  Behaviour: a particle network draws on a canvas while the name fades in letter by
-  letter, then a rule and a subtitle appear. It dismisses itself after
-  `page.splash.duration` ms (default 4200) or on click / key / scroll, and it plays once
-  per tab (sessionStorage). Add `?splash` to the URL to force it, e.g. while testing.
-  Skipped entirely for `prefers-reduced-motion` and when JS is off.
+  Behaviour: a particle network draws on a canvas, "hello" in many languages
+  (`page.splash.greetings`) floats slowly all over the screen, and the name fades in letter
+  by letter above an "enter" button. It never dismisses itself: the visitor clicks the
+  button (or presses Enter / Space / Escape). It plays once per tab (sessionStorage); add
+  `?splash` to the URL to force it, e.g. while testing. Skipped entirely for
+  `prefers-reduced-motion` and when JS is off.
 {% endcomment %}
 {% if site.title == 'blank' %}
   {% capture splash_name %}{{ site.first_name }} {{ site.middle_name }} {{ site.last_name }}{% endcapture %}
@@ -16,10 +17,17 @@
 {% endif %}
 {% assign splash_name = splash_name | strip | replace: '   ', ' ' | replace: '  ', ' ' %}
 {% assign splash_words = splash_name | split: ' ' %}
-{% assign splash_duration = page.splash.duration | default: 4200 %}
 {% assign splash_i = 0 %}
 <div id="splash" aria-hidden="true">
   <canvas></canvas>
+  {% if page.splash.greetings.size > 0 %}
+    {%- comment -%} Floating greetings; the script below scatters them around the name. {%- endcomment -%}
+    <div class="splash-float">
+      {%- for g in page.splash.greetings -%}
+        <span class="fw">{{ g }}</span>
+      {%- endfor -%}
+    </div>
+  {% endif %}
   <div class="splash-inner">
     {%- comment -%} One .word per word so line breaks only fall between words; --i staggers the letters. {%- endcomment -%}
     <p class="splash-name" lang="en">
@@ -34,20 +42,11 @@
       {%- endfor -%}
     </p>
     <div class="splash-rule"></div>
-    {% if page.splash.greetings.size > 0 %}
-      {%- comment -%} "Hello" in several languages, one at a time; the script below rotates the .on class. {%- endcomment -%}
-      <p class="splash-sub splash-greet">
-        {%- for g in page.splash.greetings -%}
-          <span class="g{% if forloop.first %} on{% endif %}">{{ g }}</span>
-        {%- endfor -%}
-      </p>
-    {% elsif page.splash.subtitle %}
-      <p class="splash-sub">{{ page.splash.subtitle }}</p>
+    {% if page.splash.subtitle %}
+      <p class="splash-sub">{% include lang.liquid en=page.splash.subtitle zh=page.splash.subtitle_zh %}</p>
     {% endif %}
+    <button type="button" class="splash-enter" id="splash-enter">{{ page.splash.enter_label | default: '进入 · Enter' }}</button>
   </div>
-  {% if page.splash.hint %}
-    <p class="splash-hint">{{ page.splash.hint }}</p>
-  {% endif %}
 </div>
 <script>
   (function () {
@@ -63,7 +62,6 @@
 
     var finished = false;
     var raf = 0;
-    var autoTimer = 0;
 
     // Whatever happens below, the page must never stay hidden.
     function bail() {
@@ -86,8 +84,8 @@
         ? [parseInt(m[1].slice(0, 2), 16), parseInt(m[1].slice(2, 4), 16), parseInt(m[1].slice(4, 6), 16)]
         : [38, 152, 186];
       var dark = root.getAttribute("data-theme") === "dark";
-      var lineAlpha = dark ? 0.5 : 0.38;
-      var dotAlpha = dark ? 0.85 : 0.7;
+      var lineAlpha = dark ? 0.4 : 0.3;
+      var dotAlpha = dark ? 0.75 : 0.6;
       var LINK = 140;
       var W = 0, H = 0, dpr = 1;
       var nodes = [];
@@ -175,6 +173,51 @@
         raf = requestAnimationFrame(step);
       }
 
+      /* ---------- floating greetings: scattered on a grid that leaves the middle for the name ---------- */
+      var words = el.querySelectorAll(".splash-float .fw");
+      var placed = false;
+      function placeWords() {
+        if (!words.length) return;
+        var portrait = W < 700;
+        var cols = portrait ? 4 : 6;
+        var rows = portrait ? 7 : 4;
+        var zx = portrait ? 0.1 : 0.24; // keep-out box around the name / button
+        var zy = portrait ? 0.34 : 0.28;
+        var cells = [];
+        for (var r = 0; r < rows; r++) {
+          for (var c = 0; c < cols; c++) {
+            var cx = (c + 0.5) / cols;
+            var cy = (r + 0.5) / rows;
+            if (cx > zx && cx < 1 - zx && cy > zy && cy < 1 - zy) continue;
+            cells.push([cx, cy]);
+          }
+        }
+        for (var k = cells.length - 1; k > 0; k--) {
+          var s = Math.floor(Math.random() * (k + 1));
+          var t = cells[k];
+          cells[k] = cells[s];
+          cells[s] = t;
+        }
+        for (var i = 0; i < words.length; i++) {
+          var cell = cells[i % cells.length];
+          var jx = (Math.random() - 0.5) * 0.5 / cols;
+          var jy = (Math.random() - 0.5) * 0.5 / rows;
+          var w = words[i];
+          w.style.left = ((cell[0] + jx) * 100).toFixed(2) + "%";
+          w.style.top = ((cell[1] + jy) * 100).toFixed(2) + "%";
+          if (!placed) {
+            w.style.setProperty("--fs", (0.95 + Math.random() * 1.45).toFixed(2));
+            w.style.setProperty("--op", (0.22 + Math.random() * 0.3).toFixed(2));
+            w.style.setProperty("--dx", ((Math.random() - 0.5) * 70).toFixed(0) + "px");
+            w.style.setProperty("--dy", ((Math.random() - 0.5) * 70).toFixed(0) + "px");
+            w.style.setProperty("--dur", (18 + Math.random() * 16).toFixed(1) + "s");
+            w.style.setProperty("--in-delay", (0.3 + Math.random() * 1.6).toFixed(2) + "s");
+            if (i % 3 === 0) w.style.color = accent || "#2698ba";
+          }
+        }
+        placed = true;
+      }
+
       function onMove(e) {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
@@ -188,52 +231,38 @@
           if (nodes[i].x > W) nodes[i].x = Math.random() * W;
           if (nodes[i].y > H) nodes[i].y = Math.random() * H;
         }
+        placeWords();
       }
 
       size();
       seed();
       step();
+      placeWords();
 
       /* ---------- text timeline: wait (briefly) for the web font so letters do not swap mid-reveal ---------- */
       var readyFired = false;
-      var greetings = el.querySelectorAll(".splash-greet .g");
-      var greetIndex = 0;
-      var greetTimer = 0;
-      // Rotate the greetings once the subtitle line has faded in (1.35 s after is-ready, see head.liquid).
-      function startGreetings() {
-        if (greetings.length < 2) return;
-        greetTimer = setInterval(function () {
-          greetings[greetIndex].classList.remove("on");
-          greetIndex = (greetIndex + 1) % greetings.length;
-          greetings[greetIndex].classList.add("on");
-        }, {{ page.splash.greeting_interval | default: 420 }});
-      }
       function ready() {
         if (readyFired) return;
         readyFired = true;
         el.classList.add("is-ready");
-        setTimeout(startGreetings, 1350 + 600);
       }
       if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
         document.fonts.ready.then(ready, ready);
       }
       setTimeout(ready, 600);
 
-      /* ---------- dismissal ---------- */
+      /* ---------- dismissal: only the button (or Enter / Space / Escape) ---------- */
+      var enterBtn = document.getElementById("splash-enter");
       function dismiss() {
         if (finished) return;
         finished = true;
-        clearTimeout(autoTimer);
-        el.removeEventListener("pointerdown", dismiss);
+        if (enterBtn) enterBtn.removeEventListener("click", dismiss);
         window.removeEventListener("keydown", onKey);
-        window.removeEventListener("wheel", dismiss);
-        window.removeEventListener("touchmove", dismiss);
         root.classList.remove("splash-pending");
         root.classList.add("splash-leaving");
         el.classList.add("is-out");
         setTimeout(function () {
           cancelAnimationFrame(raf);
-          clearInterval(greetTimer);
           el.removeEventListener("pointermove", onMove);
           el.removeEventListener("pointerleave", onLeave);
           window.removeEventListener("resize", onResize);
@@ -242,18 +271,20 @@
         }, 1000);
       }
       function onKey(e) {
-        if (/^(Shift|Control|Alt|Meta|CapsLock|Tab|F\d+)$/.test(e.key)) return;
-        dismiss();
+        if (e.key === "Enter" || e.key === " " || e.key === "Escape") {
+          e.preventDefault();
+          dismiss();
+        }
       }
 
       el.addEventListener("pointermove", onMove, { passive: true });
       el.addEventListener("pointerleave", onLeave);
       window.addEventListener("resize", onResize);
-      el.addEventListener("pointerdown", dismiss);
+      if (enterBtn) enterBtn.addEventListener("click", dismiss);
       window.addEventListener("keydown", onKey);
-      window.addEventListener("wheel", dismiss, { passive: true });
-      window.addEventListener("touchmove", dismiss, { passive: true });
-      autoTimer = setTimeout(dismiss, {{ splash_duration }});
+
+      // Tells the backstop in head.liquid that the splash is alive and will dismiss itself on click.
+      window.__splashOk = true;
     } catch (err) {
       bail();
       if (window.console) console.warn("splash disabled:", err);
