@@ -4,6 +4,14 @@ title: about
 permalink: /
 subtitle: '进退维谷之日，正是别有洞天之时。<br><span class="subtitle-en">When there seems to be no way forward or back, a whole new world may be just about to reveal itself.</span>'
 
+# Intro splash shown before the homepage (see _includes/splash.liquid). Plays once per tab;
+# add ?splash to the URL to force it. Set enabled: false to turn it off.
+splash:
+  enabled: true
+  subtitle: "School of Computer Science · University of Sydney"
+  hint: "点击任意处进入 · Click anywhere to enter"
+  duration: 4200
+
 profile:
   align: right
   image: prof_pic_2026.jpg
@@ -13,7 +21,7 @@ profile:
     <p>University of Sydney</p>
     <p>NSW, Australia</p>
 
-selected_papers: true # includes a list of papers marked as "selected={true}"
+selected_papers: false # all papers live on /publications/, grouped by year newest first (scholar.group_order in _config.yml)
 social: true # includes social icons at the bottom of the page
 
 announcements:

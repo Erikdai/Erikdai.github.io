@@ -179,8 +179,6 @@
   }
   /* Keep the publications list author-free; full authors stay in the BibTeX (Bib button) */
   .publications .author { display: none; }
-  /* Push the "selected publications" heading down a bit (heading-to-papers gap stays default) */
-  h2:has(> a[href="/publications/"]) { margin-top: 2.5rem; }
   /* Underline beneath the hero slogan/subtitle */
   .desc { display: inline-block; border-bottom: 1px solid var(--global-divider-color, #e8e8e8); padding-bottom: 0.4rem; }
   /* English rendering of the slogan, in a script face (font loaded via third_party_libraries.google_fonts) */
@@ -193,3 +191,112 @@
     color: var(--global-text-color-light);
   }
 </style>
+
+{% if page.splash.enabled %}
+  <!-- Intro splash (homepage). Decided before first paint so nothing flickers; markup + behaviour live in
+       _includes/splash.liquid, rendered by the local _layouts/about.liquid. -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      try {
+        var force = /[?&#]splash\b/.test(location.search + location.hash);
+        if (!force) {
+          if (sessionStorage.getItem("jd-splash-seen") === "1") return;
+          if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        }
+      } catch (e) {}
+      root.classList.add("splash-pending");
+      // Backstop: never leave the page hidden if the splash script fails to run.
+      setTimeout(function () {
+        root.classList.remove("splash-pending");
+      }, {{ page.splash.duration | default: 4200 | plus: 5000 }});
+    })();
+  </script>
+  <style>
+    html.splash-pending { overflow: hidden; }
+    html.splash-pending body > * { visibility: hidden; }
+    #splash {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2147483000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--global-bg-color, #fff);
+      color: var(--global-text-color, #000);
+      overflow: hidden;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: none;
+      transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    html.splash-pending #splash, html.splash-leaving #splash { display: flex; visibility: visible; }
+    #splash.is-out { opacity: 0; transform: scale(1.04); pointer-events: none; }
+    #splash canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    #splash::before {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background: radial-gradient(ellipse at 50% 45%, rgba(38, 152, 186, 0.16), transparent 55%);
+      pointer-events: none;
+    }
+    .splash-inner { position: relative; text-align: center; padding: 0 1.25rem; max-width: 48rem; }
+    .splash-name {
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      column-gap: 0.3em;
+      font-family: "Roboto Slab", Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(1.9rem, 7.5vw, 4.6rem);
+      line-height: 1.15;
+      letter-spacing: 0.05em;
+    }
+    .splash-name .word { display: inline-flex; white-space: nowrap; }
+    .splash-name .ch { display: inline-block; opacity: 0; transform: translateY(0.45em); filter: blur(10px); }
+    .is-ready .splash-name .ch {
+      animation: splash-ch 0.85s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+      animation-delay: calc(var(--i) * 55ms + 150ms);
+    }
+    @keyframes splash-ch { to { opacity: 1; transform: none; filter: blur(0); } }
+    .splash-rule {
+      width: min(16rem, 60vw);
+      height: 1px;
+      margin: 1.2rem auto 1rem;
+      background: linear-gradient(90deg, transparent, var(--global-theme-color, #2698ba), transparent);
+      transform: scaleX(0);
+      opacity: 0;
+    }
+    .is-ready .splash-rule { animation: splash-rule 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 1.05s forwards; }
+    @keyframes splash-rule { to { transform: scaleX(1); opacity: 1; } }
+    .splash-sub {
+      margin: 0;
+      font-size: clamp(0.78rem, 1.6vw, 0.95rem);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--global-text-color-light, #828282);
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    .is-ready .splash-sub { animation: splash-up 0.9s ease 1.35s forwards; }
+    @keyframes splash-up { to { opacity: 1; transform: none; } }
+    .splash-hint {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+      margin: 0;
+      text-align: center;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      color: var(--global-text-color-light, #828282);
+      opacity: 0;
+    }
+    .is-ready .splash-hint { animation: splash-hint 2.2s ease-in-out 1.9s infinite; }
+    @keyframes splash-hint { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.9; } }
+  </style>
+{% endif %}

@@ -1,0 +1,241 @@
+{% comment %}
+  Homepage intro splash. Rendered by the local `_layouts/about.liquid` when the page's
+  front matter has `splash.enabled: true`; styles + the first-paint guard that adds
+  `html.splash-pending` live in `_includes/head.liquid`.
+
+  Behaviour: a particle network draws on a canvas while the name fades in letter by
+  letter, then a rule and a subtitle appear. It dismisses itself after
+  `page.splash.duration` ms (default 4200) or on click / key / scroll, and it plays once
+  per tab (sessionStorage). Add `?splash` to the URL to force it, e.g. while testing.
+  Skipped entirely for `prefers-reduced-motion` and when JS is off.
+{% endcomment %}
+{% if site.title == 'blank' %}
+  {% capture splash_name %}{{ site.first_name }} {{ site.middle_name }} {{ site.last_name }}{% endcapture %}
+{% else %}
+  {% capture splash_name %}{{ site.title }}{% endcapture %}
+{% endif %}
+{% assign splash_name = splash_name | strip | replace: '   ', ' ' | replace: '  ', ' ' %}
+{% assign splash_words = splash_name | split: ' ' %}
+{% assign splash_duration = page.splash.duration | default: 4200 %}
+{% assign splash_i = 0 %}
+<div id="splash" aria-hidden="true">
+  <canvas></canvas>
+  <div class="splash-inner">
+    {%- comment -%} One .word per word so line breaks only fall between words; --i staggers the letters. {%- endcomment -%}
+    <p class="splash-name" lang="en">
+      {%- for word in splash_words -%}
+        {%- assign word_chars = word | split: '' -%}
+        <span class="word">
+          {%- for ch in word_chars -%}
+            <span class="ch" style="--i: {{ splash_i }}">{{ ch }}</span>
+            {%- assign splash_i = splash_i | plus: 1 -%}
+          {%- endfor -%}
+        </span>
+      {%- endfor -%}
+    </p>
+    <div class="splash-rule"></div>
+    {% if page.splash.subtitle %}
+      <p class="splash-sub">{{ page.splash.subtitle }}</p>
+    {% endif %}
+  </div>
+  {% if page.splash.hint %}
+    <p class="splash-hint">{{ page.splash.hint }}</p>
+  {% endif %}
+</div>
+<script>
+  (function () {
+    var root = document.documentElement;
+    var el = document.getElementById("splash");
+    if (!el) return;
+
+    // head.liquid only adds this class when the splash should play this time.
+    if (!root.classList.contains("splash-pending")) {
+      el.parentNode.removeChild(el);
+      return;
+    }
+
+    var finished = false;
+    var raf = 0;
+    var autoTimer = 0;
+
+    // Whatever happens below, the page must never stay hidden.
+    function bail() {
+      root.classList.remove("splash-pending");
+      root.classList.remove("splash-leaving");
+      if (el.parentNode) el.parentNode.removeChild(el);
+    }
+
+    try {
+      try {
+        sessionStorage.setItem("jd-splash-seen", "1");
+      } catch (e) {}
+
+      /* ---------- particle network ---------- */
+      var canvas = el.querySelector("canvas");
+      var ctx = canvas.getContext("2d");
+      var accent = (getComputedStyle(root).getPropertyValue("--global-theme-color") || "").trim();
+      var m = /^#?([0-9a-f]{6})$/i.exec(accent);
+      var rgb = m
+        ? [parseInt(m[1].slice(0, 2), 16), parseInt(m[1].slice(2, 4), 16), parseInt(m[1].slice(4, 6), 16)]
+        : [38, 152, 186];
+      var dark = root.getAttribute("data-theme") === "dark";
+      var lineAlpha = dark ? 0.5 : 0.38;
+      var dotAlpha = dark ? 0.85 : 0.7;
+      var LINK = 140;
+      var W = 0, H = 0, dpr = 1;
+      var nodes = [];
+      var mouse = { x: -1e9, y: -1e9 };
+
+      function size() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = el.clientWidth;
+        H = el.clientHeight;
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function seed() {
+        var n = Math.max(45, Math.min(110, Math.round((W * H) / 15000)));
+        nodes = [];
+        for (var i = 0; i < n; i++) {
+          nodes.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            vx: (Math.random() - 0.5) * 0.4,
+            vy: (Math.random() - 0.5) * 0.4,
+            r: 1 + Math.random() * 1.6,
+          });
+        }
+      }
+
+      function rgba(a) {
+        return "rgba(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + "," + a + ")";
+      }
+
+      function step() {
+        ctx.clearRect(0, 0, W, H);
+        var i, j, a, b, dx, dy, d2, d;
+        for (i = 0; i < nodes.length; i++) {
+          a = nodes[i];
+          // gentle pull towards the pointer
+          dx = mouse.x - a.x;
+          dy = mouse.y - a.y;
+          d2 = dx * dx + dy * dy;
+          if (d2 < 180 * 180 && d2 > 1) {
+            d = Math.sqrt(d2);
+            a.vx += (dx / d) * 0.012;
+            a.vy += (dy / d) * 0.012;
+          }
+          // keep speeds bounded
+          var sp = Math.sqrt(a.vx * a.vx + a.vy * a.vy);
+          if (sp > 0.9) {
+            a.vx *= 0.9 / sp;
+            a.vy *= 0.9 / sp;
+          }
+          a.x += a.vx;
+          a.y += a.vy;
+          if (a.x < -10) a.x = W + 10;
+          else if (a.x > W + 10) a.x = -10;
+          if (a.y < -10) a.y = H + 10;
+          else if (a.y > H + 10) a.y = -10;
+        }
+        ctx.lineWidth = 0.8;
+        for (i = 0; i < nodes.length; i++) {
+          a = nodes[i];
+          for (j = i + 1; j < nodes.length; j++) {
+            b = nodes[j];
+            dx = a.x - b.x;
+            dy = a.y - b.y;
+            d2 = dx * dx + dy * dy;
+            if (d2 < LINK * LINK) {
+              d = Math.sqrt(d2);
+              ctx.strokeStyle = rgba((1 - d / LINK) * lineAlpha);
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+        ctx.fillStyle = rgba(dotAlpha);
+        for (i = 0; i < nodes.length; i++) {
+          a = nodes[i];
+          ctx.beginPath();
+          ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        raf = requestAnimationFrame(step);
+      }
+
+      function onMove(e) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      }
+      function onLeave() {
+        mouse.x = mouse.y = -1e9;
+      }
+      function onResize() {
+        size();
+        for (var i = 0; i < nodes.length; i++) {
+          if (nodes[i].x > W) nodes[i].x = Math.random() * W;
+          if (nodes[i].y > H) nodes[i].y = Math.random() * H;
+        }
+      }
+
+      size();
+      seed();
+      step();
+
+      /* ---------- text timeline: wait (briefly) for the web font so letters do not swap mid-reveal ---------- */
+      var readyFired = false;
+      function ready() {
+        if (readyFired) return;
+        readyFired = true;
+        el.classList.add("is-ready");
+      }
+      if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+        document.fonts.ready.then(ready, ready);
+      }
+      setTimeout(ready, 600);
+
+      /* ---------- dismissal ---------- */
+      function dismiss() {
+        if (finished) return;
+        finished = true;
+        clearTimeout(autoTimer);
+        el.removeEventListener("pointerdown", dismiss);
+        window.removeEventListener("keydown", onKey);
+        window.removeEventListener("wheel", dismiss);
+        window.removeEventListener("touchmove", dismiss);
+        root.classList.remove("splash-pending");
+        root.classList.add("splash-leaving");
+        el.classList.add("is-out");
+        setTimeout(function () {
+          cancelAnimationFrame(raf);
+          el.removeEventListener("pointermove", onMove);
+          el.removeEventListener("pointerleave", onLeave);
+          window.removeEventListener("resize", onResize);
+          root.classList.remove("splash-leaving");
+          if (el.parentNode) el.parentNode.removeChild(el);
+        }, 1000);
+      }
+      function onKey(e) {
+        if (/^(Shift|Control|Alt|Meta|CapsLock|Tab|F\d+)$/.test(e.key)) return;
+        dismiss();
+      }
+
+      el.addEventListener("pointermove", onMove, { passive: true });
+      el.addEventListener("pointerleave", onLeave);
+      window.addEventListener("resize", onResize);
+      el.addEventListener("pointerdown", dismiss);
+      window.addEventListener("keydown", onKey);
+      window.addEventListener("wheel", dismiss, { passive: true });
+      window.addEventListener("touchmove", dismiss, { passive: true });
+      autoTimer = setTimeout(dismiss, {{ splash_duration }});
+    } catch (err) {
+      bail();
+      if (window.console) console.warn("splash disabled:", err);
+    }
+  })();
+</script>
