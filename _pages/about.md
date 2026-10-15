@@ -7,7 +7,7 @@ subtitle: '进退维谷之日，正是别有洞天之时。<br><span class="subt
 
 # Intro splash shown before the homepage (see _includes/splash.liquid). Plays once per tab;
 # add ?splash to the URL to force it. Set enabled: false to turn it off. The greetings float
-# around the name; the page only opens when the visitor clicks the round Enter button.
+# around the name; the page opens when the visitor clicks the down arrow, scrolls down or swipes up.
 splash:
   enabled: true
   subtitle: "AI Researcher · Agent Engineer · World Explorer"

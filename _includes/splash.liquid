@@ -5,9 +5,9 @@
 
   Behaviour: a particle network draws on a canvas, "hello" in many languages
   (`page.splash.greetings`) floats slowly all over the screen, and the name fades in letter
-  by letter above a round "magnetic" Enter button (it leans towards the cursor and fills
-  with the accent colour on hover). It never dismisses itself: the visitor clicks the
-  button (or presses Enter / Space / Escape). It plays once per tab (sessionStorage); add
+  by letter; a small down arrow bounces at the bottom. It never dismisses itself: the
+  visitor clicks the arrow, scrolls down, swipes up, or presses Enter / Space / Escape /
+  ArrowDown, and the splash lifts away like a curtain. It plays once per tab (sessionStorage); add
   `?splash` to the URL to force it, e.g. while testing. Skipped entirely for
   `prefers-reduced-motion` and when JS is off.
 {% endcomment %}
@@ -46,15 +46,10 @@
     {% if page.splash.subtitle %}
       <p class="splash-sub">{% include lang.liquid en=page.splash.subtitle zh=page.splash.subtitle_zh %}</p>
     {% endif %}
-    {%- comment -%} Magnetic round Enter button: the script below makes it lean towards the pointer. {%- endcomment -%}
-    <button type="button" class="splash-enter" id="splash-enter">
-      <span class="splash-enter-fill" aria-hidden="true"></span>
-      <span class="splash-enter-label">
-        {{- page.splash.enter_label | default: 'Enter' -}}
-        <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </span>
-    </button>
   </div>
+  <button type="button" class="splash-down" id="splash-down" aria-label="{{ page.splash.enter_label | default: 'Enter' }}" title="{{ page.splash.enter_label | default: 'Enter' }}">
+    <svg aria-hidden="true" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
 </div>
 <script>
   (function () {
@@ -197,6 +192,7 @@
             var cx = (c + 0.5) / cols;
             var cy = (r + 0.5) / rows;
             if (cx > zx && cx < 1 - zx && cy > zy && cy < 1 - zy) continue;
+            if (cy > 0.8 && cx > 0.3 && cx < 0.7) continue; // leave the bottom centre for the down arrow
             cells.push([cx, cy]);
           }
         }
@@ -229,11 +225,9 @@
       function onMove(e) {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
-        if (e.pointerType !== "touch") magnet(e.clientX, e.clientY);
       }
       function onLeave() {
         mouse.x = mouse.y = -1e9;
-        magnetReset();
       }
       function onResize() {
         size();
@@ -261,39 +255,17 @@
       }
       setTimeout(ready, 600);
 
-      /* ---------- dismissal: the Enter button (or Enter / Space / Escape) ---------- */
-      var enterBtn = document.getElementById("splash-enter");
-      var enterFill = enterBtn ? enterBtn.querySelector(".splash-enter-fill") : null;
-      var MAGNET = 150; // px: how far from the button centre the pull starts
-      function magnet(x, y) {
-        if (!enterBtn || finished) return;
-        var r = enterBtn.getBoundingClientRect();
-        var cx = r.left + r.width / 2 - parseFloat(enterBtn.style.getPropertyValue("--mx") || 0);
-        var cy = r.top + r.height / 2 - parseFloat(enterBtn.style.getPropertyValue("--my") || 0);
-        var dx = x - cx;
-        var dy = y - cy;
-        var d = Math.sqrt(dx * dx + dy * dy);
-        if (d < MAGNET) {
-          var pull = 0.38 * (1 - d / MAGNET) + 0.12; // stronger the closer you get
-          enterBtn.style.setProperty("--mx", (dx * pull).toFixed(1) + "px");
-          enterBtn.style.setProperty("--my", (dy * pull).toFixed(1) + "px");
-          if (enterFill) enterFill.style.transformOrigin = (50 + (dx / r.width) * 60).toFixed(1) + "% " + (50 + (dy / r.height) * 60).toFixed(1) + "%";
-        } else {
-          enterBtn.style.setProperty("--mx", "0px");
-          enterBtn.style.setProperty("--my", "0px");
-        }
-      }
-      function magnetReset() {
-        if (!enterBtn) return;
-        enterBtn.style.setProperty("--mx", "0px");
-        enterBtn.style.setProperty("--my", "0px");
-      }
+      /* ---------- dismissal: arrow click, wheel down, swipe up, or a key ---------- */
+      var downBtn = document.getElementById("splash-down");
+      var touchY = null;
       function dismiss() {
         if (finished) return;
         finished = true;
-        if (enterBtn) enterBtn.removeEventListener("click", dismiss);
+        if (downBtn) downBtn.removeEventListener("click", dismiss);
         window.removeEventListener("keydown", onKey);
-        magnetReset();
+        el.removeEventListener("wheel", onWheel);
+        el.removeEventListener("touchstart", onTouchStart);
+        el.removeEventListener("touchmove", onTouchMove);
         root.classList.remove("splash-pending");
         root.classList.add("splash-leaving");
         el.classList.add("is-out");
@@ -307,17 +279,33 @@
         }, 1000);
       }
       function onKey(e) {
-        if (e.key === "Enter" || e.key === " " || e.key === "Escape") {
+        if (e.key === "Enter" || e.key === " " || e.key === "Escape" || e.key === "ArrowDown" || e.key === "PageDown") {
           e.preventDefault();
           dismiss();
         }
+      }
+      function onWheel(e) {
+        if (e.deltaY > 0) {
+          e.preventDefault();
+          dismiss();
+        }
+      }
+      function onTouchStart(e) {
+        touchY = e.touches.length ? e.touches[0].clientY : null;
+      }
+      function onTouchMove(e) {
+        if (touchY === null || !e.touches.length) return;
+        if (touchY - e.touches[0].clientY > 30) dismiss(); // finger moved up: "scroll down"
       }
 
       el.addEventListener("pointermove", onMove, { passive: true });
       el.addEventListener("pointerleave", onLeave);
       window.addEventListener("resize", onResize);
-      if (enterBtn) enterBtn.addEventListener("click", dismiss);
+      if (downBtn) downBtn.addEventListener("click", dismiss);
       window.addEventListener("keydown", onKey);
+      el.addEventListener("wheel", onWheel, { passive: false });
+      el.addEventListener("touchstart", onTouchStart, { passive: true });
+      el.addEventListener("touchmove", onTouchMove, { passive: true });
 
       // Tells the backstop in head.liquid that the splash is alive and will dismiss itself on click.
       window.__splashOk = true;
