@@ -988,12 +988,57 @@
 </script>
 
 
-<!-- ===== Back-to-top button above the fixed footer: vanilla-back-to-top pins it 20px from the bottom, under the
-     fixed copyright bar (z-index 1030), which wraps to two or three lines on phones and hid the button. The footer
-     height is measured into --footer-h and the button sits 16px above it; the library's .hidden rule (id + class)
-     still wins, so it keeps sliding out of view at the top of the page. -->
+<!-- ===== Back-to-top button: a round glass button in the accent blue (same recipe as the navbar pill: accent
+     gradient, accent hairline, soft accent glow, plus a frosted backdrop), lifting on hover and dipping on press.
+     It sits 16px above the fixed copyright bar (z-index 1030), which wraps to two or three lines on phones: the
+     footer height is measured into --footer-h below. The gem's main.css styles it with `:root #back-to-top`
+     (bottom 30px, 40px) and `html[data-theme-setting=dark] #back-to-top`, so these rules use `html:root` to match
+     the heavier one and come later; .hidden fades it out. -->
 <style>
-  #back-to-top { bottom: calc(var(--footer-h, 0px) + 16px); }
+  html:root #back-to-top {
+    right: 20px;
+    bottom: calc(var(--footer-h, 0px) + 16px);
+    width: 46px;
+    height: 46px;
+    z-index: 1020;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--global-theme-color);
+    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.3, 0.9, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease;
+  }
+  html:root #back-to-top svg { width: 24px; height: 24px; margin: 0; transition: transform 0.35s cubic-bezier(0.3, 0.9, 0.3, 1); }
+  html:root #back-to-top.hidden { opacity: 0; transform: translateY(14px) scale(0.85); pointer-events: none; }
+  @supports (color: color-mix(in srgb, red, red)) {
+    html:root #back-to-top {
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--global-theme-color) 24%, transparent), color-mix(in srgb, var(--global-theme-color) 10%, transparent)),
+        color-mix(in srgb, var(--global-bg-color) 60%, transparent);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      backdrop-filter: saturate(180%) blur(14px);
+      box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--global-theme-color) 40%, transparent),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        0 8px 22px -8px color-mix(in srgb, var(--global-theme-color) 80%, transparent);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      html:root #back-to-top:not(.hidden):hover {
+        transform: translateY(-3px);
+        background:
+          linear-gradient(180deg, color-mix(in srgb, var(--global-theme-color) 38%, transparent), color-mix(in srgb, var(--global-theme-color) 18%, transparent)),
+          color-mix(in srgb, var(--global-bg-color) 55%, transparent);
+        box-shadow:
+          inset 0 0 0 1px color-mix(in srgb, var(--global-theme-color) 60%, transparent),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3),
+          0 12px 28px -8px color-mix(in srgb, var(--global-theme-color) 95%, transparent);
+      }
+      html:root #back-to-top:not(.hidden):hover svg { transform: translateY(-2px); }
+    }
+  }
+  html:root #back-to-top:not(.hidden):active { transform: scale(0.93); }
+  @media (prefers-reduced-motion: reduce) {
+    html:root #back-to-top, html:root #back-to-top svg { transition: opacity 0.2s ease; }
+  }
 </style>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
