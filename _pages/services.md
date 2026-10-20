@@ -14,6 +14,7 @@ nav_order: 3
 
 - **Steering Committee**, ICC 2027
 - **Program Committee**, AAAI 2025 / 2026
+- **Reviewer**, International Conference on Learning Representations (ICLR) 2027
 - **Reviewer**, Transactions on Machine Learning Research (TMLR)
 - **Reviewer**, ACL Rolling Review (ARR)
 - **Reviewer**, IJCNN 2025 / 2026
@@ -36,6 +37,7 @@ nav_order: 3
 
 - **指导委员会（Steering Committee）**，ICC 2027
 - **程序委员会（Program Committee）**，AAAI 2025 / 2026
+- **审稿人**，International Conference on Learning Representations (ICLR) 2027
 - **审稿人**，Transactions on Machine Learning Research (TMLR)
 - **审稿人**，ACL Rolling Review (ARR)
 - **审稿人**，IJCNN 2025 / 2026
