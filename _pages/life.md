@@ -5,21 +5,21 @@ title_zh: 生活
 permalink: /life/
 nav: true
 nav_order: 5
-description: Just a chill guy. Aviation, hiking and travel enthusiast.
-description_zh: 一个想要修飞机的 AI 研究员。
+description: Just a chill guy.
+description_zh: 一个松弛的人。
 ---
 
 <!-- Photo effects (this page only): a curtain reveal as each photo scrolls into view, then on hover a lift, an
      in-frame parallax that follows the cursor, a light sheen and the other photos dimming; click opens the photo
      (medium-zoom via zoomable=true). The reveal is skipped without JS or with prefers-reduced-motion.
-     17 photos in two columns would leave one alone on the last row, so one panorama spans both columns. -->
+     Two columns of 4:3 photos, plus one panorama spanning both columns (.life-wide) and two portraits spanning two
+     rows (.life-tall); keep the cell count even so the last row stays full. -->
 <script>
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("life-fx");
 </script>
 
 <style>
   .life-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem; }
-  @media (max-width: 575px) { .life-gallery { grid-template-columns: 1fr; } }
   .life-gallery figure {
     --px: 0px;
     --py: 0px;
@@ -35,6 +35,14 @@ description_zh: 一个想要修飞机的 AI 研究员。
   }
   .life-gallery .life-wide { grid-column: 1 / -1; }
   .life-gallery .life-wide figure { aspect-ratio: 8 / 3; } /* cropped to 8:3, about one row tall */
+  .life-gallery .life-tall { grid-row: span 2; }
+  .life-gallery .life-tall figure { aspect-ratio: auto; height: 100%; } /* cropped to 2:3, fills two rows */
+  .life-gallery .life-tall picture { position: absolute; inset: 0; }
+  @media (max-width: 575px) {
+    .life-gallery { grid-template-columns: 1fr; }
+    .life-gallery .life-tall { grid-row: auto; }
+    .life-gallery .life-tall figure { aspect-ratio: 2 / 3; height: auto; }
+  }
   .life-gallery picture, .life-gallery img { display: block; width: 100%; height: 100%; }
   .life-gallery img { object-fit: cover; }
   .life-gallery img {
@@ -86,21 +94,25 @@ description_zh: 一个想要修飞机的 AI 研究员。
 <div class="life-gallery">
   {% include figure.liquid path="assets/img/life17.jpg" class="img-fluid rounded z-depth-1" alt="Airliner cockpit" zoomable=true %}
   {% include figure.liquid path="assets/img/life5.jpg" class="img-fluid rounded z-depth-1" alt="Marina Bay Sands, Singapore" zoomable=true %}
-  {% include figure.liquid path="assets/img/life6.jpg" class="img-fluid rounded z-depth-1" alt="A woolly friend on a grassy hill" zoomable=true %}
+  <div class="life-tall">{% include figure.liquid path="assets/img/life19.jpg" class="img-fluid rounded z-depth-1" alt="Airport aprons seen from the terminal" zoomable=true %}</div>
   {% include figure.liquid path="assets/img/life7.jpg" class="img-fluid rounded z-depth-1" alt="Ocean view from a sea cliff" zoomable=true %}
-  {% include figure.liquid path="assets/img/life8.jpg" class="img-fluid rounded z-depth-1" alt="Sunset over the bush" zoomable=true %}
+  {% include figure.liquid path="assets/img/life6.jpg" class="img-fluid rounded z-depth-1" alt="A woolly friend on a grassy hill" zoomable=true %}
   {% include figure.liquid path="assets/img/life9.jpg" class="img-fluid rounded z-depth-1" alt="ICML 2026 at COEX" zoomable=true %}
+  {% include figure.liquid path="assets/img/life8.jpg" class="img-fluid rounded z-depth-1" alt="Sunset over the bush" zoomable=true %}
   {% include figure.liquid path="assets/img/life2.jpg" class="img-fluid rounded z-depth-1" alt="Beach at sunset" zoomable=true %}
-  {% include figure.liquid path="assets/img/life14.jpg" class="img-fluid rounded z-depth-1" alt="Fiji Airways airliner at a hangar" zoomable=true %}
+  {% include figure.liquid path="assets/img/life18.jpg" class="img-fluid rounded z-depth-1" alt="A*STAR Advanced Remanufacturing and Technology Centre" zoomable=true %}
   <div class="life-wide">{% include figure.liquid path="assets/img/life10.jpg" class="img-fluid rounded z-depth-1" alt="Sydney Harbour Bridge lit up at night" zoomable=true %}</div>
+  {% include figure.liquid path="assets/img/life14.jpg" class="img-fluid rounded z-depth-1" alt="Fiji Airways airliner at a hangar" zoomable=true %}
   {% include figure.liquid path="assets/img/life15.jpg" class="img-fluid rounded z-depth-1" alt="Inside a submarine" zoomable=true %}
   {% include figure.liquid path="assets/img/life13.jpg" class="img-fluid rounded z-depth-1" alt="Palm trees on a small island" zoomable=true %}
-  {% include figure.liquid path="assets/img/life16.jpg" class="img-fluid rounded z-depth-1" alt="Cathay Pacific airliner at the gate" zoomable=true %}
+  <div class="life-tall">{% include figure.liquid path="assets/img/life20.jpg" class="img-fluid rounded z-depth-1" alt="Chinese pavilion above the trees" zoomable=true %}</div>
   {% include figure.liquid path="assets/img/life4.jpg" class="img-fluid rounded z-depth-1" alt="Ocean pool at dusk" zoomable=true %}
+  {% include figure.liquid path="assets/img/life16.jpg" class="img-fluid rounded z-depth-1" alt="Cathay Pacific airliner at the gate" zoomable=true %}
   {% include figure.liquid path="assets/img/life3.jpg" class="img-fluid rounded z-depth-1" alt="Coastal road through green hills" zoomable=true %}
+  {% include figure.liquid path="assets/img/life21.jpg" class="img-fluid rounded z-depth-1" alt="Waves rolling into a beach town" zoomable=true %}
   {% include figure.liquid path="assets/img/life11.jpg" class="img-fluid rounded z-depth-1" alt="A classic sedan under palm trees" zoomable=true %}
-  {% include figure.liquid path="assets/img/life12.jpg" class="img-fluid rounded z-depth-1" alt="Beach under a clear blue sky" zoomable=true %}
   {% include figure.liquid path="assets/img/life1.jpg" class="img-fluid rounded z-depth-1" alt="Full moon over hillside houses at dusk" zoomable=true %}
+  {% include figure.liquid path="assets/img/life12.jpg" class="img-fluid rounded z-depth-1" alt="Beach under a clear blue sky" zoomable=true %}
 </div>
 
 <script>

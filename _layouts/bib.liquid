@@ -8,6 +8,7 @@
     3. Author marks: a dagger on the authors whose positions are listed in `cofirst` (co-first, e.g. {1,3}),
        an asterisk on the first author when
        `first_author = {true}`; legend at the top of _pages/publications.md.
+    4. Thumbnails are not click-to-zoom (no zoomable=true).
   When bumping al_folio_core in the Gemfile, re-copy the gem's bib.liquid and re-apply these changes.
 {% endcomment %}
 <div class="row">
@@ -46,7 +47,6 @@
             path=entry_path
             sizes = "200px"
             class="preview z-depth-1 rounded"
-            zoomable=true
             avoid_scaling=true
             alt=entry.preview
           %}
