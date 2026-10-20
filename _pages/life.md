@@ -92,7 +92,7 @@ description_zh: 一个松弛的人。
 </style>
 
 <div class="life-gallery">
-  {% include figure.liquid path="assets/img/life17.jpg" class="img-fluid rounded z-depth-1" alt="Airliner cockpit" zoomable=true %}
+  {% include figure.liquid path="assets/img/life13.jpg" class="img-fluid rounded z-depth-1" alt="Palm trees on a small island" zoomable=true %}
   {% include figure.liquid path="assets/img/life5.jpg" class="img-fluid rounded z-depth-1" alt="Marina Bay Sands, Singapore" zoomable=true %}
   <div class="life-tall">{% include figure.liquid path="assets/img/life19.jpg" class="img-fluid rounded z-depth-1" alt="Airport aprons seen from the terminal" zoomable=true %}</div>
   {% include figure.liquid path="assets/img/life7.jpg" class="img-fluid rounded z-depth-1" alt="Ocean view from a sea cliff" zoomable=true %}
@@ -104,7 +104,7 @@ description_zh: 一个松弛的人。
   <div class="life-wide">{% include figure.liquid path="assets/img/life10.jpg" class="img-fluid rounded z-depth-1" alt="Sydney Harbour Bridge lit up at night" zoomable=true %}</div>
   {% include figure.liquid path="assets/img/life14.jpg" class="img-fluid rounded z-depth-1" alt="Fiji Airways airliner at a hangar" zoomable=true %}
   {% include figure.liquid path="assets/img/life15.jpg" class="img-fluid rounded z-depth-1" alt="Inside a submarine" zoomable=true %}
-  {% include figure.liquid path="assets/img/life13.jpg" class="img-fluid rounded z-depth-1" alt="Palm trees on a small island" zoomable=true %}
+  {% include figure.liquid path="assets/img/life17.jpg" class="img-fluid rounded z-depth-1" alt="Airliner cockpit" zoomable=true %}
   <div class="life-tall">{% include figure.liquid path="assets/img/life20.jpg" class="img-fluid rounded z-depth-1" alt="Chinese pavilion above the trees" zoomable=true %}</div>
   {% include figure.liquid path="assets/img/life4.jpg" class="img-fluid rounded z-depth-1" alt="Ocean pool at dusk" zoomable=true %}
   {% include figure.liquid path="assets/img/life16.jpg" class="img-fluid rounded z-depth-1" alt="Cathay Pacific airliner at the gate" zoomable=true %}
