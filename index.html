@@ -545,10 +545,6 @@
   }
   #lang-toggle:hover { background-color: var(--nav-pill); border-color: var(--global-theme-color); }
 
-  /* Scroll progress: 2px gradient line under the bar */
-  progress { height: 2px; }
-  progress::-webkit-progress-value { background-color: var(--global-theme-color); background-image: linear-gradient(90deg, var(--global-theme-color), #7fd6ec); }
-  progress::-moz-progress-bar { background-color: var(--global-theme-color); background-image: linear-gradient(90deg, var(--global-theme-color), #7fd6ec); }
 
   /* Cursor light (mouse only): a soft glow follows the cursor along the bar and lights the hairline under it */
   @media (hover: hover) and (pointer: fine) {
@@ -675,7 +671,149 @@
     });
     settle();
   });
-</script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item active"> <a class="nav-link" href="/"><span class="lang-en">About</span><span class="lang-zh">关于</span> <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">Publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">Services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/"><span class="lang-en">Projects</span><span class="lang-zh">项目</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/"><span class="lang-en">Life</span><span class="lang-zh">生活</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">Notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">CV</span><span class="lang-zh">简历</span> </a> </li> <li class="toggle-container nav-tools-start"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div id="splash" aria-hidden="true"> <canvas></canvas> <div class="splash-float"> <span class="fw">你好</span><span class="fw">Hello</span><span class="fw">こんにちは</span><span class="fw">안녕하세요</span><span class="fw">Bonjour</span><span class="fw">Hola</span><span class="fw">Hallo</span><span class="fw">Ciao</span><span class="fw">Olá</span><span class="fw">Привет</span><span class="fw">مرحبا</span><span class="fw">नमस्ते</span><span class="fw">Xin chào</span><span class="fw">Sawubona</span> </div> <div class="splash-inner"> <p class="splash-name" lang="en"><span class="word"><span class="ch" style="--i: 0">C</span><span class="ch" style="--i: 1">h</span><span class="ch" style="--i: 2">e</span><span class="ch" style="--i: 3">n</span><span class="ch" style="--i: 4">g</span><span class="ch" style="--i: 5">x</span><span class="ch" style="--i: 6">i</span><span class="ch" style="--i: 7">a</span><span class="ch" style="--i: 8">o</span></span><span class="word"><span class="ch" style="--i: 9">D</span><span class="ch" style="--i: 10">a</span><span class="ch" style="--i: 11">i</span></span></p> <div class="splash-rule"></div> <p class="splash-sub">AI Researcher · Agent Engineer · World Explorer</p> </div> <button type="button" class="splash-down" id="splash-down" aria-label="Enter" title="Enter"> <svg aria-hidden="true" viewbox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg> </button> </div> <script>
+</script> <style>
+  .social .contact-icons a { --c: var(--global-theme-color); position: relative; display: inline-block; margin: 0 0.35rem; }
+  .social .contact-icons a[href*="github.com"] { --c: #181717; }
+  html[data-theme="dark"] .social .contact-icons a[href*="github.com"] { --c: #f0f6fc; }
+  .social .contact-icons a[href*="scholar.google"] { --c: #4285f4; }
+  .social .contact-icons a[href*="linkedin.com"] { --c: #0a66c2; }
+  .social .contact-icons a i { display: inline-block; transition: transform 0.45s cubic-bezier(0.3, 1.6, 0.5, 1), filter 0.35s ease; }
+  .social .contact-icons a i::before,
+  .social .contact-icons a:hover i::before { color: var(--c); }
+  .social .contact-icons a:hover i,
+  .social .contact-icons a:focus-visible i {
+    animation: icon-pop 0.6s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+    filter: drop-shadow(0 10px 14px color-mix(in srgb, var(--c) 45%, transparent));
+  }
+  .social .contact-icons a:active i { transform: translateY(-2px) scale(0.9); animation: none; transition-duration: 0.12s; }
+  @keyframes icon-pop {
+    0% { transform: translateY(0) scale(1) rotate(0); }
+    40% { transform: translateY(-9px) scale(1.18) rotate(-8deg); }
+    70% { transform: translateY(-5px) scale(1.1) rotate(5deg); }
+    100% { transform: translateY(-6px) scale(1.12) rotate(0); }
+  }
+  /* Click ring */
+  .social .contact-icons a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 3.2rem;
+    height: 3.2rem;
+    margin: -1.6rem 0 0 -1.6rem;
+    border-radius: 50%;
+    border: 2px solid var(--c);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .social .contact-icons a.is-ring::after { animation: icon-ring 0.6s ease-out; }
+  @keyframes icon-ring {
+    0% { transform: scale(0.6); opacity: 0.8; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .social .contact-icons a i, .social .contact-icons a::after { animation: none !important; transition: none !important; }
+  }
+</style> <script>
+  document.addEventListener("pointerdown", function (e) {
+    var a = e.target.closest && e.target.closest(".social .contact-icons a");
+    if (!a) return;
+    a.classList.remove("is-ring");
+    void a.offsetWidth; // restart the animation on repeated clicks
+    a.classList.add("is-ring");
+    a.addEventListener("animationend", function done() {
+      a.classList.remove("is-ring");
+      a.removeEventListener("animationend", done);
+    });
+  });
+</script> <style>
+  #side-progress {
+    --p: 0%;
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    z-index: 1020;
+    width: 3px;
+    height: 150px;
+    margin-top: -75px;
+    border-radius: 3px;
+    background: var(--global-divider-color);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+  }
+  #side-progress.is-scrollable { opacity: 0.4; }
+  #side-progress.is-scrollable.is-active { opacity: 1; }
+  #side-progress .sp-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: var(--p);
+    border-radius: inherit;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--global-theme-color) 35%, transparent), var(--global-theme-color));
+  }
+  #side-progress .sp-knob {
+    position: absolute;
+    left: 50%;
+    top: var(--p);
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -4.5px;
+    border-radius: 50%;
+    background: var(--global-theme-color);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--global-theme-color) 18%, transparent), 0 0 12px color-mix(in srgb, var(--global-theme-color) 60%, transparent);
+  }
+  #side-progress .sp-pct {
+    position: absolute;
+    right: 14px;
+    top: var(--p);
+    transform: translate(4px, -50%);
+    font: 600 11px/1 "Cascadia Mono", Consolas, ui-monospace, monospace;
+    letter-spacing: 0.04em;
+    color: var(--global-theme-color);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  #side-progress.is-active .sp-pct { opacity: 1; transform: translate(0, -50%); }
+  @media (max-width: 767.98px) { #side-progress { display: none; } }
+  @media (prefers-reduced-motion: reduce) { #side-progress, #side-progress * { transition: none !important; } }
+</style> <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var rail = document.createElement("div");
+    rail.id = "side-progress";
+    rail.setAttribute("aria-hidden", "true");
+    rail.innerHTML = '<div class="sp-fill"></div><div class="sp-knob"></div><div class="sp-pct">0%</div>';
+    document.body.appendChild(rail);
+    var pct = rail.querySelector(".sp-pct");
+    var idle = 0;
+    var raf = 0;
+    function update() {
+      raf = 0;
+      var root = document.documentElement;
+      var max = root.scrollHeight - root.clientHeight;
+      rail.classList.toggle("is-scrollable", max > 40);
+      var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      rail.style.setProperty("--p", (p * 100).toFixed(2) + "%");
+      pct.textContent = Math.round(p * 100) + "%";
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!raf) raf = requestAnimationFrame(update);
+        rail.classList.add("is-active");
+        clearTimeout(idle);
+        idle = setTimeout(function () {
+          rail.classList.remove("is-active");
+        }, 1200);
+      },
+      { passive: true }
+    );
+    window.addEventListener("resize", update);
+    window.addEventListener("load", update);
+    update();
+  });
+</script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item active"> <a class="nav-link" href="/"><span class="lang-en">About</span><span class="lang-zh">关于</span> <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">Publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">Services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/"><span class="lang-en">Projects</span><span class="lang-zh">项目</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/"><span class="lang-en">Life</span><span class="lang-zh">生活</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">Notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">CV</span><span class="lang-zh">简历</span> </a> </li> <li class="toggle-container nav-tools-start"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> </header> <div class="container mt-5" role="main"> <div id="splash" aria-hidden="true"> <canvas></canvas> <div class="splash-float"> <span class="fw">你好</span><span class="fw">Hello</span><span class="fw">こんにちは</span><span class="fw">안녕하세요</span><span class="fw">Bonjour</span><span class="fw">Hola</span><span class="fw">Hallo</span><span class="fw">Ciao</span><span class="fw">Olá</span><span class="fw">Привет</span><span class="fw">مرحبا</span><span class="fw">नमस्ते</span><span class="fw">Xin chào</span><span class="fw">Sawubona</span> </div> <div class="splash-inner"> <p class="splash-name" lang="en"><span class="word"><span class="ch" style="--i: 0">C</span><span class="ch" style="--i: 1">h</span><span class="ch" style="--i: 2">e</span><span class="ch" style="--i: 3">n</span><span class="ch" style="--i: 4">g</span><span class="ch" style="--i: 5">x</span><span class="ch" style="--i: 6">i</span><span class="ch" style="--i: 7">a</span><span class="ch" style="--i: 8">o</span></span><span class="word"><span class="ch" style="--i: 9">D</span><span class="ch" style="--i: 10">a</span><span class="ch" style="--i: 11">i</span></span></p> <div class="splash-rule"></div> <p class="splash-sub">AI Researcher · Agent Engineer · World Explorer</p> </div> <button type="button" class="splash-down" id="splash-down" aria-label="Enter" title="Enter"> <svg aria-hidden="true" viewbox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg> </button> </div> <script>
   (function () {
     var root = document.documentElement;
     var el = document.getElementById("splash");
@@ -940,10 +1078,10 @@
       if (window.console) console.warn("splash disabled:", err);
     }
   })();
-</script> <div class="post"> <header class="post-header"> <h1 class="post-title"> <span class="font-weight-bold">Chengxiao Dai</span> </h1> <p class="desc">进退维谷之日，正是别有洞天之时。<br><span class="subtitle-en">When there seems to be no way forward or back, a whole new world may be just about to reveal itself.</span></p> </header> <article> <div class="profile float-right"> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/prof_pic_2026-480.webp 480w,/assets/img/prof_pic_2026-800.webp 800w,/assets/img/prof_pic_2026-1400.webp 1400w," type="image/webp" sizes="(min-width: 1080px) 315.0px, (min-width: 576px) 30vw, 95vw"> <img src="/assets/img/prof_pic_2026.jpg?v=d9125cd3a7b87588dc38877e92e4cfd7" class="img-fluid z-depth-1 rounded" width="100%" height="auto" alt="prof_pic_2026.jpg" loading="eager" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </source></picture> </figure> <div class="more-info"> <div class="lang-en"> <p>School of Computer Science</p> <p>University of Sydney</p> <p>NSW, Australia</p> </div> <div class="lang-zh"> <p>计算机学院</p> <p>悉尼大学</p> <p>澳大利亚 新南威尔士州</p> </div> </div> </div> <div class="clearfix"> <div class="lang-en"> <p>Hi! I am <strong>Chengxiao Dai</strong>, a Master of Computer Science student and tutor at the <a href="https://www.sydney.edu.au/" rel="external nofollow noopener" target="_blank">University of Sydney</a>. I have previously worked as a research intern at <a href="https://www.a-star.edu.sg/simtech" rel="external nofollow noopener" target="_blank">A*STAR’s Singapore Institute of Manufacturing Technology</a> (supervised by Research Scientist <a href="https://scholar.google.com/citations?user=JEG76EoAAAAJ&amp;hl=en" rel="external nofollow noopener" target="_blank">Yang Zhao</a>) and the <a href="http://www.caict.ac.cn/english/" rel="external nofollow noopener" target="_blank">China Academy of Information and Communications Technology (CAICT)</a>, and as an algorithm engineer at <a href="https://imperial-vision.com/en" rel="external nofollow noopener" target="_blank">Imperial Vision</a>. I am also a co-founder of <a href="https://chuchiangdata.cc/" rel="external nofollow noopener" target="_blank">ChuChiang Data</a>, where we focus on building high-quality synthetic data solutions to address long-tail data challenges.</p> <p>My research focuses on large language models and multi-agent systems, in particular LLM post-training, reinforcement learning for agentic systems, knowledge-graph reasoning, and domain-specific applications.</p> </div> <div class="lang-zh"> <p>你好！我是 <strong>Chengxiao Dai</strong>，<a href="https://www.sydney.edu.au/" rel="external nofollow noopener" target="_blank">悉尼大学</a>计算机科学硕士在读，同时担任课程助教。此前曾在<a href="https://www.a-star.edu.sg/simtech" rel="external nofollow noopener" target="_blank">新加坡科技研究局制造技术研究院（A*STAR SIMTech）</a>（导师：研究科学家 <a href="https://scholar.google.com/citations?user=JEG76EoAAAAJ&amp;hl=en" rel="external nofollow noopener" target="_blank">Yang Zhao</a>）和<a href="http://www.caict.ac.cn/english/" rel="external nofollow noopener" target="_blank">中国信息通信研究院（CAICT）</a>担任研究实习生，并在 <a href="https://imperial-vision.com/en" rel="external nofollow noopener" target="_blank">Imperial Vision</a> 担任算法工程师。我也是 <a href="https://chuchiangdata.cc/" rel="external nofollow noopener" target="_blank">ChuChiang Data</a> 的联合创始人，我们专注于构建高质量的合成数据方案，以解决长尾数据难题。</p> <p>我的研究方向是大语言模型与多智能体系统，重点关注 LLM 后训练、面向智能体系统的强化学习、知识图谱推理以及领域应用。</p> </div> <p class="lang-en" style="font-size: 0.9rem; color: var(--global-text-color-light);" title="Google Scholar figures as of 2026-10-20"><a href="https://scholar.google.com/citations?user=9IYEVxcAAAAJ" target="_blank" rel="external nofollow noopener">Google Scholar</a> · 208 citations · h-index 6 · i10-index 4</p> <p class="lang-zh" style="font-size: 0.9rem; color: var(--global-text-color-light);" title="Google Scholar 数据更新于 2026-10-20"><a href="https://scholar.google.com/citations?user=9IYEVxcAAAAJ" target="_blank" rel="external nofollow noopener">Google Scholar</a> · 引用 208 次 · h 指数 6 · i10 指数 4</p> <div class="lang-en"> <p>I am currently seeking PhD opportunities and AI/ML engineering roles. Feel free to reach out at <strong>chengxiao [dot] dai [at] sydney [dot] edu [dot] au</strong> or <strong>daicxx1226 [at] gmail [dot] com</strong>.</p> </div> <div class="lang-zh"> <p>我目前正在寻找博士（PhD）机会以及 AI/ML 工程师岗位，欢迎通过 <strong>chengxiao [dot] dai [at] sydney [dot] edu [dot] au</strong> 或 <strong>daicxx1226 [at] gmail [dot] com</strong> 与我联系。</p> </div> </div> <div class="social"> <div class="contact-icons"> <a href="mailto:chengxiao.dai@sydney.edu.au" title="Email"><i class="fa-solid fa-envelope"></i></a> <a href="https://github.com/Erikdai" title="Github username" rel="external nofollow noopener" target="_blank"><i class="fa-brands fa-github"></i></a> <a href="https://scholar.google.com/citations?user=9IYEVxcAAAAJ" title="Scholar userid" rel="external nofollow noopener" target="_blank"><i class="ai ai-google-scholar"></i></a> <a href="https://www.linkedin.com/in/chengxiaodai" title="Linkedin username" rel="external nofollow noopener" target="_blank"><i class="fa-brands fa-linkedin"></i></a> </div> <div class="contact-note"></div> </div> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Chengxiao Dai . Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script>
+</script> <div class="post"> <header class="post-header"> <h1 class="post-title"> <span class="font-weight-bold">Chengxiao Dai</span> </h1> <p class="desc">进退维谷之日，正是别有洞天之时。<br><span class="subtitle-en">When there seems to be no way forward or back, a whole new world may be just about to reveal itself.</span></p> </header> <article> <div class="profile float-right"> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/prof_pic_2026-480.webp 480w,/assets/img/prof_pic_2026-800.webp 800w,/assets/img/prof_pic_2026-1400.webp 1400w," type="image/webp" sizes="(min-width: 1080px) 315.0px, (min-width: 576px) 30vw, 95vw"> <img src="/assets/img/prof_pic_2026.jpg?v=d9125cd3a7b87588dc38877e92e4cfd7" class="img-fluid z-depth-1 rounded" width="100%" height="auto" alt="prof_pic_2026.jpg" loading="eager" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </source></picture> </figure> <div class="more-info"> <div class="lang-en"> <p>School of Computer Science</p> <p>University of Sydney,</p> <p>NSW, Australia</p> </div> <div class="lang-zh"> <p>计算机学院</p> <p>悉尼大学</p> <p>澳大利亚 新南威尔士州</p> </div> </div> </div> <div class="clearfix"> <div class="lang-en"> <p>Hi! I am <strong>Chengxiao Dai</strong>, a Master of Computer Science student and tutor at the <a href="https://www.sydney.edu.au/" rel="external nofollow noopener" target="_blank">University of Sydney</a>. I was previously a research intern at <a href="https://www.a-star.edu.sg/simtech" rel="external nofollow noopener" target="_blank">A*STAR’s Singapore Institute of Manufacturing Technology</a>, supervised by Research Scientist <a href="https://scholar.google.com/citations?user=JEG76EoAAAAJ&amp;hl=en" rel="external nofollow noopener" target="_blank">Yang Zhao</a>, and at the <a href="http://www.caict.ac.cn/english/" rel="external nofollow noopener" target="_blank">China Academy of Information and Communications Technology (CAICT)</a>. In 2024, I worked as an algorithm engineer at <a href="https://imperial-vision.com/en" rel="external nofollow noopener" target="_blank">Imperial Vision</a>. I also co-founded <a href="https://chuchiangdata.cc/" rel="external nofollow noopener" target="_blank">ChuChiang Data</a>, where we build high-quality synthetic data to tackle long-tail data challenges.</p> <p>My research centres on large language models and multi-agent systems, especially LLM post-training, reinforcement learning for agents, knowledge-graph reasoning, and domain-specific applications.</p> </div> <div class="lang-zh"> <p>你好！我是 <strong>Chengxiao Dai</strong>，目前在<a href="https://www.sydney.edu.au/" rel="external nofollow noopener" target="_blank">悉尼大学</a>攻读计算机科学硕士，同时担任课程助教。此前，我在<a href="https://www.a-star.edu.sg/simtech" rel="external nofollow noopener" target="_blank">新加坡科技研究局制造技术研究院（A*STAR SIMTech）</a>担任研究实习生，导师是研究科学家 <a href="https://scholar.google.com/citations?user=JEG76EoAAAAJ&amp;hl=en" rel="external nofollow noopener" target="_blank">Yang Zhao</a>，也曾在<a href="http://www.caict.ac.cn/english/" rel="external nofollow noopener" target="_blank">中国信息通信研究院（CAICT）</a>实习。2024 年，我在 <a href="https://imperial-vision.com/en" rel="external nofollow noopener" target="_blank">Imperial Vision</a> 担任算法工程师。我还联合创立了 <a href="https://chuchiangdata.cc/" rel="external nofollow noopener" target="_blank">ChuChiang Data</a>，专注于构建高质量的合成数据，解决长尾数据难题。</p> <p>我的研究方向是大语言模型与多智能体系统，重点关注 LLM 后训练、面向智能体的强化学习、知识图谱推理以及领域应用。</p> </div> <p class="lang-en" style="font-size: 0.9rem; color: var(--global-text-color-light);" title="Google Scholar figures as of 2026-10-20"><a href="https://scholar.google.com/citations?user=9IYEVxcAAAAJ" target="_blank" rel="external nofollow noopener">Google Scholar</a> · 208 citations · h-index 6 · i10-index 4</p> <p class="lang-zh" style="font-size: 0.9rem; color: var(--global-text-color-light);" title="Google Scholar 数据更新于 2026-10-20"><a href="https://scholar.google.com/citations?user=9IYEVxcAAAAJ" target="_blank" rel="external nofollow noopener">Google Scholar</a> · 引用 208 次 · h 指数 6 · i10 指数 4</p> <div class="lang-en"> <p>I am currently seeking PhD opportunities and AI/ML engineering roles. Feel free to reach out at <strong>chengxiao [dot] dai [at] sydney [dot] edu [dot] au</strong> or <strong>daicxx1226 [at] gmail [dot] com</strong>.</p> </div> <div class="lang-zh"> <p>我目前正在寻找博士（PhD）机会以及 AI/ML 工程师岗位，欢迎通过 <strong>chengxiao [dot] dai [at] sydney [dot] edu [dot] au</strong> 或 <strong>daicxx1226 [at] gmail [dot] com</strong> 与我联系。</p> </div> </div> <div class="social"> <div class="contact-icons"> <a href="mailto:chengxiao.dai@sydney.edu.au" title="Email"><i class="fa-solid fa-envelope"></i></a> <a href="https://github.com/Erikdai" title="Github username" rel="external nofollow noopener" target="_blank"><i class="fa-brands fa-github"></i></a> <a href="https://scholar.google.com/citations?user=9IYEVxcAAAAJ" title="Scholar userid" rel="external nofollow noopener" target="_blank"><i class="ai ai-google-scholar"></i></a> <a href="https://www.linkedin.com/in/chengxiaodai" title="Linkedin username" rel="external nofollow noopener" target="_blank"><i class="fa-brands fa-linkedin"></i></a> </div> <div class="contact-note"></div> </div> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Chengxiao Dai . Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script>
   window.alFolio = {
     compatBootstrap: false
   };
-</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
     addBackToTop();
   </script> </body> </html>

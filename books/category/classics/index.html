@@ -406,10 +406,6 @@
   }
   #lang-toggle:hover { background-color: var(--nav-pill); border-color: var(--global-theme-color); }
 
-  /* Scroll progress: 2px gradient line under the bar */
-  progress { height: 2px; }
-  progress::-webkit-progress-value { background-color: var(--global-theme-color); background-image: linear-gradient(90deg, var(--global-theme-color), #7fd6ec); }
-  progress::-moz-progress-bar { background-color: var(--global-theme-color); background-image: linear-gradient(90deg, var(--global-theme-color), #7fd6ec); }
 
   /* Cursor light (mouse only): a soft glow follows the cursor along the bar and lights the hairline under it */
   @media (hover: hover) and (pointer: fine) {
@@ -536,10 +532,152 @@
     });
     settle();
   });
-</script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Chengxiao Dai</span> </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/"><span class="lang-en">About</span><span class="lang-zh">关于</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">Publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">Services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/"><span class="lang-en">Projects</span><span class="lang-zh">项目</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/"><span class="lang-en">Life</span><span class="lang-zh">生活</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">Notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">CV</span><span class="lang-zh">简历</span> </a> </li> <li class="toggle-container nav-tools-start"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title"> <i class="fa-solid fa-tag fa-sm"></i> classics</h1> <p class="post-description">an archive of books in this category</p> </header> <article class="archive"> <div class="table-responsive"> <table class="table table-sm table-borderless"> <tr> <th scope="row">Aug 23, 2024</th> <td> <a class="post-link" href="/books/the_godfather/">The Godfather</a> </td> </tr> </table> </div> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Chengxiao Dai . Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script>
+</script> <style>
+  .social .contact-icons a { --c: var(--global-theme-color); position: relative; display: inline-block; margin: 0 0.35rem; }
+  .social .contact-icons a[href*="github.com"] { --c: #181717; }
+  html[data-theme="dark"] .social .contact-icons a[href*="github.com"] { --c: #f0f6fc; }
+  .social .contact-icons a[href*="scholar.google"] { --c: #4285f4; }
+  .social .contact-icons a[href*="linkedin.com"] { --c: #0a66c2; }
+  .social .contact-icons a i { display: inline-block; transition: transform 0.45s cubic-bezier(0.3, 1.6, 0.5, 1), filter 0.35s ease; }
+  .social .contact-icons a i::before,
+  .social .contact-icons a:hover i::before { color: var(--c); }
+  .social .contact-icons a:hover i,
+  .social .contact-icons a:focus-visible i {
+    animation: icon-pop 0.6s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+    filter: drop-shadow(0 10px 14px color-mix(in srgb, var(--c) 45%, transparent));
+  }
+  .social .contact-icons a:active i { transform: translateY(-2px) scale(0.9); animation: none; transition-duration: 0.12s; }
+  @keyframes icon-pop {
+    0% { transform: translateY(0) scale(1) rotate(0); }
+    40% { transform: translateY(-9px) scale(1.18) rotate(-8deg); }
+    70% { transform: translateY(-5px) scale(1.1) rotate(5deg); }
+    100% { transform: translateY(-6px) scale(1.12) rotate(0); }
+  }
+  /* Click ring */
+  .social .contact-icons a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 3.2rem;
+    height: 3.2rem;
+    margin: -1.6rem 0 0 -1.6rem;
+    border-radius: 50%;
+    border: 2px solid var(--c);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .social .contact-icons a.is-ring::after { animation: icon-ring 0.6s ease-out; }
+  @keyframes icon-ring {
+    0% { transform: scale(0.6); opacity: 0.8; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .social .contact-icons a i, .social .contact-icons a::after { animation: none !important; transition: none !important; }
+  }
+</style> <script>
+  document.addEventListener("pointerdown", function (e) {
+    var a = e.target.closest && e.target.closest(".social .contact-icons a");
+    if (!a) return;
+    a.classList.remove("is-ring");
+    void a.offsetWidth; // restart the animation on repeated clicks
+    a.classList.add("is-ring");
+    a.addEventListener("animationend", function done() {
+      a.classList.remove("is-ring");
+      a.removeEventListener("animationend", done);
+    });
+  });
+</script> <style>
+  #side-progress {
+    --p: 0%;
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    z-index: 1020;
+    width: 3px;
+    height: 150px;
+    margin-top: -75px;
+    border-radius: 3px;
+    background: var(--global-divider-color);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+  }
+  #side-progress.is-scrollable { opacity: 0.4; }
+  #side-progress.is-scrollable.is-active { opacity: 1; }
+  #side-progress .sp-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: var(--p);
+    border-radius: inherit;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--global-theme-color) 35%, transparent), var(--global-theme-color));
+  }
+  #side-progress .sp-knob {
+    position: absolute;
+    left: 50%;
+    top: var(--p);
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -4.5px;
+    border-radius: 50%;
+    background: var(--global-theme-color);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--global-theme-color) 18%, transparent), 0 0 12px color-mix(in srgb, var(--global-theme-color) 60%, transparent);
+  }
+  #side-progress .sp-pct {
+    position: absolute;
+    right: 14px;
+    top: var(--p);
+    transform: translate(4px, -50%);
+    font: 600 11px/1 "Cascadia Mono", Consolas, ui-monospace, monospace;
+    letter-spacing: 0.04em;
+    color: var(--global-theme-color);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  #side-progress.is-active .sp-pct { opacity: 1; transform: translate(0, -50%); }
+  @media (max-width: 767.98px) { #side-progress { display: none; } }
+  @media (prefers-reduced-motion: reduce) { #side-progress, #side-progress * { transition: none !important; } }
+</style> <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var rail = document.createElement("div");
+    rail.id = "side-progress";
+    rail.setAttribute("aria-hidden", "true");
+    rail.innerHTML = '<div class="sp-fill"></div><div class="sp-knob"></div><div class="sp-pct">0%</div>';
+    document.body.appendChild(rail);
+    var pct = rail.querySelector(".sp-pct");
+    var idle = 0;
+    var raf = 0;
+    function update() {
+      raf = 0;
+      var root = document.documentElement;
+      var max = root.scrollHeight - root.clientHeight;
+      rail.classList.toggle("is-scrollable", max > 40);
+      var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      rail.style.setProperty("--p", (p * 100).toFixed(2) + "%");
+      pct.textContent = Math.round(p * 100) + "%";
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!raf) raf = requestAnimationFrame(update);
+        rail.classList.add("is-active");
+        clearTimeout(idle);
+        idle = setTimeout(function () {
+          rail.classList.remove("is-active");
+        }, 1200);
+      },
+      { passive: true }
+    );
+    window.addEventListener("resize", update);
+    window.addEventListener("load", update);
+    update();
+  });
+</script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Chengxiao Dai</span> </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/"><span class="lang-en">About</span><span class="lang-zh">关于</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">Publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">Services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/"><span class="lang-en">Projects</span><span class="lang-zh">项目</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/"><span class="lang-en">Life</span><span class="lang-zh">生活</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">Notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">CV</span><span class="lang-zh">简历</span> </a> </li> <li class="toggle-container nav-tools-start"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title"> <i class="fa-solid fa-tag fa-sm"></i> classics</h1> <p class="post-description">an archive of books in this category</p> </header> <article class="archive"> <div class="table-responsive"> <table class="table table-sm table-borderless"> <tr> <th scope="row">Aug 23, 2024</th> <td> <a class="post-link" href="/books/the_godfather/">The Godfather</a> </td> </tr> </table> </div> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Chengxiao Dai . Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script>
   window.alFolio = {
     compatBootstrap: false
   };
-</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=87baac90f765f2f3362dcf6aaf312a8a"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script src="https://cdn.jsdelivr.net/npm/vanilla-back-to-top@7.2.1/dist/vanilla-back-to-top.min.js" integrity="sha256-uMJJ3EoTyfRBoTbR+lrfu1uRQ87RZG8AR3cVNuQVeFg=" crossorigin="anonymous"></script> <script>
     addBackToTop();
   </script> </body> </html>
