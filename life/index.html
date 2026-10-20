@@ -522,13 +522,126 @@
     });
     settle();
   });
-</script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Chengxiao Dai</span> </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/"><span class="lang-en">About</span><span class="lang-zh">关于</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">Publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">Services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/"><span class="lang-en">Projects</span><span class="lang-zh">项目</span> </a> </li> <li class="nav-item active"> <a class="nav-link" href="/life/"><span class="lang-en">Life</span><span class="lang-zh">生活</span> <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">Notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">CV</span><span class="lang-zh">简历</span> </a> </li> <li class="toggle-container nav-tools-start"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title"> <span class="lang-en">Life</span><span class="lang-zh">生活</span> </h1> <p class="post-description"><span class="lang-en">Just a chill guy.</span><span class="lang-zh">一个松弛的人。</span></p> </header> <article> <style>
-  .life-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+</script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Chengxiao Dai</span> </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/"><span class="lang-en">About</span><span class="lang-zh">关于</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">Publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">Services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/"><span class="lang-en">Projects</span><span class="lang-zh">项目</span> </a> </li> <li class="nav-item active"> <a class="nav-link" href="/life/"><span class="lang-en">Life</span><span class="lang-zh">生活</span> <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">Notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">CV</span><span class="lang-zh">简历</span> </a> </li> <li class="toggle-container nav-tools-start"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title"> <span class="lang-en">Life</span><span class="lang-zh">生活</span> </h1> <p class="post-description"><span class="lang-en">Just a chill guy.</span><span class="lang-zh">一个松弛的人。</span></p> </header> <article> <script>
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("life-fx");
+</script> <style>
+  .life-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem; }
   @media (max-width: 575px) { .life-gallery { grid-template-columns: 1fr; } }
-  .life-gallery figure { margin: 0; }
-  .life-gallery picture, .life-gallery img { display: block; width: 100%; height: auto; }
-  .life-gallery img { border-radius: 8px; }
-</style> <div class="life-gallery"> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/life1-480.webp 480w,/assets/img/life1-800.webp 800w,/assets/img/life1-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/life1.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" alt="Everyday life" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/life2-480.webp 480w,/assets/img/life2-800.webp 800w,/assets/img/life2-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/life2.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" alt="Everyday life" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/life3-480.webp 480w,/assets/img/life3-800.webp 800w,/assets/img/life3-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/life3.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" alt="Everyday life" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/life4-480.webp 480w,/assets/img/life4-800.webp 800w,/assets/img/life4-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/life4.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" alt="Everyday life" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/life5-480.webp 480w,/assets/img/life5-800.webp 800w,/assets/img/life5-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/life5.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" alt="Everyday life" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/life6-480.webp 480w,/assets/img/life6-800.webp 800w,/assets/img/life6-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/life6.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" alt="Everyday life" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> </div> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Chengxiao Dai . Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script>
+  .life-gallery figure {
+    --px: 0px;
+    --py: 0px;
+    --d: 0s;
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    aspect-ratio: 4 / 3; /* all photos are 1600x1200; reserves the space before the lazy image loads */
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    cursor: zoom-in;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease, opacity 0.45s ease, filter 0.45s ease;
+  }
+  .life-gallery picture, .life-gallery img { display: block; width: 100%; height: 100%; }
+  .life-gallery img { object-fit: cover; }
+  .life-gallery img {
+    --s: 1;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: translate(var(--px), var(--py)) scale(var(--s));
+    transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.9s ease;
+  }
+
+  /* Curtain reveal: the frame opens from the middle while the photo settles from a blurred zoom */
+  .life-fx .life-gallery figure:not(.is-in) { clip-path: inset(12% 12% 12% 12% round 12px); opacity: 0; }
+  .life-fx .life-gallery figure:not(.is-in) img { --s: 1.18; filter: blur(8px); }
+  .life-fx .life-gallery figure.is-in:not(.is-done) {
+    clip-path: inset(0 0 0 0 round 12px);
+    transition: clip-path 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d), opacity 0.8s ease var(--d);
+  }
+  .life-fx .life-gallery figure.is-in:not(.is-done) img {
+    transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d), filter 1s ease var(--d);
+  }
+
+  /* Light sheen that sweeps across once per hover */
+  .life-gallery figure::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.28) 50%, transparent 65%);
+    transform: translateX(-120%);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .life-gallery figure.is-done:hover { transform: translateY(-6px); box-shadow: 0 22px 44px rgba(0, 0, 0, 0.22); }
+    .life-gallery figure.is-done:hover img { --s: 1.07; transition: transform 0.3s ease-out; }
+    .life-gallery figure.is-done:hover::after { transform: translateX(120%); transition: transform 1.1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .life-gallery:hover figure.is-done:not(:hover) { opacity: 0.55; filter: saturate(0.6); }
+  }
+
+  /* The opened photo sits above the fixed navbar (z-index 1030) */
+  .medium-zoom-overlay, .medium-zoom-image--opened { z-index: 1040; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .life-gallery figure, .life-gallery img, .life-gallery figure::after { transition: none !important; }
+    .life-gallery figure::after { display: none; }
+  }
+</style> <div class="life-gallery"> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/life1-480.webp 480w,/assets/img/life1-800.webp 800w,/assets/img/life1-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/life1.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" alt="Everyday life" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/life2-480.webp 480w,/assets/img/life2-800.webp 800w,/assets/img/life2-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/life2.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" alt="Everyday life" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/life3-480.webp 480w,/assets/img/life3-800.webp 800w,/assets/img/life3-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/life3.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" alt="Everyday life" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/life4-480.webp 480w,/assets/img/life4-800.webp 800w,/assets/img/life4-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/life4.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" alt="Everyday life" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/life5-480.webp 480w,/assets/img/life5-800.webp 800w,/assets/img/life5-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/life5.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" alt="Everyday life" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/life6-480.webp 480w,/assets/img/life6-800.webp 800w,/assets/img/life6-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/life6.jpg" class="img-fluid rounded z-depth-1" width="100%" height="auto" alt="Everyday life" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> </figure> </div> <script>
+  (function () {
+    var figs = document.querySelectorAll(".life-gallery figure");
+    var cols = window.matchMedia("(max-width: 575px)").matches ? 1 : 2;
+    function done(fig) {
+      fig.classList.add("is-in", "is-done");
+    }
+    if (!document.documentElement.classList.contains("life-fx") || !("IntersectionObserver" in window)) {
+      figs.forEach(done);
+    } else {
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (e) {
+            if (!e.isIntersecting) return;
+            var fig = e.target;
+            io.unobserve(fig);
+            fig.style.setProperty("--d", (Array.prototype.indexOf.call(figs, fig) % cols) * 0.12 + "s");
+            fig.classList.add("is-in");
+            // hand over to the hover transitions once the reveal has played
+            setTimeout(function () {
+              fig.classList.add("is-done");
+            }, 1600);
+          });
+        },
+        { threshold: 0.15 }
+      );
+      figs.forEach(function (fig) {
+        io.observe(fig);
+      });
+    }
+
+    // In-frame parallax: the photo drifts against the cursor (mouse only)
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    figs.forEach(function (fig) {
+      var img = fig.querySelector("img");
+      if (!img) return;
+      var raf = 0;
+      fig.addEventListener("mousemove", function (e) {
+        var r = fig.getBoundingClientRect();
+        var dx = (e.clientX - r.left) / r.width - 0.5;
+        var dy = (e.clientY - r.top) / r.height - 0.5;
+        if (raf) return;
+        raf = requestAnimationFrame(function () {
+          raf = 0;
+          img.style.setProperty("--px", (-dx * 18).toFixed(1) + "px");
+          img.style.setProperty("--py", (-dy * 14).toFixed(1) + "px");
+        });
+      });
+      fig.addEventListener("mouseleave", function () {
+        img.style.setProperty("--px", "0px");
+        img.style.setProperty("--py", "0px");
+      });
+    });
+  })();
+</script> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Chengxiao Dai . Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script>
   window.alFolio = {
     compatBootstrap: false
   };
