@@ -34,7 +34,7 @@ profile:
   image_circular: false # crops the image to make it circular
   more_info: >
     <p>School of Computer Science</p>
-    <p>University of Sydney</p>
+    <p>University of Sydney,</p>
     <p>NSW, Australia</p>
   more_info_zh: >
     <p>计算机学院</p>
@@ -58,16 +58,16 @@ latest_posts:
 <!-- Bilingual body: the language toggle in the navbar shows one of the two blocks (classes lang-en / lang-zh). -->
 <div class="lang-en" markdown="1">
 
-Hi! I am **Chengxiao Dai**, a Master of Computer Science student and tutor at the [University of Sydney](https://www.sydney.edu.au/). I have previously worked as a research intern at [A\*STAR's Singapore Institute of Manufacturing Technology](https://www.a-star.edu.sg/simtech) (supervised by Research Scientist [Yang Zhao](https://scholar.google.com/citations?user=JEG76EoAAAAJ&hl=en)) and the [China Academy of Information and Communications Technology (CAICT)](http://www.caict.ac.cn/english/), and as an algorithm engineer at [Imperial Vision](https://imperial-vision.com/en). I am also a co-founder of [ChuChiang Data](https://chuchiangdata.cc/), where we focus on building high-quality synthetic data solutions to address long-tail data challenges.
+Hi! I am **Chengxiao Dai**, a Master of Computer Science student and tutor at the [University of Sydney](https://www.sydney.edu.au/). I was previously a research intern at [A\*STAR's Singapore Institute of Manufacturing Technology](https://www.a-star.edu.sg/simtech), supervised by Research Scientist [Yang Zhao](https://scholar.google.com/citations?user=JEG76EoAAAAJ&hl=en), and at the [China Academy of Information and Communications Technology (CAICT)](http://www.caict.ac.cn/english/). In 2024, I worked as an algorithm engineer at [Imperial Vision](https://imperial-vision.com/en). I also co-founded [ChuChiang Data](https://chuchiangdata.cc/), where we build high-quality synthetic data to tackle long-tail data challenges.
 
-My research focuses on large language models and multi-agent systems, in particular LLM post-training, reinforcement learning for agentic systems, knowledge-graph reasoning, and domain-specific applications.
+My research centres on large language models and multi-agent systems, especially LLM post-training, reinforcement learning for agents, knowledge-graph reasoning, and domain-specific applications.
 
 </div>
 <div class="lang-zh" markdown="1">
 
-你好！我是 **Chengxiao Dai**，[悉尼大学](https://www.sydney.edu.au/)计算机科学硕士在读，同时担任课程助教。此前曾在[新加坡科技研究局制造技术研究院（A\*STAR SIMTech）](https://www.a-star.edu.sg/simtech)（导师：研究科学家 [Yang Zhao](https://scholar.google.com/citations?user=JEG76EoAAAAJ&hl=en)）和[中国信息通信研究院（CAICT）](http://www.caict.ac.cn/english/)担任研究实习生，并在 [Imperial Vision](https://imperial-vision.com/en) 担任算法工程师。我也是 [ChuChiang Data](https://chuchiangdata.cc/) 的联合创始人，我们专注于构建高质量的合成数据方案，以解决长尾数据难题。
+你好！我是 **Chengxiao Dai**，目前在[悉尼大学](https://www.sydney.edu.au/)攻读计算机科学硕士，同时担任课程助教。此前，我在[新加坡科技研究局制造技术研究院（A\*STAR SIMTech）](https://www.a-star.edu.sg/simtech)担任研究实习生，导师是研究科学家 [Yang Zhao](https://scholar.google.com/citations?user=JEG76EoAAAAJ&hl=en)，也曾在[中国信息通信研究院（CAICT）](http://www.caict.ac.cn/english/)实习。2024 年，我在 [Imperial Vision](https://imperial-vision.com/en) 担任算法工程师。我还联合创立了 [ChuChiang Data](https://chuchiangdata.cc/)，专注于构建高质量的合成数据，解决长尾数据难题。
 
-我的研究方向是大语言模型与多智能体系统，重点关注 LLM 后训练、面向智能体系统的强化学习、知识图谱推理以及领域应用。
+我的研究方向是大语言模型与多智能体系统，重点关注 LLM 后训练、面向智能体的强化学习、知识图谱推理以及领域应用。
 
 </div>
 

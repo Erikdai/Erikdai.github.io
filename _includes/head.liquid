@@ -706,10 +706,6 @@
   }
   #lang-toggle:hover { background-color: var(--nav-pill); border-color: var(--global-theme-color); }
 
-  /* Scroll progress: 2px gradient line under the bar */
-  progress { height: 2px; }
-  progress::-webkit-progress-value { background-color: var(--global-theme-color); background-image: linear-gradient(90deg, var(--global-theme-color), #7fd6ec); }
-  progress::-moz-progress-bar { background-color: var(--global-theme-color); background-image: linear-gradient(90deg, var(--global-theme-color), #7fd6ec); }
 
   /* Cursor light (mouse only): a soft glow follows the cursor along the bar and lights the hairline under it */
   @media (hover: hover) and (pointer: fine) {
@@ -838,3 +834,157 @@
     settle();
   });
 </script>
+
+<!-- ===== Homepage contact icons: brand colours at rest; on hover they pop up with a small wobble and a glow in
+     their own colour; a click presses them in and sends out a ring. Markup comes from the gem ({% raw %}{% social_links %}{% endraw %}). -->
+<style>
+  .social .contact-icons a { --c: var(--global-theme-color); position: relative; display: inline-block; margin: 0 0.35rem; }
+  .social .contact-icons a[href*="github.com"] { --c: #181717; }
+  html[data-theme="dark"] .social .contact-icons a[href*="github.com"] { --c: #f0f6fc; }
+  .social .contact-icons a[href*="scholar.google"] { --c: #4285f4; }
+  .social .contact-icons a[href*="linkedin.com"] { --c: #0a66c2; }
+  .social .contact-icons a i { display: inline-block; transition: transform 0.45s cubic-bezier(0.3, 1.6, 0.5, 1), filter 0.35s ease; }
+  .social .contact-icons a i::before,
+  .social .contact-icons a:hover i::before { color: var(--c); }
+  .social .contact-icons a:hover i,
+  .social .contact-icons a:focus-visible i {
+    animation: icon-pop 0.6s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+    filter: drop-shadow(0 10px 14px color-mix(in srgb, var(--c) 45%, transparent));
+  }
+  .social .contact-icons a:active i { transform: translateY(-2px) scale(0.9); animation: none; transition-duration: 0.12s; }
+  @keyframes icon-pop {
+    0% { transform: translateY(0) scale(1) rotate(0); }
+    40% { transform: translateY(-9px) scale(1.18) rotate(-8deg); }
+    70% { transform: translateY(-5px) scale(1.1) rotate(5deg); }
+    100% { transform: translateY(-6px) scale(1.12) rotate(0); }
+  }
+  /* Click ring */
+  .social .contact-icons a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 3.2rem;
+    height: 3.2rem;
+    margin: -1.6rem 0 0 -1.6rem;
+    border-radius: 50%;
+    border: 2px solid var(--c);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .social .contact-icons a.is-ring::after { animation: icon-ring 0.6s ease-out; }
+  @keyframes icon-ring {
+    0% { transform: scale(0.6); opacity: 0.8; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .social .contact-icons a i, .social .contact-icons a::after { animation: none !important; transition: none !important; }
+  }
+</style>
+<script>
+  document.addEventListener("pointerdown", function (e) {
+    var a = e.target.closest && e.target.closest(".social .contact-icons a");
+    if (!a) return;
+    a.classList.remove("is-ring");
+    void a.offsetWidth; // restart the animation on repeated clicks
+    a.classList.add("is-ring");
+    a.addEventListener("animationend", function done() {
+      a.classList.remove("is-ring");
+      a.removeEventListener("animationend", done);
+    });
+  });
+</script>
+
+<!-- ===== Side scroll progress (replaces the top progress bar, enable_progressbar: false): a slim rail on the right,
+     vertically centred; a gradient fill and a glowing knob follow the scroll, with the percentage beside the knob.
+     Full strength while scrolling, faint when idle, hidden when the page cannot scroll and on screens below 768px. -->
+<style>
+  #side-progress {
+    --p: 0%;
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    z-index: 1020;
+    width: 3px;
+    height: 150px;
+    margin-top: -75px;
+    border-radius: 3px;
+    background: var(--global-divider-color);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+  }
+  #side-progress.is-scrollable { opacity: 0.4; }
+  #side-progress.is-scrollable.is-active { opacity: 1; }
+  #side-progress .sp-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: var(--p);
+    border-radius: inherit;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--global-theme-color) 35%, transparent), var(--global-theme-color));
+  }
+  #side-progress .sp-knob {
+    position: absolute;
+    left: 50%;
+    top: var(--p);
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -4.5px;
+    border-radius: 50%;
+    background: var(--global-theme-color);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--global-theme-color) 18%, transparent), 0 0 12px color-mix(in srgb, var(--global-theme-color) 60%, transparent);
+  }
+  #side-progress .sp-pct {
+    position: absolute;
+    right: 14px;
+    top: var(--p);
+    transform: translate(4px, -50%);
+    font: 600 11px/1 "Cascadia Mono", Consolas, ui-monospace, monospace;
+    letter-spacing: 0.04em;
+    color: var(--global-theme-color);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  #side-progress.is-active .sp-pct { opacity: 1; transform: translate(0, -50%); }
+  @media (max-width: 767.98px) { #side-progress { display: none; } }
+  @media (prefers-reduced-motion: reduce) { #side-progress, #side-progress * { transition: none !important; } }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var rail = document.createElement("div");
+    rail.id = "side-progress";
+    rail.setAttribute("aria-hidden", "true");
+    rail.innerHTML = '<div class="sp-fill"></div><div class="sp-knob"></div><div class="sp-pct">0%</div>';
+    document.body.appendChild(rail);
+    var pct = rail.querySelector(".sp-pct");
+    var idle = 0;
+    var raf = 0;
+    function update() {
+      raf = 0;
+      var root = document.documentElement;
+      var max = root.scrollHeight - root.clientHeight;
+      rail.classList.toggle("is-scrollable", max > 40);
+      var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      rail.style.setProperty("--p", (p * 100).toFixed(2) + "%");
+      pct.textContent = Math.round(p * 100) + "%";
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!raf) raf = requestAnimationFrame(update);
+        rail.classList.add("is-active");
+        clearTimeout(idle);
+        idle = setTimeout(function () {
+          rail.classList.remove("is-active");
+        }, 1200);
+      },
+      { passive: true }
+    );
+    window.addEventListener("resize", update);
+    window.addEventListener("load", update);
+    update();
+  });
+</script>
+
