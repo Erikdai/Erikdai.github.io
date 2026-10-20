@@ -181,8 +181,10 @@
     color: var(--global-text-color-light);
     white-space: nowrap;
   }
-  /* Keep the publications list author-free; full authors stay in the BibTeX (BibTeX button) */
-  .publications .author { display: none; }
+  /* Author marks (dagger = co-first, asterisk = first author) and the legend above the list */
+  .publications .author-mark { margin-left: 0.05em; color: var(--global-theme-color); font-weight: 600; }
+  .pub-legend { margin: -0.5rem 0 1.25rem; font-size: 0.9rem; color: var(--global-text-color-light); }
+  .pub-legend .mark { color: var(--global-theme-color); font-weight: 600; }
   /* Paper titles are links (see _layouts/bib.liquid): keep the text colour, show the accent on hover */
   .publications .title a { color: inherit; text-decoration: none; }
   .publications .title a:hover { color: var(--global-theme-color); text-decoration: underline; text-underline-offset: 0.15em; }
