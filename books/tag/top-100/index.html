@@ -281,7 +281,169 @@
   }
   #lang-toggle:hover { color: var(--global-hover-color); }
   @media (min-width: 576px) { #lang-toggle { transform: translateY(4px); margin-left: 0.25rem; } }
-</style> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Chengxiao Dai</span> </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/"><span class="lang-en">About</span><span class="lang-zh">关于</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">Publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">Services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/"><span class="lang-en">Projects</span><span class="lang-zh">项目</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/"><span class="lang-en">Life</span><span class="lang-zh">生活</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">Notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">CV</span><span class="lang-zh">简历</span> </a> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title"> <i class="fa-solid fa-hashtag fa-sm"></i> top-100</h1> <p class="post-description">an archive of books with this tag</p> </header> <article class="archive"> <div class="table-responsive"> <table class="table table-sm table-borderless"> <tr> <th scope="row">Aug 23, 2024</th> <td> <a class="post-link" href="/books/the_godfather/">The Godfather</a> </td> </tr> </table> </div> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Chengxiao Dai . Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script>
+</style> <style>
+  #navbar {
+    --nav-pill: rgba(38, 152, 186, 0.13);
+    --nav-pill: color-mix(in srgb, var(--global-theme-color) 13%, transparent);
+    opacity: 1;
+    min-height: 56px;
+    border-bottom: 1px solid transparent;
+    transition: background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    #navbar {
+      background-color: color-mix(in srgb, var(--global-bg-color) 76%, transparent);
+      -webkit-backdrop-filter: saturate(180%) blur(16px);
+      backdrop-filter: saturate(180%) blur(16px);
+    }
+  }
+  #navbar.is-scrolled { border-bottom-color: var(--global-divider-color); box-shadow: 0 8px 28px rgba(0, 0, 0, 0.07); }
+  html[data-theme="dark"] #navbar.is-scrolled { box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4); }
+
+  /* Name with an accent full stop (on the name span: the <a> also holds whitespace) */
+  #navbar .navbar-brand { letter-spacing: -0.01em; transition: color 0.25s ease; }
+  #navbar .navbar-brand > span::after {
+    content: "";
+    display: inline-block;
+    width: 0.38rem;
+    height: 0.38rem;
+    margin-left: 0.18rem;
+    border-radius: 50%;
+    background: var(--global-theme-color);
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  #navbar .navbar-brand:hover { color: var(--global-theme-color); }
+  #navbar .navbar-brand:hover > span::after { transform: scale(1.5); }
+
+  #navbar.navbar-light .navbar-nav .nav-item .nav-link { border-radius: 999px; transition: color 0.25s ease, background-color 0.25s ease; }
+  #navbar.navbar-light .navbar-nav .nav-item.active > .nav-link { font-weight: 500; background-color: var(--nav-pill); }
+  @media (max-width: 575.98px) {
+    #navbar.navbar-light .navbar-nav .nav-item .nav-link { display: inline-block; padding: 0.45rem 0.8rem; }
+    /* Open menu: one link per row, the two toggles side by side on the last row */
+    #navbar .navbar-nav { flex-direction: row; flex-wrap: wrap; align-items: center; padding-bottom: 0.5rem; }
+    #navbar .navbar-nav > .nav-item { width: 100%; }
+    #navbar .nav-indicator { display: none; }
+    #navbar .nav-tools-start { margin-top: 0.4rem; }
+    #navbar #lang-toggle { margin-left: 0.5rem; }
+  }
+
+  @media (min-width: 576px) {
+    #navbar .navbar-nav { position: relative; align-items: center; gap: 0.1rem; }
+    #navbar.navbar-light .navbar-nav .nav-item .nav-link {
+      position: relative;
+      z-index: 1;
+      padding: 0.36rem 0.8rem;
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+    }
+    /* With the script running, the moving pill replaces the static one */
+    #navbar.navbar-light .navbar-nav.has-indicator .nav-item.active > .nav-link { background-color: transparent; }
+    #navbar .nav-indicator {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 0;
+      width: 0;
+      height: 0;
+      list-style: none;
+      border-radius: 999px;
+      background: var(--nav-pill);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease;
+    }
+    #navbar .nav-indicator.no-anim { transition: none; }
+    #navbar .nav-tools-start { margin-left: 0.6rem; padding-left: 0.7rem; border-left: 1px solid var(--global-divider-color); }
+    #navbar .toggle-container { display: flex; align-items: center; }
+  }
+
+  #light-toggle, #lang-toggle { transform: none !important; border-radius: 999px; transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
+  #light-toggle { width: 2.1rem; height: 2.1rem; }
+  #light-toggle i { transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  #light-toggle:hover { background-color: var(--nav-pill); }
+  #light-toggle:hover i { transform: rotate(-30deg); }
+  #lang-toggle {
+    height: 1.9rem;
+    padding: 0 0.7rem;
+    margin-left: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid var(--global-divider-color);
+  }
+  #lang-toggle:hover { background-color: var(--nav-pill); border-color: var(--global-theme-color); }
+
+  /* Scroll progress: 2px gradient line under the bar */
+  progress { height: 2px; }
+  progress::-webkit-progress-value { background-color: var(--global-theme-color); background-image: linear-gradient(90deg, var(--global-theme-color), #7fd6ec); }
+  progress::-moz-progress-bar { background-color: var(--global-theme-color); background-image: linear-gradient(90deg, var(--global-theme-color), #7fd6ec); }
+
+  @media (prefers-reduced-motion: reduce) {
+    #navbar, #navbar *, #navbar .nav-indicator { transition: none !important; }
+  }
+</style> <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var nav = document.getElementById("navbar");
+    if (!nav) return;
+    var onScroll = function () {
+      nav.classList.toggle("is-scrolled", window.scrollY > 4);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    var list = nav.querySelector(".navbar-nav");
+    if (!list) return;
+    var wide = window.matchMedia("(min-width: 576px)");
+    var pill = document.createElement("li");
+    pill.className = "nav-indicator no-anim";
+    pill.setAttribute("aria-hidden", "true");
+    list.insertBefore(pill, list.firstChild);
+    list.classList.add("has-indicator");
+
+    function place(link) {
+      if (!link || !wide.matches) {
+        pill.style.opacity = "0";
+        return;
+      }
+      var a = link.getBoundingClientRect();
+      var b = list.getBoundingClientRect();
+      pill.style.width = a.width + "px";
+      pill.style.height = a.height + "px";
+      pill.style.transform = "translate(" + (a.left - b.left) + "px," + (a.top - b.top) + "px)";
+      pill.style.opacity = "1";
+    }
+    function rest() {
+      place(list.querySelector(".nav-item.active > .nav-link"));
+    }
+    function settle() {
+      pill.classList.add("no-anim");
+      rest();
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          pill.classList.remove("no-anim");
+        });
+      });
+    }
+    list.querySelectorAll(".nav-item > .nav-link").forEach(function (link) {
+      link.addEventListener("mouseenter", function () {
+        place(link);
+      });
+      link.addEventListener("focus", function () {
+        place(link);
+      });
+    });
+    list.addEventListener("mouseleave", rest);
+    list.addEventListener("focusout", function (e) {
+      if (!list.contains(e.relatedTarget)) rest();
+    });
+    window.addEventListener("resize", settle);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(settle);
+    var lang = document.getElementById("lang-toggle");
+    if (lang) lang.addEventListener("click", function () {
+      requestAnimationFrame(settle);
+    });
+    settle();
+  });
+</script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Chengxiao Dai</span> </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/"><span class="lang-en">About</span><span class="lang-zh">关于</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/"><span class="lang-en">Publications</span><span class="lang-zh">论文</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/services/"><span class="lang-en">Services</span><span class="lang-zh">服务</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/"><span class="lang-en">Projects</span><span class="lang-zh">项目</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/life/"><span class="lang-en">Life</span><span class="lang-zh">生活</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/blog/"><span class="lang-en">Notes</span><span class="lang-zh">笔记</span> </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/"><span class="lang-en">CV</span><span class="lang-zh">简历</span> </a> </li> <li class="toggle-container nav-tools-start"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> <li class="toggle-container"> <button id="lang-toggle" type="button" title="中文 / English" aria-label="Switch language"> <span class="lang-en">中文</span><span class="lang-zh">EN</span> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title"> <i class="fa-solid fa-hashtag fa-sm"></i> top-100</h1> <p class="post-description">an archive of books with this tag</p> </header> <article class="archive"> <div class="table-responsive"> <table class="table table-sm table-borderless"> <tr> <th scope="row">Aug 23, 2024</th> <td> <a class="post-link" href="/books/the_godfather/">The Godfather</a> </td> </tr> </table> </div> </article> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Chengxiao Dai . Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script>
   window.alFolio = {
     compatBootstrap: false
   };
