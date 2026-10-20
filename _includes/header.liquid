@@ -1,7 +1,8 @@
 {% comment %}
   Local override of al_folio_core 1.0.11's _includes/header.liquid.
   Changes vs. upstream: nav labels go through lang.liquid (title / title_zh front matter) and a
-  language toggle button (#lang-toggle) sits after the theme toggle. Behaviour + styles: _includes/head.liquid.
+  language toggle button (#lang-toggle) sits after the theme toggle, and the theme toggle's <li> carries
+  .nav-tools-start. Behaviour + styles (incl. the navbar glass / sliding pill): _includes/head.liquid.
   When bumping al_folio_core in the Gemfile, re-copy the gem's header.liquid and re-apply these changes.
 {% endcomment %}
 <header>
@@ -131,8 +132,8 @@
             </li>
           {% endif %}
           {% if site.enable_darkmode %}
-            <!-- Toogle theme mode -->
-            <li class="toggle-container">
+            <!-- Toogle theme mode (nav-tools-start: draws the divider before the toggles) -->
+            <li class="toggle-container nav-tools-start">
               <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme">
                 <i class="fa-half-sun-moon" id="light-toggle-system"></i>
                 <i class="fa-solid fa-moon" id="light-toggle-dark"></i>
