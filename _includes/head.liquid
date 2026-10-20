@@ -987,3 +987,23 @@
   });
 </script>
 
+
+<!-- ===== Back-to-top button above the fixed footer: vanilla-back-to-top pins it 20px from the bottom, under the
+     fixed copyright bar (z-index 1030), which wraps to two or three lines on phones and hid the button. The footer
+     height is measured into --footer-h and the button sits 16px above it; the library's .hidden rule (id + class)
+     still wins, so it keeps sliding out of view at the top of the page. -->
+<style>
+  #back-to-top { bottom: calc(var(--footer-h, 0px) + 16px); }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var footer = document.querySelector("footer.fixed-bottom");
+    if (!footer) return;
+    function update() {
+      document.documentElement.style.setProperty("--footer-h", footer.offsetHeight + "px");
+    }
+    if ("ResizeObserver" in window) new ResizeObserver(update).observe(footer);
+    window.addEventListener("resize", update);
+    update();
+  });
+</script>
