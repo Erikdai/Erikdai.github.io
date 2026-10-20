@@ -337,19 +337,31 @@
     }
     /* With the script running, the moving pill replaces the static one */
     #navbar.navbar-light .navbar-nav.has-indicator .nav-item.active > .nav-link { background-color: transparent; }
+    /* Liquid pill: left and right edges move separately (the script delays the trailing one), with an accent rim */
     #navbar .nav-indicator {
+      --dl: 0s;
+      --dr: 0s;
       position: absolute;
       left: 0;
+      right: 100%;
       top: 0;
       z-index: 0;
-      width: 0;
       height: 0;
       list-style: none;
       border-radius: 999px;
       background: var(--nav-pill);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--global-theme-color) 18%, transparent), color-mix(in srgb, var(--global-theme-color) 8%, transparent));
+      box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--global-theme-color) 30%, transparent),
+        0 6px 18px -8px color-mix(in srgb, var(--global-theme-color) 75%, transparent);
       opacity: 0;
       pointer-events: none;
-      transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease;
+      transition:
+        left 0.42s cubic-bezier(0.3, 0.9, 0.3, 1) var(--dl),
+        right 0.42s cubic-bezier(0.3, 0.9, 0.3, 1) var(--dr),
+        top 0.3s ease,
+        height 0.3s ease,
+        opacity 0.25s ease;
     }
     #navbar .nav-indicator.no-anim { transition: none; }
     #navbar .nav-tools-start { margin-left: 0.6rem; padding-left: 0.7rem; border-left: 1px solid var(--global-divider-color); }
@@ -376,8 +388,38 @@
   progress::-webkit-progress-value { background-color: var(--global-theme-color); background-image: linear-gradient(90deg, var(--global-theme-color), #7fd6ec); }
   progress::-moz-progress-bar { background-color: var(--global-theme-color); background-image: linear-gradient(90deg, var(--global-theme-color), #7fd6ec); }
 
+  /* Cursor light (mouse only): a soft glow follows the cursor along the bar and lights the hairline under it */
+  @media (hover: hover) and (pointer: fine) {
+    #navbar { --nx: 50%; }
+    #navbar::before,
+    #navbar::after { content: ""; position: absolute; pointer-events: none; opacity: 0; transition: opacity 0.45s ease; }
+    #navbar::before {
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(340px circle at var(--nx) 50%, color-mix(in srgb, var(--global-theme-color) 11%, transparent), transparent 70%);
+    }
+    #navbar::after {
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 3px;
+      background: radial-gradient(ellipse 200px 3px at var(--nx) 50%, var(--global-theme-color), transparent);
+    }
+    #navbar.is-lit::before,
+    #navbar.is-lit::after { opacity: 1; }
+  }
+
+  /* The accent dot breathes: a faint ring every few seconds */
+  #navbar .navbar-brand > span::after { animation: nav-dot 3.4s ease-out infinite; }
+  @keyframes nav-dot {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--global-theme-color) 55%, transparent); }
+    70%, 100% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--global-theme-color) 0%, transparent); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     #navbar, #navbar *, #navbar .nav-indicator { transition: none !important; }
+    #navbar::before, #navbar::after { display: none; }
+    #navbar .navbar-brand > span::after { animation: none; }
   }
 </style> <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -388,6 +430,27 @@
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+
+    var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (fine && !still) {
+      var raf = 0;
+      var nx = 0;
+      nav.addEventListener("mousemove", function (e) {
+        nx = e.clientX - nav.getBoundingClientRect().left;
+        if (!raf)
+          raf = requestAnimationFrame(function () {
+            raf = 0;
+            nav.style.setProperty("--nx", nx + "px");
+          });
+      });
+      nav.addEventListener("mouseenter", function () {
+        nav.classList.add("is-lit");
+      });
+      nav.addEventListener("mouseleave", function () {
+        nav.classList.remove("is-lit");
+      });
+    }
 
     var list = nav.querySelector(".navbar-nav");
     if (!list) return;
@@ -405,9 +468,16 @@
       }
       var a = link.getBoundingClientRect();
       var b = list.getBoundingClientRect();
-      pill.style.width = a.width + "px";
+      var left = a.left - b.left;
+      var prev = parseFloat(pill.style.left);
+      var goingRight = !isNaN(prev) && left > prev;
+      // Liquid stretch: the leading edge sets off first, the trailing edge catches up
+      pill.style.setProperty("--dl", goingRight ? "0.08s" : "0s");
+      pill.style.setProperty("--dr", goingRight ? "0s" : "0.08s");
+      pill.style.left = left + "px";
+      pill.style.right = b.width - left - a.width + "px";
+      pill.style.top = a.top - b.top + "px";
       pill.style.height = a.height + "px";
-      pill.style.transform = "translate(" + (a.left - b.left) + "px," + (a.top - b.top) + "px)";
       pill.style.opacity = "1";
     }
     function rest() {
