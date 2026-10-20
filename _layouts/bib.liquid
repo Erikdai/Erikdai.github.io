@@ -5,6 +5,7 @@
   Changes vs. upstream:
     1. The title itself links to the paper (html > arxiv > doi > pdf); the DOI / arXiv / HTML buttons are gone.
     2. A "BibTeX" button (and its hidden bibtex block) is shown for every entry, not only when bibtex_show is set.
+    3. The year after the venue is bold (<strong class="pub-year">).
   When bumping al_folio_core in the Gemfile, re-copy the gem's bib.liquid and re-apply these changes.
 {% endcomment %}
 <div class="row">
@@ -197,7 +198,7 @@
     {% endif %}
     {% assign entryyear = '' %}
     {% if entry.year %}
-      {% capture entryyear %}{{ " " }}{{ entry.year }}{% endcapture %}
+      {% capture entryyear %}{{ " " }}<strong class="pub-year">{{ entry.year }}</strong>{% endcapture %}
     {% endif %}
     {% if entry.location %}
       {% capture entrytype %}{{ entrytype }}{{ ", " }}{{ entry.location }}{% endcapture %}
