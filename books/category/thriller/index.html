@@ -18,9 +18,20 @@
     }
   </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
   :root {
-    --max-content-width: 1200px;
+    --max-content-width: 1080px;
   }
-</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Great+Vibes|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%98%8E&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> <link rel="canonical" href="https://erikdai.github.io/books/category/thriller/"> <script src="/assets/js/theme.js?v=7af685e2ba20b37fef545c97b8064050"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+</style> <style>
+  @media (min-width: 1280px) and (hover: hover) and (pointer: fine) {
+    html { zoom: 1.25; }
+  }
+</style> <script>
+  window.pageZoom = function () {
+    var b = document.body;
+    if (!b || !b.offsetWidth) return 1;
+    var z = b.getBoundingClientRect().width / b.offsetWidth;
+    return z > 0.5 && z < 4 ? z : 1;
+  };
+</script> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Great+Vibes|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%98%8E&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> <link rel="canonical" href="https://erikdai.github.io/books/category/thriller/"> <script src="/assets/js/theme.js?v=7af685e2ba20b37fef545c97b8064050"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
     initTheme();
   </script> <style>
   :root {
@@ -208,13 +219,13 @@
       if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       function bind(el, tilt) {
-        var rect = null, raf = null, last = null;
+        var rect = null, raf = null, last = null, zoom = 1;
         function apply() {
           raf = null;
           if (!rect || !last) return;
-          var x = last.clientX - rect.left, y = last.clientY - rect.top;
-          el.style.setProperty("--mx", x.toFixed(1) + "px");
-          el.style.setProperty("--my", y.toFixed(1) + "px");
+          var x = last.clientX - rect.left, y = last.clientY - rect.top; // zoomed px
+          el.style.setProperty("--mx", (x / zoom).toFixed(1) + "px");
+          el.style.setProperty("--my", (y / zoom).toFixed(1) + "px");
           if (tilt) {
             el.style.setProperty("--rx", ((0.5 - y / rect.height) * 7).toFixed(2) + "deg");
             el.style.setProperty("--ry", ((x / rect.width - 0.5) * 9).toFixed(2) + "deg");
@@ -222,6 +233,7 @@
         }
         el.addEventListener("mouseenter", function (e) {
           rect = el.getBoundingClientRect();
+          zoom = window.pageZoom ? window.pageZoom() : 1;
           last = e;
           if (tilt) el.classList.add("is-tilting");
           apply();
@@ -448,7 +460,7 @@
       var raf = 0;
       var nx = 0;
       nav.addEventListener("mousemove", function (e) {
-        nx = e.clientX - nav.getBoundingClientRect().left;
+        nx = (e.clientX - nav.getBoundingClientRect().left) / (window.pageZoom ? window.pageZoom() : 1);
         if (!raf)
           raf = requestAnimationFrame(function () {
             raf = 0;
@@ -477,18 +489,19 @@
         pill.style.opacity = "0";
         return;
       }
+      var z = window.pageZoom ? window.pageZoom() : 1;
       var a = link.getBoundingClientRect();
       var b = list.getBoundingClientRect();
-      var left = a.left - b.left;
+      var left = (a.left - b.left) / z;
       var prev = parseFloat(pill.style.left);
       var goingRight = !isNaN(prev) && left > prev;
       // Liquid stretch: the leading edge sets off first, the trailing edge catches up
       pill.style.setProperty("--dl", goingRight ? "0.08s" : "0s");
       pill.style.setProperty("--dr", goingRight ? "0s" : "0.08s");
       pill.style.left = left + "px";
-      pill.style.right = b.width - left - a.width + "px";
-      pill.style.top = a.top - b.top + "px";
-      pill.style.height = a.height + "px";
+      pill.style.right = (b.width - a.width) / z - left + "px";
+      pill.style.top = (a.top - b.top) / z + "px";
+      pill.style.height = a.height / z + "px";
       pill.style.opacity = "1";
     }
     function rest() {
