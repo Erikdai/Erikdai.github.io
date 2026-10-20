@@ -12,8 +12,8 @@ nav_order: 2
 
 <!-- Legend for the author marks set in _layouts/bib.liquid (fields cofirst / first_author in papers.bib) -->
 <p class="pub-legend">
-  <span class="lang-en"><span class="mark">&dagger;</span> Co-first author &nbsp;&middot;&nbsp; <span class="mark">*</span> First author</span>
-  <span class="lang-zh"><span class="mark">&dagger;</span> 共同第一作者 &nbsp;&middot;&nbsp; <span class="mark">*</span> 第一作者</span>
+  <span class="lang-en"><span class="mark">&dagger;</span> Co-first author with supervisor &nbsp;&middot;&nbsp; <span class="mark">*</span> First author</span>
+  <span class="lang-zh"><span class="mark">&dagger;</span> 与导师共同第一作者 &nbsp;&middot;&nbsp; <span class="mark">*</span> 第一作者</span>
 </p>
 
 <!-- Bibsearch Feature -->
