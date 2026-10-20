@@ -16,10 +16,12 @@
 <!-- Desktop opens at 125% (user request 2026-10-20: "打开就是 zoom in 125%，只要电脑端，手机端不要"): CSS zoom on the root,
      only for wide screens driven by a mouse; phones and tablets stay at 100%. Under zoom, getBoundingClientRect() and
      mouse clientX/Y are in zoomed pixels while CSS lengths are not, so scripts that write measured pixels back into
-     styles divide by window.pageZoom(). -->
+     styles divide by window.pageZoom(). medium-zoom does the same with its opened clone (sized from the zoomed rect,
+     then zoomed again), so the clone undoes the root zoom; otherwise the opened photo is 1.25x too big and off centre. -->
 <style>
   @media (min-width: 1280px) and (hover: hover) and (pointer: fine) {
     html { zoom: 1.25; }
+    .medium-zoom-image--opened { zoom: 0.8; }
   }
 </style>
 <script>

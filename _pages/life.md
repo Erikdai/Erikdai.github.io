@@ -5,13 +5,14 @@ title_zh: 生活
 permalink: /life/
 nav: true
 nav_order: 5
-description: Just a chill guy.
-description_zh: 一个松弛的人。
+description: Just a chill guy. Aviation, hiking and travel enthusiast.
+description_zh: 一个想要修飞机的 AI 研究员。
 ---
 
 <!-- Photo effects (this page only): a curtain reveal as each photo scrolls into view, then on hover a lift, an
      in-frame parallax that follows the cursor, a light sheen and the other photos dimming; click opens the photo
-     (medium-zoom via zoomable=true). The reveal is skipped without JS or with prefers-reduced-motion. -->
+     (medium-zoom via zoomable=true). The reveal is skipped without JS or with prefers-reduced-motion.
+     17 photos in two columns would leave one alone on the last row, so one panorama spans both columns. -->
 <script>
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("life-fx");
 </script>
@@ -26,12 +27,14 @@ description_zh: 一个松弛的人。
     position: relative;
     margin: 0;
     overflow: hidden;
-    aspect-ratio: 4 / 3; /* all photos are 1600x1200; reserves the space before the lazy image loads */
+    aspect-ratio: 4 / 3; /* all photos are cropped to 4:3; reserves the space before the lazy image loads */
     border-radius: 12px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
     cursor: zoom-in;
     transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease, opacity 0.45s ease, filter 0.45s ease;
   }
+  .life-gallery .life-wide { grid-column: 1 / -1; }
+  .life-gallery .life-wide figure { aspect-ratio: 8 / 3; } /* cropped to 8:3, about one row tall */
   .life-gallery picture, .life-gallery img { display: block; width: 100%; height: 100%; }
   .life-gallery img { object-fit: cover; }
   .life-gallery img {
@@ -81,18 +84,29 @@ description_zh: 一个松弛的人。
 </style>
 
 <div class="life-gallery">
-  {% include figure.liquid path="assets/img/life1.jpg" class="img-fluid rounded z-depth-1" alt="Everyday life" zoomable=true %}
-  {% include figure.liquid path="assets/img/life2.jpg" class="img-fluid rounded z-depth-1" alt="Everyday life" zoomable=true %}
-  {% include figure.liquid path="assets/img/life3.jpg" class="img-fluid rounded z-depth-1" alt="Everyday life" zoomable=true %}
-  {% include figure.liquid path="assets/img/life4.jpg" class="img-fluid rounded z-depth-1" alt="Everyday life" zoomable=true %}
-  {% include figure.liquid path="assets/img/life5.jpg" class="img-fluid rounded z-depth-1" alt="Everyday life" zoomable=true %}
-  {% include figure.liquid path="assets/img/life6.jpg" class="img-fluid rounded z-depth-1" alt="Everyday life" zoomable=true %}
+  {% include figure.liquid path="assets/img/life17.jpg" class="img-fluid rounded z-depth-1" alt="Airliner cockpit" zoomable=true %}
+  {% include figure.liquid path="assets/img/life5.jpg" class="img-fluid rounded z-depth-1" alt="Marina Bay Sands, Singapore" zoomable=true %}
+  {% include figure.liquid path="assets/img/life6.jpg" class="img-fluid rounded z-depth-1" alt="A woolly friend on a grassy hill" zoomable=true %}
+  {% include figure.liquid path="assets/img/life7.jpg" class="img-fluid rounded z-depth-1" alt="Ocean view from a sea cliff" zoomable=true %}
+  {% include figure.liquid path="assets/img/life8.jpg" class="img-fluid rounded z-depth-1" alt="Sunset over the bush" zoomable=true %}
+  {% include figure.liquid path="assets/img/life9.jpg" class="img-fluid rounded z-depth-1" alt="ICML 2026 at COEX" zoomable=true %}
+  {% include figure.liquid path="assets/img/life2.jpg" class="img-fluid rounded z-depth-1" alt="Beach at sunset" zoomable=true %}
+  {% include figure.liquid path="assets/img/life14.jpg" class="img-fluid rounded z-depth-1" alt="Fiji Airways airliner at a hangar" zoomable=true %}
+  <div class="life-wide">{% include figure.liquid path="assets/img/life10.jpg" class="img-fluid rounded z-depth-1" alt="Sydney Harbour Bridge lit up at night" zoomable=true %}</div>
+  {% include figure.liquid path="assets/img/life15.jpg" class="img-fluid rounded z-depth-1" alt="Inside a submarine" zoomable=true %}
+  {% include figure.liquid path="assets/img/life13.jpg" class="img-fluid rounded z-depth-1" alt="Palm trees on a small island" zoomable=true %}
+  {% include figure.liquid path="assets/img/life16.jpg" class="img-fluid rounded z-depth-1" alt="Cathay Pacific airliner at the gate" zoomable=true %}
+  {% include figure.liquid path="assets/img/life4.jpg" class="img-fluid rounded z-depth-1" alt="Ocean pool at dusk" zoomable=true %}
+  {% include figure.liquid path="assets/img/life3.jpg" class="img-fluid rounded z-depth-1" alt="Coastal road through green hills" zoomable=true %}
+  {% include figure.liquid path="assets/img/life11.jpg" class="img-fluid rounded z-depth-1" alt="A classic sedan under palm trees" zoomable=true %}
+  {% include figure.liquid path="assets/img/life12.jpg" class="img-fluid rounded z-depth-1" alt="Beach under a clear blue sky" zoomable=true %}
+  {% include figure.liquid path="assets/img/life1.jpg" class="img-fluid rounded z-depth-1" alt="Full moon over hillside houses at dusk" zoomable=true %}
 </div>
 
 <script>
   (function () {
-    var figs = document.querySelectorAll(".life-gallery figure");
-    var cols = window.matchMedia("(max-width: 575px)").matches ? 1 : 2;
+    var gallery = document.querySelector(".life-gallery");
+    var figs = gallery.querySelectorAll("figure");
     function done(fig) {
       fig.classList.add("is-in", "is-done");
     }
@@ -105,7 +119,9 @@ description_zh: 一个松弛的人。
             if (!e.isIntersecting) return;
             var fig = e.target;
             io.unobserve(fig);
-            fig.style.setProperty("--d", (Array.prototype.indexOf.call(figs, fig) % cols) * 0.12 + "s");
+            // the right-hand photo of a row opens a beat later (read from layout, since the panorama shifts the order)
+            var right = fig.getBoundingClientRect().left - gallery.getBoundingClientRect().left > 20;
+            fig.style.setProperty("--d", (right ? 0.12 : 0) + "s");
             fig.classList.add("is-in");
             // hand over to the hover transitions once the reveal has played
             setTimeout(function () {
