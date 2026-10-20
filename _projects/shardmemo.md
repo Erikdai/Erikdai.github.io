@@ -7,6 +7,7 @@ img: assets/img/proj_shardmemo.png # cover drawn in the repo's logo palette (128
 importance: 2
 category: work
 github: https://github.com/Erikdai/shardmemo
-report: https://arxiv.org/abs/2601.21545 # paper (arXiv)
+report: https://arxiv.org/abs/2601.21545
+report_label: Paper (arXiv)
 redirect: https://github.com/Erikdai/shardmemo
 ---
