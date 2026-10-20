@@ -18,7 +18,7 @@
     }
   </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
   :root {
-    --max-content-width: 930px;
+    --max-content-width: 1080px;
   }
 </style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Great+Vibes|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%98%8E&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=f0b101217084a90093badfe99ff9a7d1"> <link rel="canonical" href="https://erikdai.github.io/books/category/classics/"> <script src="/assets/js/theme.js?v=7af685e2ba20b37fef545c97b8064050"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
     initTheme();
@@ -135,6 +135,13 @@
   .publications ol.bibliography > li > .row:hover::before { transform: scaleY(1); }
   .publications ol.bibliography > li > .row:hover::after { opacity: 1; }
   .publications ol.bibliography > li > .row > * { position: relative; z-index: 1; }
+  /* The text column takes the rest of the row: upstream col-sm-8 left 2/12 empty, and col-sm-10 is not in the
+     purged Tailwind build (only classes the gem uses survive), so widen col-sm-8 here instead */
+  @media (min-width: 576px) {
+    .publications ol.bibliography > li > .row > .col-sm-8 { flex: 0 0 83.3333%; max-width: 83.3333%; }
+  }
+  /* Year group headings on the right: bold, one step darker so the weight shows */
+  .publications h2.bibliography { font-weight: 700; color: var(--global-text-color-light); }
   .publications .preview { transition: transform .4s cubic-bezier(.2, .7, .2, 1), box-shadow .4s ease; }
   .publications ol.bibliography > li > .row:hover .preview { transform: translateY(-3px) scale(1.04); box-shadow: 0 10px 22px rgba(0, 0, 0, .18); }
   .publications .title a { transition: color .2s ease; }
