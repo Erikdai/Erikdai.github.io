@@ -13,6 +13,23 @@
     --max-content-width: {{ site.max_width | default: '930px' }};
   }
 </style>
+<!-- Desktop opens at 125% (user request 2026-10-20: "打开就是 zoom in 125%，只要电脑端，手机端不要"): CSS zoom on the root,
+     only for wide screens driven by a mouse; phones and tablets stay at 100%. Under zoom, getBoundingClientRect() and
+     mouse clientX/Y are in zoomed pixels while CSS lengths are not, so scripts that write measured pixels back into
+     styles divide by window.pageZoom(). -->
+<style>
+  @media (min-width: 1280px) and (hover: hover) and (pointer: fine) {
+    html { zoom: 1.25; }
+  }
+</style>
+<script>
+  window.pageZoom = function () {
+    var b = document.body;
+    if (!b || !b.offsetWidth) return 1;
+    var z = b.getBoundingClientRect().width / b.offsetWidth;
+    return z > 0.5 && z < 4 ? z : 1;
+  };
+</script>
 
 <!-- Tailwind-first core styles -->
 <link rel="stylesheet" href="{{ '/assets/css/tailwind.css' | relative_url | bust_file_cache }}">
@@ -346,13 +363,13 @@
       if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       function bind(el, tilt) {
-        var rect = null, raf = null, last = null;
+        var rect = null, raf = null, last = null, zoom = 1;
         function apply() {
           raf = null;
           if (!rect || !last) return;
-          var x = last.clientX - rect.left, y = last.clientY - rect.top;
-          el.style.setProperty("--mx", x.toFixed(1) + "px");
-          el.style.setProperty("--my", y.toFixed(1) + "px");
+          var x = last.clientX - rect.left, y = last.clientY - rect.top; // zoomed px
+          el.style.setProperty("--mx", (x / zoom).toFixed(1) + "px");
+          el.style.setProperty("--my", (y / zoom).toFixed(1) + "px");
           if (tilt) {
             el.style.setProperty("--rx", ((0.5 - y / rect.height) * 7).toFixed(2) + "deg");
             el.style.setProperty("--ry", ((x / rect.width - 0.5) * 9).toFixed(2) + "deg");
@@ -360,6 +377,7 @@
         }
         el.addEventListener("mouseenter", function (e) {
           rect = el.getBoundingClientRect();
+          zoom = window.pageZoom ? window.pageZoom() : 1;
           last = e;
           if (tilt) el.classList.add("is-tilting");
           apply();
@@ -743,7 +761,7 @@
       var raf = 0;
       var nx = 0;
       nav.addEventListener("mousemove", function (e) {
-        nx = e.clientX - nav.getBoundingClientRect().left;
+        nx = (e.clientX - nav.getBoundingClientRect().left) / (window.pageZoom ? window.pageZoom() : 1);
         if (!raf)
           raf = requestAnimationFrame(function () {
             raf = 0;
@@ -772,18 +790,19 @@
         pill.style.opacity = "0";
         return;
       }
+      var z = window.pageZoom ? window.pageZoom() : 1;
       var a = link.getBoundingClientRect();
       var b = list.getBoundingClientRect();
-      var left = a.left - b.left;
+      var left = (a.left - b.left) / z;
       var prev = parseFloat(pill.style.left);
       var goingRight = !isNaN(prev) && left > prev;
       // Liquid stretch: the leading edge sets off first, the trailing edge catches up
       pill.style.setProperty("--dl", goingRight ? "0.08s" : "0s");
       pill.style.setProperty("--dr", goingRight ? "0s" : "0.08s");
       pill.style.left = left + "px";
-      pill.style.right = b.width - left - a.width + "px";
-      pill.style.top = a.top - b.top + "px";
-      pill.style.height = a.height + "px";
+      pill.style.right = (b.width - a.width) / z - left + "px";
+      pill.style.top = (a.top - b.top) / z + "px";
+      pill.style.height = a.height / z + "px";
       pill.style.opacity = "1";
     }
     function rest() {

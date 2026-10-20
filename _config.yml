@@ -89,7 +89,7 @@ posts_in_search: true
 bib_search: true
 
 # Dimensions
-max_width: 1200px # was 930px; widened 2026-10-20 so pages fill more of the screen
+max_width: 1080px # was 930px; with the desktop 125% zoom (head.liquid) this renders ~1350px wide on screen
 
 # -----------------------------------------------------------------------------
 # Open Graph & Schema.org

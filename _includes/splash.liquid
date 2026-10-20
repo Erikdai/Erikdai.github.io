@@ -95,7 +95,8 @@
       var mouse = { x: -1e9, y: -1e9 };
 
       function size() {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        // under the desktop CSS zoom (head.liquid) one CSS px covers pageZoom() screen px: render sharper to match
+        dpr = Math.min((window.devicePixelRatio || 1) * (window.pageZoom ? window.pageZoom() : 1), 3);
         W = el.clientWidth;
         H = el.clientHeight;
         canvas.width = Math.round(W * dpr);
@@ -223,8 +224,9 @@
       }
 
       function onMove(e) {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
+        var z = window.pageZoom ? window.pageZoom() : 1; // clientX/Y are zoomed px, the nodes live in CSS px
+        mouse.x = e.clientX / z;
+        mouse.y = e.clientY / z;
       }
       function onLeave() {
         mouse.x = mouse.y = -1e9;
