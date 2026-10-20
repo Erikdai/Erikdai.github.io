@@ -77,11 +77,11 @@ My research focuses on large language models and multi-agent systems, in particu
 
 <div class="lang-en" markdown="1">
 
-I am currently seeking PhD opportunities and AI/ML engineering roles. Feel free to reach out at **chengxiao [dot] dai [at] sydney [dot] edu [dot] au**.
+I am currently seeking PhD opportunities and AI/ML engineering roles. Feel free to reach out at **chengxiao [dot] dai [at] sydney [dot] edu [dot] au** or **daicxx1226 [at] gmail [dot] com**.
 
 </div>
 <div class="lang-zh" markdown="1">
 
-我目前正在寻找博士（PhD）机会以及 AI/ML 工程师岗位，欢迎通过 **chengxiao [dot] dai [at] sydney [dot] edu [dot] au** 与我联系。
+我目前正在寻找博士（PhD）机会以及 AI/ML 工程师岗位，欢迎通过 **chengxiao [dot] dai [at] sydney [dot] edu [dot] au** 或 **daicxx1226 [at] gmail [dot] com** 与我联系。
 
 </div>
