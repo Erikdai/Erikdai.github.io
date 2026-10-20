@@ -7,6 +7,7 @@ img: assets/img/proj_bearing_f110.jpg # F110-129 turbofan on a test stand; U.S. 
 importance: 6
 category: work
 github: https://github.com/Erikdai/Fault-Diagnosis-of-Aero-engine-Inter-shaft-Bearings
-website: https://ieeexplore.ieee.org/document/11117663
+report: https://ieeexplore.ieee.org/document/11117663
+report_label: Paper (IEEE Xplore)
 redirect: https://github.com/Erikdai/Fault-Diagnosis-of-Aero-engine-Inter-shaft-Bearings
 ---
